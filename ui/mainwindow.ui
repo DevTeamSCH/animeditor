@@ -14,7 +14,11 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <item>
+     <widget class="QMdiArea" name="mdiArea"/>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -58,7 +62,11 @@
     <number>8</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QMdiArea" name="mdiArea_2"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget_2">
@@ -78,7 +86,14 @@
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3">
-    <layout class="QVBoxLayout" name="verticalLayout_2"/>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QMdiArea" name="mdiArea_3"/>
+     </item>
+     <item>
+      <widget class="QMdiArea" name="mdiArea_4"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <action name="actionOpen">
