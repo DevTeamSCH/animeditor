@@ -7,7 +7,7 @@ SCH Matrix new animeditor in Qt5
  - supports advanced editing techniques (e.g. copying, moving, selecting "pixels")
  - can set different resolutions
  - can draw primitives (e.g. circle, line etc.)
- - interpolation between frames
+ - can interpolate between frames
 
 ### Design plan
 ![](ui/designplan.png)
