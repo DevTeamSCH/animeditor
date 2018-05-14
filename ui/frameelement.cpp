@@ -23,12 +23,6 @@ FrameElement::FrameElement(QWidget *parent) :
 }
 
 
-void FrameElement::resizeEvent(QResizeEvent *event){
-    QWidget::resizeEvent(event);
-    QWidget::heightForWidth(this->height());
-
-}
-
 FrameElement::~FrameElement()
 {
     delete ui;

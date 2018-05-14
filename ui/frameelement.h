@@ -15,7 +15,6 @@ class FrameElement : public QWidget
 public:
     explicit FrameElement(QWidget *parent = 0);
     ~FrameElement();
-    void resizeEvent(QResizeEvent *event) override;
 
 private:
     QVector<PixelWidget*> pixels;
