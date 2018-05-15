@@ -14,18 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
-    <item>
-     <layout class="QGridLayout" name="frameEditLayout">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-     </layout>
-    </item>
-   </layout>
+   <layout class="QHBoxLayout" name="horizontalLayout_3"/>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

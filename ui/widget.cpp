@@ -24,7 +24,8 @@ PixelWidget::~PixelWidget()
 
 void PixelWidget::paintEvent(QPaintEvent *event){
        QPainter painter(this);
-       this->setMinimumSize(5,5);
+       this->setMinimumSize(15,15);
+       this->setMaximumSize(15,15);
        painter.fillRect(event->rect(), QBrush(color));
 }
 

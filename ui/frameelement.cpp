@@ -8,13 +8,13 @@ FrameElement::FrameElement(QWidget *parent) :
 {
     QGridLayout* layout=new QGridLayout();
     layout->setSpacing(1);
-    layout->setMargin(2);
+    layout->setMargin(0);
 
-    setMaximumSize(80,80);
-    setMinimumHeight(20);
+    setMaximumSize(31,31);
+    setMinimumSize(31,31);
 
     for(int i=0;i<4;i++){
-        pixels.append(new PixelWidget(this->height()/2,this));
+        pixels.append(new PixelWidget(this));
         layout->addWidget(pixels[i],i/2,i%2);
     }
 
