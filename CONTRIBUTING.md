@@ -14,8 +14,7 @@ Bug reports should be clear and precise. They should describe the problem in as 
 Whenever you start working on a new feature, you should create a new branch for it. Branches should have a short name that describes the feature. When a feature is ready, create a pull request for it to get into the master branch.
 
 ### C++ coding style
-Contributors should follow the [Linux kernel coding style](https://www.kernel.org/doc/html/v4.10/process/coding-style.html). Since it applies mainly to C, we have the following additions for C++:  
-...
+Contributors should follow the [Linux kernel coding style](https://www.kernel.org/doc/html/v4.10/process/coding-style.html). Yes, it applies only to C, but it shouldn't be too hard to apply the principles to C++.
 
 ### Commit messages
 Commit messages should help others understand the reasons and the contents of your change. You should write a short message in imperative.
