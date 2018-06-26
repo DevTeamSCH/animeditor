@@ -24,11 +24,11 @@ void PixelWidget::paintEvent(QPaintEvent *event)
 }
 
 QSize PixelWidget::sizeHint() const{
-        return QSize(10,10);
+        return QSize(12,12);
 }
 
 QSize PixelWidget::minimumSizeHint() const{
-        return QSize(10,10);
+        return QSize(12,12);
 }
 
 void PixelWidget::mousePressEvent(QMouseEvent *event)

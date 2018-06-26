@@ -21,11 +21,11 @@ FrameElement::FrameElement(QWidget *parent) :QWidget(parent), ui(new Ui::FrameEl
 
 QSize FrameElement::sizeHint() const
 {
-        return QSize(21,21);
+        return QSize(25,25);
 }
  QSize FrameElement::minimumSizeHint() const
  {
-         return QSize(21,21);
+         return QSize(25,25);
  }
 FrameElement::~FrameElement()
 {

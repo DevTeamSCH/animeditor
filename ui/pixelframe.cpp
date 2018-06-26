@@ -10,15 +10,22 @@ PixelFrame::PixelFrame(unsigned sizeX, unsigned sizeY, QWidget *parent) : QWidge
         QGridLayout *frameEditLayout=new QGridLayout();
         ui->setupUi(this);
         QWidget *client = new QWidget;
-        QScrollArea *scrollArea = new QScrollArea;
-        scrollArea->setWidgetResizable(true);
-        scrollArea->setWidget(client);
         client->setLayout(frameEditLayout);
+        QWidget *placeholder1 = new QWidget;
+        QWidget *placeholder2 = new QWidget;
 
-        setLayout(new QVBoxLayout);
-        layout()->addWidget(scrollArea);
+        placeholder1->setMinimumSize(100,500);
+        placeholder2->setMinimumSize(100,500);
+        QHBoxLayout *frameContainer=new QHBoxLayout();
+        frameContainer->setMargin(0);
+
+        setLayout(frameContainer);
+        layout()->addWidget(placeholder1);
+        layout()->addWidget(client);
+        layout()->addWidget(placeholder2);
 
         frameEditLayout->setMargin(2);
+        frameEditLayout->setVerticalSpacing(15);
         for(unsigned i=0;i<sizeX;i++){
                 for(unsigned j=0;j<sizeY;j++)
                         frameEditLayout->addWidget(new FrameElement(this),i,j);
