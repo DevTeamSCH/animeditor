@@ -14,29 +14,27 @@ class PixelWidget;
 
 class PixelWidget : public QWidget
 {
-    Q_OBJECT
+        Q_OBJECT
 
 public:
-    explicit PixelWidget(QWidget *parent = 0);
-    PixelWidget(int size,QWidget *parent=0);
-    ~PixelWidget();
-    void setSquareSize(int size);
+        explicit PixelWidget(QWidget *parent = 0);
+        PixelWidget(int size,QWidget *parent=0);
+        ~PixelWidget();
+        void setSquareSize(int size);
 
 public slots:
 
-
-
-signals:
+signals:      
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
-    void paintEvent(QPaintEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
 
 private:
-    Ui::PixelWidget *ui;
+        Ui::PixelWidget *ui;
 
-    QColor color=QColor(255,0,0);
-    int squareSize=20;
+        QColor color=QColor(255,0,0);
+        int squareSize=20;
 
 };
 

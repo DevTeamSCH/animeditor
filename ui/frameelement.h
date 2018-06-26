@@ -10,16 +10,15 @@ class FrameElement;
 
 class FrameElement : public QWidget
 {
-    Q_OBJECT
+        Q_OBJECT
 
 public:
-    explicit FrameElement(QWidget *parent = 0);
-    ~FrameElement();
+        explicit FrameElement(QWidget *parent = 0);
+        ~FrameElement();
 
 private:
-    QVector<PixelWidget*> pixels;
-    Ui::FrameElement *ui;
+        QVector<PixelWidget*> pixels;
+        Ui::FrameElement *ui;
 
 };
-
 #endif // FRAMEELEMENT_H

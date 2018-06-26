@@ -32,7 +32,6 @@ SOURCES += \
 HEADERS += \
     ui/mainwindow.h \
     ui/frameelement.h \
-    ui/mainwindow.h \
     ui/widget.h
 
 FORMS += \
