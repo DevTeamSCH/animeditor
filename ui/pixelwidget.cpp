@@ -1,4 +1,4 @@
-#include "widget.h"
+#include "pixelwidget.h"
 #include "ui_widget.h"
 
 PixelWidget::PixelWidget(QWidget *parent) :QWidget(parent),ui(new Ui::PixelWidget)
@@ -20,9 +20,15 @@ PixelWidget::~PixelWidget()
 void PixelWidget::paintEvent(QPaintEvent *event)
 {
         QPainter painter(this);
-        this->setMinimumSize(15,15);
-        this->setMaximumSize(15,15);
         painter.fillRect(event->rect(), QBrush(color));
+}
+
+QSize PixelWidget::sizeHint() const{
+        return QSize(10,10);
+}
+
+QSize PixelWidget::minimumSizeHint() const{
+        return QSize(10,10);
 }
 
 void PixelWidget::mousePressEvent(QMouseEvent *event)

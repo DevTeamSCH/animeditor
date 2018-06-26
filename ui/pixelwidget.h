@@ -5,7 +5,6 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QColor>
-#include "widget.h"
 
 
 namespace Ui {
@@ -21,6 +20,8 @@ public:
         PixelWidget(int size,QWidget *parent=0);
         ~PixelWidget();
         void setSquareSize(int size);
+        virtual QSize sizeHint() const override;
+        virtual QSize minimumSizeHint() const override;
 
 public slots:
 

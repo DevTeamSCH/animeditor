@@ -8,8 +8,7 @@ FrameElement::FrameElement(QWidget *parent) :QWidget(parent), ui(new Ui::FrameEl
         layout->setSpacing(1);
         layout->setMargin(0);
 
-        setMaximumSize(31,31);
-        setMinimumSize(31,31);
+        setMaximumSize(21,21);
 
         for(int i=0;i<4;i++){
                 pixels.append(new PixelWidget(this));
@@ -20,7 +19,14 @@ FrameElement::FrameElement(QWidget *parent) :QWidget(parent), ui(new Ui::FrameEl
         ui->setupUi(this);
 }
 
-
+QSize FrameElement::sizeHint() const
+{
+        return QSize(21,21);
+}
+ QSize FrameElement::minimumSizeHint() const
+ {
+         return QSize(21,21);
+ }
 FrameElement::~FrameElement()
 {
         delete ui;

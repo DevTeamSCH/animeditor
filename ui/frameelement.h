@@ -2,7 +2,7 @@
 #define FRAMEELEMENT_H
 
 #include <QWidget>
-#include "widget.h"
+#include "pixelwidget.h"
 
 namespace Ui {
 class FrameElement;
@@ -15,6 +15,9 @@ class FrameElement : public QWidget
 public:
         explicit FrameElement(QWidget *parent = 0);
         ~FrameElement();
+
+        virtual QSize sizeHint() const override;
+        virtual QSize minimumSizeHint() const override;
 
 private:
         QVector<PixelWidget*> pixels;

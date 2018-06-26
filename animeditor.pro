@@ -27,14 +27,17 @@ SOURCES += \
     main.cpp \
     ui/mainwindow.cpp \
     ui/frameelement.cpp \
-    ui/widget.cpp
+    ui/pixelwidget.cpp \
+    ui/pixelframe.cpp
 
 HEADERS += \
     ui/mainwindow.h \
     ui/frameelement.h \
-    ui/widget.h
+    ui/pixelwidget.h \
+    ui/pixelframe.h
 
 FORMS += \
     ui/mainwindow.ui \
     ui/frameelement.ui \
-    ui/widget.ui
+    ui/widget.ui \
+    ui/pixelframe.ui
