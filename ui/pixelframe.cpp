@@ -25,7 +25,7 @@ PixelFrame::PixelFrame(unsigned sizeX, unsigned sizeY, QWidget *parent) : QWidge
         layout()->addWidget(placeholder2);
 
         frameEditLayout->setMargin(2);
-        frameEditLayout->setVerticalSpacing(15);
+        frameEditLayout->setVerticalSpacing(12);
         for(unsigned i=0;i<sizeX;i++){
                 for(unsigned j=0;j<sizeY;j++)
                         frameEditLayout->addWidget(new FrameElement(this),i,j);
