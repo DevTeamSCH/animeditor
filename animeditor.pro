@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     ui/mainwindow.cpp \
+<<<<<<< HEAD
     ui/frameelement.cpp \
     ui/pixelwidget.cpp \
     ui/pixelframe.cpp
@@ -35,6 +36,15 @@ HEADERS += \
     ui/frameelement.h \
     ui/pixelwidget.h \
     ui/pixelframe.h
+=======
+    ui/colorwheel.cpp \
+    ui/colorindicator.cpp
+
+HEADERS += \
+    ui/mainwindow.h \
+    ui/colorwheel.h \
+    ui/colorindicator.h
+>>>>>>> color_copy
 
 FORMS += \
     ui/mainwindow.ui \
