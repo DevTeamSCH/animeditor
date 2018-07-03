@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     ui/mainwindow.cpp \
-    ui/colorwheel.cpp
+    ui/colorwheel.cpp \
+    ui/colorindicator.cpp
 
 HEADERS += \
     ui/mainwindow.h \
-    ui/colorwheel.h
+    ui/colorwheel.h \
+    ui/colorindicator.h
 
 FORMS += \
     ui/mainwindow.ui

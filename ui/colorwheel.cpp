@@ -266,7 +266,6 @@ public:
 ColorWheel::ColorWheel(QWidget *parent) :
         QWidget(parent), p(new Private(this))
 {
-        // setDisplayFlags(FLAGS_DEFAULT);
         setAcceptDrops(true);
 }
 
@@ -398,7 +397,7 @@ void ColorWheel::mouseMoveEvent(QMouseEvent *ev)
                         p->render_inner_selector();
 
                         emit colorSelected(color());
-                        emit colorChanged(color());
+                       // emit colorChanged(color());
                         update();
                 }
 
@@ -433,7 +432,7 @@ void ColorWheel::mouseMoveEvent(QMouseEvent *ev)
                 // }
 
                 emit colorSelected(color());
-                emit colorChanged(color());
+               // emit colorChanged(color());
                 update();
         }
 }
@@ -458,6 +457,7 @@ void ColorWheel::mousePressEvent(QMouseEvent *ev)
 void ColorWheel::mouseReleaseEvent(QMouseEvent *ev)
 {
         mouseMoveEvent(ev);
+        emit colorChanged(color());
         p->mouse_status = Nothing;
         p->current_ring_editor = -1;
 }
