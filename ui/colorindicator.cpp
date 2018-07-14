@@ -16,10 +16,10 @@ ColorIndicator::ColorIndicator(QWidget *parent) :QWidget(parent)
 
 void ColorIndicator::paintEvent(QPaintEvent *ev){
         QPainter painter(this);
-        painter.fillRect(QRect(0,0,50,20),QBrush(actual));
-        painter.drawRect(QRect(0,0,50,20));
-        painter.fillRect(QRect(60,0,50,20),QBrush(before));
-        painter.drawRect(QRect(60,0,50,20));
+        painter.fillRect(QRect(this->size().width()/2-55,0,50,20),QBrush(actual));
+        painter.drawRect(QRect(this->size().width()/2-55,0,50,20));
+        painter.fillRect(QRect(this->size().width()/2+5,0,50,20),QBrush(before));
+        painter.drawRect(QRect(this->size().width()/2+5,0,50,20));
 
         painter.drawText(QRect(0,30,100,30),"Selected: "+actual.name());
 }
@@ -28,7 +28,7 @@ void ColorIndicator::paintEvent(QPaintEvent *ev){
 
 void ColorIndicator::mousePressEvent(QMouseEvent* event){
         if(event->button()==Qt::LeftButton){
-                if(event->localPos().x()>=60 && event->localPos().x()<=110 &&
+                if(event->localPos().x()>=this->size().width()/2+5 && event->localPos().x()<=this->size().width()/2+5+50 &&
                    event->localPos().y()>=0 && event->localPos().y()<=20 )
                         emit colorChanged(before);
         }
