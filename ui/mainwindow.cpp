@@ -1,39 +1,51 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-<<<<<<< HEAD
+
 #include "pixelframe.h"
 #include <QScrollArea>
-=======
+
 #include "colorindicator.h"
 #include "colorwheel.h"
->>>>>>> color_copy
 
-MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), ui(new Ui::MainWindow)
+//Constructs a deafault window with 16*13 pixelframe, color picker, tools etc...
+
+MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), pf(nullptr),ui(new Ui::MainWindow)
 {
-<<<<<<< HEAD
         ui->setupUi(this);
-        ui->centralWidget->layout()->setMargin(0);
-        ui->centralWidget->layout()->addWidget(new PixelFrame(16,13));
 
-=======
-         ui->setupUi(this);
+        ui->centralWidget->layout()->setMargin(0);
+        setFrame(16,13);
+
         ColorIndicator* ci=new ColorIndicator();
         ColorWheel* cw=new ColorWheel();
         connect(cw,SIGNAL(colorChanged(QColor)),ci,SLOT(updateColor(QColor)));
-
-         //ui->centralWidget->layout()->addWidget(ci);
+        connect(cw,SIGNAL(colorChanged(QColor)),pf,SLOT(updateColor(QColor)));
 
          QWidget* multiWidget= new QWidget();
-         QVBoxLayout* layout=new QVBoxLayout();
-         layout->addWidget(cw);
-         layout->addWidget(ci);
-         multiWidget->setLayout(layout);
+         QVBoxLayout* rightSideLayout=new QVBoxLayout();
+         rightSideLayout->addWidget(cw);
+         rightSideLayout->addWidget(ci);
+         multiWidget->setLayout(rightSideLayout);
          ui->rightPanelDock->setMinimumSize(250,100);
          ui->rightPanelDock->setWidget(multiWidget);
->>>>>>> color_copy
+
 }
 
 MainWindow::~MainWindow()
 {
+        delete pf;
         delete ui;
 }
+
+//Sets the number of windows in the central area in the PixelFrame
+
+void MainWindow::setFrame(unsigned x,unsigned y){
+        if(pf!=nullptr)
+        {
+                centralWidget()->layout()->removeWidget(pf);
+                delete pf;
+        }
+        pf=new PixelFrame(x,y);
+        centralWidget()->layout()->addWidget(pf);
+}
+
