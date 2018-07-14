@@ -2,6 +2,7 @@
 #include "colorwheel.h"
 
 #include <QPainter>
+#include <QMouseEvent>
 
 //Constructs a Color Indicator with the actual color black and before color white
 
@@ -21,6 +22,17 @@ void ColorIndicator::paintEvent(QPaintEvent *ev){
         painter.drawRect(QRect(60,0,50,20));
 
         painter.drawText(QRect(0,30,100,30),"Selected: "+actual.name());
+}
+
+// If the user clicks on the 2nd rect the colors swap
+
+void ColorIndicator::mousePressEvent(QMouseEvent* event){
+        if(event->button()==Qt::LeftButton){
+                if(event->localPos().x()>=60 && event->localPos().x()<=110 &&
+                   event->localPos().y()>=0 && event->localPos().y()<=20 )
+                        emit colorChanged(before);
+        }
+
 }
 
 // Recommended size of the widget

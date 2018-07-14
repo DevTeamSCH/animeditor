@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), pf(nullptr),ui(new
         ColorWheel* cw=new ColorWheel();
         connect(cw,SIGNAL(colorChanged(QColor)),ci,SLOT(updateColor(QColor)));
         connect(cw,SIGNAL(colorChanged(QColor)),pf,SLOT(updateColor(QColor)));
+        connect(ci,SIGNAL(colorChanged(QColor)),cw,SLOT(setColor(QColor)));
 
          QWidget* multiWidget= new QWidget();
          QVBoxLayout* rightSideLayout=new QVBoxLayout();

@@ -18,7 +18,7 @@ private:
        // Ui::ColorIndicator *ui;
 
         QColor actual, before;
-     //   void mousePressEvent(QMouseEvent ) override;
+        void mousePressEvent(QMouseEvent *) override;
         void paintEvent(QPaintEvent *) override;
 
 public slots:
@@ -26,7 +26,7 @@ public slots:
 
 
 signals:
-    //   void colorChanged(QColor);
+      void colorChanged(QColor);
 };
 
 #endif // COLORINDICATOR_H
