@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), pf(nullptr),ui(new
         ui->setupUi(this);
 
         ui->centralWidget->layout()->setMargin(0);
-        setFrame(16,13);
+        setFrame(13,16);
 
         ColorIndicator* ci=new ColorIndicator();
         ColorWheel* cw=new ColorWheel();

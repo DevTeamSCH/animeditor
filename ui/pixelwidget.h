@@ -38,7 +38,7 @@ protected:
 private:
         Ui::PixelWidget *ui;
         unsigned pos;
-        QColor color=QColor(255,0,0);
+        QColor color=QColor(0,0,0);
         int squareSize=20;
 
 };
