@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "pixelframe.h"
-#include <QScrollArea>
+#include <QGroupBox>
 
 #include "colorindicator.h"
 #include "colorwheel.h"
@@ -12,9 +12,8 @@
 MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), pf(nullptr),ui(new Ui::MainWindow)
 {
         ui->setupUi(this);
-
-        ui->centralWidget->layout()->setMargin(0);
         setFrame(13,16);
+        setupCentralWidget();
 
         ColorIndicator* ci=new ColorIndicator();
         ColorWheel* cw=new ColorWheel();
@@ -22,13 +21,13 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), pf(nullptr),ui(new
         connect(cw,SIGNAL(colorChanged(QColor)),pf,SLOT(updateColor(QColor)));
         connect(ci,SIGNAL(colorChanged(QColor)),cw,SLOT(setColor(QColor)));
 
-         QWidget* multiWidget= new QWidget();
-         QVBoxLayout* rightSideLayout=new QVBoxLayout();
-         rightSideLayout->addWidget(cw);
-         rightSideLayout->addWidget(ci);
-         multiWidget->setLayout(rightSideLayout);
-         ui->rightPanelDock->setMinimumSize(250,100);
-         ui->rightPanelDock->setWidget(multiWidget);
+        QWidget* multiWidget= new QWidget();
+        QVBoxLayout* rightSideLayout=new QVBoxLayout();
+        rightSideLayout->addWidget(cw);
+        rightSideLayout->addWidget(ci);
+        multiWidget->setLayout(rightSideLayout);
+        ui->rightPanelDock->setMinimumSize(250,100);
+        ui->rightPanelDock->setWidget(multiWidget);
 
 }
 
@@ -43,10 +42,31 @@ MainWindow::~MainWindow()
 void MainWindow::setFrame(unsigned x,unsigned y){
         if(pf!=nullptr)
         {
-                centralWidget()->layout()->removeWidget(pf);
+                //centralWidget()->layout()->removeWidget(pf);
                 delete pf;
         }
         pf=new PixelFrame(x,y);
-        centralWidget()->layout()->addWidget(pf);
+      //  centralWidget()->layout()->addWidget(pf);
+}
+
+void MainWindow::setupCentralWidget(){
+
+        QWidget *client = new QWidget;
+        QWidget *placeholder1 = new QWidget;
+        QWidget *placeholder2 = new QWidget;
+
+        placeholder1->setMinimumSize(100,500);
+        placeholder2->setMinimumSize(100,500);
+
+        centralWidget()->layout()->setMargin(0);
+        centralWidget()->layout()->addWidget(placeholder1);
+        centralWidget()->layout()->addWidget(client);
+        centralWidget()->layout()->addWidget(placeholder2);
+
+        client->setLayout(new QVBoxLayout());
+        client->layout()->addWidget(new QWidget());
+        client->layout()->addWidget(pf);
+        client->layout()->addWidget(new QWidget());
+
 }
 

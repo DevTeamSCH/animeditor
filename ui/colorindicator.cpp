@@ -21,7 +21,6 @@ void ColorIndicator::paintEvent(QPaintEvent *ev){
         painter.fillRect(QRect(this->size().width()/2+5,0,50,20),QBrush(before));
         painter.drawRect(QRect(this->size().width()/2+5,0,50,20));
 
-        painter.drawText(QRect(0,30,100,30),"Selected: "+actual.name());
 }
 
 // If the user clicks on the 2nd rect the colors swap
@@ -38,7 +37,7 @@ void ColorIndicator::mousePressEvent(QMouseEvent* event){
 // Recommended size of the widget
 
 QSize ColorIndicator::sizeHint()const{
-        return QSize(120,120);
+        return QSize(120,50);
 }
 
 ColorIndicator::~ColorIndicator(){

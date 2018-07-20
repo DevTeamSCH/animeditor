@@ -16,7 +16,8 @@ public:
         explicit PixelFrame(unsigned sizeX, unsigned sizeY, QWidget *parent=0);
         ~PixelFrame();
         QColor getDrawColor();
-//        QSize sizeHint() const override;
+        QSize sizeHint() const override;
+
 //        QSize minimumSizeHint() const override;
 
 private:
