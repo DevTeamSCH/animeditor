@@ -16,10 +16,13 @@ public:
         explicit MainWindow(QWidget *parent = 0);
         ~MainWindow();
         void setFrame(unsigned x,unsigned y);
-        void setupCentralWidget();
+
 
 private:
         PixelFrame *pf;
+
+        void setupCentralWidget();
+        void setupRightSide();
         Ui::MainWindow *ui;
 };
 

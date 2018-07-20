@@ -2,6 +2,7 @@
 #define PIXELFRAME_H
 
 #include <QWidget>
+#include "toolbar.h"
 
 namespace Ui {
 class PixelFrame;
@@ -24,9 +25,11 @@ private:
         Ui::PixelFrame *ui;
         unsigned x,y;
         QColor drawColor;
+        ToolState ts=Arrow;
 
 public slots:
         void updateColor(QColor);
+        void setTool(ToolState);
 };
 
 #endif // PIXELFRAME_H

@@ -44,4 +44,25 @@ QSize PixelFrame::sizeHint() const{
         return QSize((layout()->itemAt(1)->widget()->width()+1)*x,layout()->itemAt(1)->widget()->height()*2*y);
 }
 
+void PixelFrame::setTool(ToolState tools){
+        ts=tools;
+        QPixmap pixm;
+
+        switch(ts){
+        case Arrow:
+                setCursor(Qt::ArrowCursor);
+                break;
+        case Brush:
+                pixm=QPixmap(":/images/brush");
+                setCursor(pixm);
+                break;
+        case Pipette:
+                pixm= QPixmap(":/resources/pipette.png");
+                setCursor(pixm);
+                break;
+        default:
+                setCursor(Qt::CrossCursor);
+                break;
+        }
+}
 

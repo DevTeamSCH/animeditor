@@ -31,6 +31,7 @@ SOURCES += \
     ui/colorindicator.cpp \
     ui/pixelframe.cpp \
     ui/pixelwidget.cpp \
+    ui/toolbar.cpp
 
 HEADERS += \
     ui/mainwindow.h \
@@ -39,9 +40,14 @@ HEADERS += \
     ui/pixelframe.h \
     ui/colorwheel.h \
     ui/colorindicator.h \
+    ui/toolbar.h
 
 FORMS += \
     ui/mainwindow.ui \
     ui/frameelement.ui \
     ui/widget.ui \
-    ui/pixelframe.ui
+    ui/pixelframe.ui \
+    ui/toolbar.ui
+
+RESOURCES += \
+    images.qrc

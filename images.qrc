@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="brush">resources/brush.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>resources/arrow.png</file>
+        <file>resources/brushicon.png</file>
+        <file>resources/ellipse.png</file>
+        <file>resources/line.png</file>
+        <file>resources/pipette.png</file>
+        <file>resources/pipetteicon.png</file>
+        <file>resources/rect.png</file>
+    </qresource>
+</RCC>

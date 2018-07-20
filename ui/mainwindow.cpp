@@ -6,6 +6,7 @@
 
 #include "colorindicator.h"
 #include "colorwheel.h"
+#include "toolbar.h"
 
 //Constructs a deafault window with 16*13 pixelframe, color picker, tools etc...
 
@@ -14,20 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), pf(nullptr),ui(new
         ui->setupUi(this);
         setFrame(13,16);
         setupCentralWidget();
-
-        ColorIndicator* ci=new ColorIndicator();
-        ColorWheel* cw=new ColorWheel();
-        connect(cw,SIGNAL(colorChanged(QColor)),ci,SLOT(updateColor(QColor)));
-        connect(cw,SIGNAL(colorChanged(QColor)),pf,SLOT(updateColor(QColor)));
-        connect(ci,SIGNAL(colorChanged(QColor)),cw,SLOT(setColor(QColor)));
-
-        QWidget* multiWidget= new QWidget();
-        QVBoxLayout* rightSideLayout=new QVBoxLayout();
-        rightSideLayout->addWidget(cw);
-        rightSideLayout->addWidget(ci);
-        multiWidget->setLayout(rightSideLayout);
-        ui->rightPanelDock->setMinimumSize(250,100);
-        ui->rightPanelDock->setWidget(multiWidget);
+        setupRightSide();
 
 }
 
@@ -70,3 +58,30 @@ void MainWindow::setupCentralWidget(){
 
 }
 
+void MainWindow::setupRightSide(){
+        ColorIndicator* ci=new ColorIndicator();
+        ColorWheel* cw=new ColorWheel();
+        Toolbar* tb=new Toolbar();
+
+        connect(cw,SIGNAL(colorChanged(QColor)),ci,SLOT(updateColor(QColor)));
+        connect(cw,SIGNAL(colorChanged(QColor)),pf,SLOT(updateColor(QColor)));
+        connect(ci,SIGNAL(colorChanged(QColor)),cw,SLOT(setColor(QColor)));
+        connect(tb,SIGNAL(toolChanged(ToolState)),pf,SLOT(setTool(ToolState)));
+
+        QVBoxLayout* rightSideLayout=new QVBoxLayout();
+        rightSideLayout->addWidget(cw);
+        rightSideLayout->addWidget(ci);
+
+        QWidget* multiWidget= new QWidget();
+        QGridLayout* multiLayout= new QGridLayout();
+
+
+        QWidget* rightWidget=new QWidget();
+        multiLayout->addWidget(tb,1,0,5,1);
+        multiLayout->addWidget(rightWidget,1,1,5,5);
+        multiWidget->setLayout(multiLayout);
+
+        rightWidget->setLayout(rightSideLayout);
+        ui->rightPanelDock->setMinimumSize(300,250);
+        ui->rightPanelDock->setWidget(multiWidget);
+}
