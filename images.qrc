@@ -7,5 +7,6 @@
         <file alias="line">resources/line.png</file>
         <file alias="pipette">resources/pipette.png</file>
         <file alias="rect">resources/rect.png</file>
+        <file alias="pipetteicon">resources/pipetteicon.png</file>
     </qresource>
 </RCC>

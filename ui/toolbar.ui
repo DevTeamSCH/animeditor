@@ -159,8 +159,8 @@
     <string>...</string>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>C:/Users/ASUS/Downloads/pipette.png</normaloff>C:/Users/ASUS/Downloads/pipette.png</iconset>
+    <iconset resource="../images.qrc">
+     <normaloff>:/images/pipetteicon</normaloff>:/images/pipetteicon</iconset>
    </property>
    <property name="iconSize">
     <size>
