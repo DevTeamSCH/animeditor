@@ -29,8 +29,8 @@
     <string>...</string>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>C:/Users/ASUS/Downloads/arrow.png</normaloff>C:/Users/ASUS/Downloads/arrow.png</iconset>
+    <iconset resource="../images.qrc">
+     <normaloff>:/images/arrow</normaloff>:/images/arrow</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -55,8 +55,8 @@
     <string>...</string>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>C:/Users/ASUS/Downloads/brush.png</normaloff>C:/Users/ASUS/Downloads/brush.png</iconset>
+    <iconset resource="../images.qrc">
+     <normaloff>:/images/brush</normaloff>:/images/brush</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -81,8 +81,8 @@
     <string>...</string>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>C:/Users/ASUS/Downloads/line.png</normaloff>C:/Users/ASUS/Downloads/line.png</iconset>
+    <iconset resource="../images.qrc">
+     <normaloff>:/images/line</normaloff>:/images/line</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -107,8 +107,8 @@
     <string>...</string>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>C:/Users/ASUS/Downloads/rect.png</normaloff>C:/Users/ASUS/Downloads/rect.png</iconset>
+    <iconset resource="../images.qrc">
+     <normaloff>:/images/rect</normaloff>:/images/rect</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -133,8 +133,8 @@
     <string>...</string>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>C:/Users/ASUS/Downloads/ellipse.png</normaloff>C:/Users/ASUS/Downloads/ellipse.png</iconset>
+    <iconset resource="../images.qrc">
+     <normaloff>:/images/ellipse</normaloff>:/images/ellipse</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -171,6 +171,8 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../images.qrc"/>
+ </resources>
  <connections/>
 </ui>

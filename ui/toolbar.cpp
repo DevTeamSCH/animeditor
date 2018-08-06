@@ -17,7 +17,7 @@ Toolbar::~Toolbar()
 
 void Toolbar::on_brushButton_clicked()
 {
-    QPixmap pixm(":/resources/brush.png");
+    QPixmap pixm(":/images/brushicon");
     setCursor(pixm);
     emit toolChanged(Brush);
 }
@@ -48,7 +48,7 @@ void Toolbar::on_ellipseButton_clicked()
 
 void Toolbar::on_toolButton_6_clicked()
 {
-     QPixmap pixm(":/resources/pipette.png");
+     QPixmap pixm(":/images/pipette");
      setCursor(pixm);
      emit toolChanged(Pipette);
 }

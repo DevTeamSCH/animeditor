@@ -53,11 +53,11 @@ void PixelFrame::setTool(ToolState tools){
                 setCursor(Qt::ArrowCursor);
                 break;
         case Brush:
-                pixm=QPixmap(":/images/brush");
+                pixm=QPixmap(":/images/brushicon");
                 setCursor(pixm);
                 break;
         case Pipette:
-                pixm= QPixmap(":/resources/pipette.png");
+                pixm= QPixmap(":/images/pipette");
                 setCursor(pixm);
                 break;
         default:
