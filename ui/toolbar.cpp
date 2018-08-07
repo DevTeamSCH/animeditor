@@ -46,7 +46,7 @@ void Toolbar::on_ellipseButton_clicked()
      emit toolChanged(Ellipse);
 }
 
-void Toolbar::on_toolButton_6_clicked()
+void Toolbar::on_pipetteButton_clicked()
 {
      QPixmap pixm(":/images/pipette");
      setCursor(pixm);

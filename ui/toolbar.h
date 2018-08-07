@@ -37,7 +37,7 @@ private slots:
 
         void on_ellipseButton_clicked();
 
-        void on_toolButton_6_clicked();
+        void on_pipetteButton_clicked();
 
 signals:
         void toolChanged(ToolState);

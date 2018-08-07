@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>41</width>
-    <height>245</height>
+    <width>43</width>
+    <height>325</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,6 +24,9 @@
    </property>
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="toolTip">
+    <string>Pixel manipulation</string>
    </property>
    <property name="text">
     <string>...</string>
@@ -51,6 +54,9 @@
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="toolTip">
+    <string>Brush tool</string>
+   </property>
    <property name="text">
     <string>...</string>
    </property>
@@ -76,6 +82,9 @@
    </property>
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="toolTip">
+    <string>Line tool</string>
    </property>
    <property name="text">
     <string>...</string>
@@ -103,6 +112,12 @@
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="toolTip">
+    <string>Rectangle tool</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
    <property name="text">
     <string>...</string>
    </property>
@@ -129,6 +144,9 @@
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="toolTip">
+    <string>Ellipse tool</string>
+   </property>
    <property name="text">
     <string>...</string>
    </property>
@@ -143,7 +161,7 @@
     </size>
    </property>
   </widget>
-  <widget class="QToolButton" name="toolButton_6">
+  <widget class="QToolButton" name="pipetteButton">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -154,6 +172,9 @@
    </property>
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="toolTip">
+    <string>Pipette</string>
    </property>
    <property name="text">
     <string>...</string>
@@ -167,6 +188,52 @@
      <width>20</width>
      <height>20</height>
     </size>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="fillButton">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>250</y>
+     <width>40</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Fillbucket</string>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../images.qrc">
+     <normaloff>:/images/resources/fillbucket.png</normaloff>:/images/resources/fillbucket.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>20</width>
+     <height>20</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="textButton">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>290</y>
+     <width>40</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Text</string>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../images.qrc">
+     <normaloff>:/images/text</normaloff>:/images/text</iconset>
    </property>
   </widget>
  </widget>
