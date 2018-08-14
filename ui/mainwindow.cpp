@@ -7,6 +7,7 @@
 #include "colorindicator.h"
 #include "colorwheel.h"
 #include "toolbar.h"
+#include "properties.h"
 
 //Constructs a deafault window with 16*13 pixelframe, color picker, tools etc...
 
@@ -62,11 +63,13 @@ void MainWindow::setupRightSide(){
         ColorIndicator* ci=new ColorIndicator();
         ColorWheel* cw=new ColorWheel();
         Toolbar* tb=new Toolbar();
+        Properties* prop=new Properties();
 
         connect(cw,SIGNAL(colorChanged(QColor)),ci,SLOT(updateColor(QColor)));
         connect(cw,SIGNAL(colorChanged(QColor)),pf,SLOT(updateColor(QColor)));
         connect(ci,SIGNAL(colorChanged(QColor)),cw,SLOT(setColor(QColor)));
         connect(tb,SIGNAL(toolChanged(ToolState)),pf,SLOT(setTool(ToolState)));
+        connect(tb,SIGNAL(toolChanged(ToolState)),prop,SLOT(toolChanged(ToolState)));
 
         QVBoxLayout* rightSideLayout=new QVBoxLayout();
         rightSideLayout->addWidget(cw);
@@ -79,6 +82,7 @@ void MainWindow::setupRightSide(){
         QWidget* rightWidget=new QWidget();
         multiLayout->addWidget(tb,1,0,5,1);
         multiLayout->addWidget(rightWidget,1,1,5,5);
+        multiLayout->addWidget(prop,6,1,5,5);
         multiWidget->setLayout(multiLayout);
 
         rightWidget->setLayout(rightSideLayout);

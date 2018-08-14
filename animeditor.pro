@@ -25,29 +25,44 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    ui/mainwindow.cpp \
-    ui/frameelement.cpp \
-    ui/colorwheel.cpp \
+    ui/properties/brushprop.cpp \
+    ui/properties/defprop.cpp \
+    ui/properties/drawprop.cpp \
+    ui/properties/property.cpp \
     ui/colorindicator.cpp \
+    ui/colorwheel.cpp \
+    ui/frameelement.cpp \
+    ui/mainwindow.cpp \
     ui/pixelframe.cpp \
     ui/pixelwidget.cpp \
-    ui/toolbar.cpp
+    ui/toolbar.cpp \
+    ui/properties.cpp
 
 HEADERS += \
-    ui/mainwindow.h \
-    ui/frameelement.h \
-    ui/pixelwidget.h \
-    ui/pixelframe.h \
-    ui/colorwheel.h \
+    ui/properties/brushprop.h \
+    ui/properties/defprop.h \
+    ui/properties/drawprop.h \
+    ui/properties/property.h \
     ui/colorindicator.h \
-    ui/toolbar.h
+    ui/colorwheel.h \
+    ui/frameelement.h \
+    ui/mainwindow.h \
+    ui/pixelframe.h \
+    ui/pixelwidget.h \
+    ui/toolbar.h \
+    ui/properties.h
 
 FORMS += \
     ui/mainwindow.ui \
     ui/frameelement.ui \
     ui/widget.ui \
     ui/pixelframe.ui \
-    ui/toolbar.ui
+    ui/toolbar.ui \
+    ui/properties/brushprop.ui \
+    ui/properties/defprop.ui \
+    ui/properties/drawprop.ui \
+    ui/properties/property.ui \
+    ui/properties.ui
 
 RESOURCES += \
     images.qrc
