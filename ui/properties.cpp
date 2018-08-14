@@ -21,13 +21,6 @@ Properties::~Properties()
         delete ui;
 }
 
-void Properties::on_pushButton_clicked()
-{
-        layout()->removeWidget(actProp);
-        actProp=new DefProp();
-        layout()->addWidget(actProp);
-}
-
 void Properties::toolChanged(ToolState state){
         switch(state){
                 case Brush: layout()->removeWidget(actProp);

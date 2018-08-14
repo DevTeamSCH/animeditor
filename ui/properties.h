@@ -23,7 +23,6 @@ public:
 private slots:
 
         void toolChanged(ToolState state);
-        void on_pushButton_clicked();
 
 private:
         Property* actProp=new DefProp();
