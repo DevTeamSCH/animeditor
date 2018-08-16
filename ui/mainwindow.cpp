@@ -77,12 +77,12 @@ void MainWindow::setupRightSide(){
 
         QWidget* multiWidget= new QWidget();
         QGridLayout* multiLayout= new QGridLayout();
-
+        multiLayout->setMargin(0);
 
         QWidget* rightWidget=new QWidget();
         multiLayout->addWidget(tb,1,0,10,1);
-        multiLayout->addWidget(rightWidget,1,1,8,8);
-        multiLayout->addWidget(prop,6,1,5,8);
+        multiLayout->addWidget(rightWidget,1,1,10,8);
+        multiLayout->addWidget(prop,7,1,5,8);
         multiWidget->setLayout(multiLayout);
 
         rightWidget->setLayout(rightSideLayout);

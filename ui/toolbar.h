@@ -13,7 +13,9 @@ enum ToolState{
         Line,
         Rectangle,
         Ellipse,
-        Pipette
+        Pipette,
+        Fill,
+        Text
 };
 
 class Toolbar : public QWidget
@@ -38,6 +40,10 @@ private slots:
         void on_ellipseButton_clicked();
 
         void on_pipetteButton_clicked();
+
+        void on_fillButton_clicked();
+
+        void on_textButton_clicked();
 
 signals:
         void toolChanged(ToolState);

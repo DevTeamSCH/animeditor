@@ -36,7 +36,8 @@ SOURCES += \
     ui/pixelframe.cpp \
     ui/pixelwidget.cpp \
     ui/toolbar.cpp \
-    ui/properties.cpp
+    ui/properties.cpp \
+    ui/properties/textprop.cpp
 
 HEADERS += \
     ui/properties/brushprop.h \
@@ -50,7 +51,8 @@ HEADERS += \
     ui/pixelframe.h \
     ui/pixelwidget.h \
     ui/toolbar.h \
-    ui/properties.h
+    ui/properties.h \
+    ui/properties/textprop.h
 
 FORMS += \
     ui/mainwindow.ui \
@@ -62,7 +64,8 @@ FORMS += \
     ui/properties/defprop.ui \
     ui/properties/drawprop.ui \
     ui/properties/property.ui \
-    ui/properties.ui
+    ui/properties.ui \
+    ui/properties/textprop.ui
 
 RESOURCES += \
     images.qrc

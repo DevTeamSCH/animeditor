@@ -56,3 +56,13 @@ void Toolbar::on_pipetteButton_clicked()
 QSize Toolbar::sizeHint() const{
         return QSize(40,200);
 }
+
+void Toolbar::on_fillButton_clicked()
+{
+    emit toolChanged(Fill);
+}
+
+void Toolbar::on_textButton_clicked()
+{
+    emit toolChanged(Text);
+}

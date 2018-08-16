@@ -2,12 +2,13 @@
 #define TEXTPROP_H
 
 #include <QWidget>
+#include "property.h"
 
 namespace Ui {
 class TextProp;
 }
 
-class TextProp : public QWidget
+class TextProp : public Property
 {
         Q_OBJECT
 

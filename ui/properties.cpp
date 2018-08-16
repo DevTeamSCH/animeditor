@@ -5,6 +5,7 @@
 #include "properties/defprop.h"
 #include "properties/drawprop.h"
 #include "properties/brushprop.h"
+#include "properties/textprop.h"
 
 Properties::Properties(QWidget *parent) :
         QWidget(parent),
@@ -43,6 +44,11 @@ void Properties::toolChanged(ToolState state){
                                  actProp=new DrawProp();
                                 layout()->addWidget(actProp);
                                  break;
+                case Text: layout()->removeWidget(actProp);
+                            delete actProp;
+                            actProp=new TextProp();
+                            layout()->addWidget(actProp);
+                            break;
                 default: layout()->removeWidget(actProp);
                          delete actProp;
                          actProp=new DefProp();
