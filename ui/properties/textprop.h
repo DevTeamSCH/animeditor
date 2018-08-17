@@ -13,7 +13,7 @@ class TextProp : public Property
         Q_OBJECT
 
 public:
-        explicit TextProp(QWidget *parent = 0);
+        explicit TextProp(QWidget *parent = 0,Properties *prop=nullptr);
         ~TextProp();
 
 private:

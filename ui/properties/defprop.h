@@ -13,7 +13,7 @@ class DefProp : public Property
         Q_OBJECT
 
 public:
-        explicit DefProp(QWidget *parent = 0);
+        explicit DefProp(QWidget *parent = 0,Properties *prop=nullptr);
         ~DefProp();
 
 private:

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "property.h"
+#include "../properties.h"
 
 namespace Ui {
 class BrushProp;
@@ -13,7 +14,7 @@ class BrushProp : public Property
         Q_OBJECT
 
 public:
-        explicit BrushProp(QWidget *parent = 0);
+        explicit BrushProp(QWidget *parent = 0,Properties *prop=nullptr);
         ~BrushProp();
 
 private:

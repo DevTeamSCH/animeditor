@@ -6,28 +6,44 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>233</width>
-    <height>194</height>
+    <width>229</width>
+    <height>173</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>231</width>
-     <height>21</height>
+     <width>221</width>
+     <height>171</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Text</string>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-   <property name="readOnly">
-    <bool>true</bool>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
    </property>
+   <widget class="QLineEdit" name="lineEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>221</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Text</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

@@ -13,7 +13,7 @@ class DrawProp : public Property
         Q_OBJECT
 
 public:
-        explicit DrawProp(QWidget *parent = 0);
+        explicit DrawProp(QWidget *parent = 0,Properties *prop=nullptr);
         ~DrawProp();
 
 private:
