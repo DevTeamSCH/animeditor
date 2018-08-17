@@ -20,7 +20,7 @@ class Properties : public QWidget
 
         int frameRate;
         int frameSize;
-        int brushSize;
+        int brushSize=1;
         int lineSize;
         int textSize;
         //drawPrimitive

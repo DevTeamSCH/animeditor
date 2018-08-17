@@ -14,8 +14,11 @@ class BrushProp : public Property
         Q_OBJECT
 
 public:
-        explicit BrushProp(QWidget *parent = 0,Properties *prop=nullptr);
+        explicit BrushProp(QWidget *parent = 0,Properties *_prop=nullptr);
         ~BrushProp();
+
+private slots:
+        void on_spinBox_valueChanged(int arg1);
 
 private:
         Ui::BrushProp *ui;

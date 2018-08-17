@@ -20,39 +20,52 @@ Properties::Properties(QWidget *parent) :
 Properties::~Properties()
 {
         delete ui;
+        delete actProp;
 }
 
 void Properties::toolChanged(ToolState state){
         switch(state){
                 case Brush: layout()->removeWidget(actProp);
                             delete actProp;
-                            actProp=new BrushProp();
+                            actProp=new BrushProp(this,this);
                             layout()->addWidget(actProp);
                             break;
                 case Line: layout()->removeWidget(actProp);
                             delete actProp;
-                            actProp=new BrushProp();
+                            actProp=new BrushProp(this,this);
                             layout()->addWidget(actProp);
                             break;
                 case Rectangle: layout()->removeWidget(actProp);
                                 delete actProp;
-                                actProp=new DrawProp();
+                                actProp=new DrawProp(this,this);
                                 layout()->addWidget(actProp);
                                  break;
                 case Ellipse: layout()->removeWidget(actProp);
                                 delete actProp;
-                                 actProp=new DrawProp();
+                                 actProp=new DrawProp(this,this);
                                 layout()->addWidget(actProp);
                                  break;
                 case Text: layout()->removeWidget(actProp);
                             delete actProp;
-                            actProp=new TextProp();
+                            actProp=new TextProp(this,this);
                             layout()->addWidget(actProp);
                             break;
                 default: layout()->removeWidget(actProp);
                          delete actProp;
-                         actProp=new DefProp();
+                         actProp=new DefProp(this,this);
                          layout()->addWidget(actProp);
                          break;
         }
 }
+
+int Properties::getBrush(){
+        return brushSize;
+}
+void Properties::setBrush(int siz){
+        brushSize=siz;
+}
+
+int Properties::getFrameRate(){}
+int Properties::getFrameSize(){}
+int Properties::getLine(){}
+void Properties::setLine(int){}
