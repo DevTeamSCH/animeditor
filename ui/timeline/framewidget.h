@@ -7,24 +7,49 @@
 #include <QColor>
 
 namespace Ui {
-class frameWidget;
+class FrameWidget;
 }
 
-class frameWidget : public QWidget
+class FrameWidget : public QWidget
 {
-    Q_OBJECT
+        Q_OBJECT
 
 public:
-    explicit frameWidget(QWidget *parent = 0);
-    explicit frameWidget(int x, int y, int width, int height, QWidget *parent = 0);
-    ~frameWidget();
+
+
+
+        explicit FrameWidget(QWidget *parent = 0);
+        explicit FrameWidget( QString name, unsigned int duration = 1000, QWidget *parent = 0);
+        virtual QSize sizeHint() const override;
+        virtual QSize minimumSizeHint() const override;
+        void selectFrame();
+        void unselectFrame();
+        int getDuration();
+        ~FrameWidget();
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
+//        void paintEvent(QPaintEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
 private:
-    Ui::frameWidget *ui;
-    int x, y, width, height;
-    QColor color = QColor(0,0,0);
+        int x = 0 , y = 0, width = 200, height = 115;
+//    int marginX = 5, marginY = 5;
+        QString name;
+        int duration;
+        Ui::FrameWidget *ui;
+        QColor unselectedColor = QColor(216, 216, 216);
+        QColor selectedColor = QColor(181, 209, 255);
+        void setColor(QColor color);
+
+
+        void init();
+public slots:
+        void updateName(QString name);
+        void updateDuration(int duration);
+        void Close();
+signals:
+        void selectedFrame(FrameWidget* fw);
+        void closeFrame(FrameWidget* fw);
+        void durationChanged(int change);
 };
 
 #endif // FRAMEWIDGET_H

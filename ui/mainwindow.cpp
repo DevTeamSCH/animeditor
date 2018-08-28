@@ -1,12 +1,15 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include "pixelframe.h"
 #include <QGroupBox>
+#include <QScrollArea>
 
 #include "colorindicator.h"
 #include "colorwheel.h"
 #include "toolbar.h"
+
+
 
 //Constructs a deafault window with 16*13 pixelframe, color picker, tools etc...
 
@@ -16,12 +19,14 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), pf(nullptr),ui(new
         setFrame(13,16);
         setupCentralWidget();
         setupRightSide();
+        setupSouthWidget();
 
 }
 
 MainWindow::~MainWindow()
 {
         delete pf;
+        delete tlb;
         delete ui;
 }
 
@@ -84,4 +89,11 @@ void MainWindow::setupRightSide(){
         rightWidget->setLayout(rightSideLayout);
         ui->rightPanelDock->setMinimumSize(300,250);
         ui->rightPanelDock->setWidget(multiWidget);
+}
+
+
+void MainWindow::setupSouthWidget(){
+        tlb = new TimeLineBar();
+        ui->southWidget->setWidget(tlb);
+        ui->southWidget->setMinimumHeight(190);
 }

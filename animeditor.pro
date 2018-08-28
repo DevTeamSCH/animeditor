@@ -32,7 +32,9 @@ SOURCES += \
     ui/pixelframe.cpp \
     ui/pixelwidget.cpp \
     ui/toolbar.cpp \
-    ui/timeline/framewidget.cpp
+    ui/timeline/framewidget.cpp \
+    ui/timeline/timelinewidget.cpp \
+    ui/timeline/timelinebar.cpp
 
 HEADERS += \
     ui/mainwindow.h \
@@ -42,7 +44,9 @@ HEADERS += \
     ui/colorwheel.h \
     ui/colorindicator.h \
     ui/toolbar.h \
-    ui/timeline/framewidget.h
+    ui/timeline/framewidget.h \
+    ui/timeline/timelinewidget.h \
+    ui/timeline/timelinebar.h
 
 FORMS += \
     ui/mainwindow.ui \
@@ -50,7 +54,9 @@ FORMS += \
     ui/widget.ui \
     ui/pixelframe.ui \
     ui/toolbar.ui \
-    ui/timeline/framewidget.ui
+    ui/timeline/framewidget.ui \
+    ui/timeline/timelinewidget.ui \
+    ui/timeline/timelinebar.ui
 
 RESOURCES += \
     images.qrc

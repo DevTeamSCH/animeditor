@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "pixelframe.h"
 
+#include "timeline/timelinebar.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -16,13 +18,12 @@ public:
         explicit MainWindow(QWidget *parent = 0);
         ~MainWindow();
         void setFrame(unsigned x,unsigned y);
-
-
 private:
         PixelFrame *pf;
-
+        TimeLineBar* tlb = nullptr;
         void setupCentralWidget();
         void setupRightSide();
+        void setupSouthWidget();
         Ui::MainWindow *ui;
 };
 
