@@ -24,6 +24,7 @@ PixelFrame::PixelFrame(unsigned sizeX, unsigned sizeY, QWidget *parent) : QWidge
                         frameEditLayout->addWidget(new FrameElement(this,i,j),i,j);
         }
         frameEditLayout->setHorizontalSpacing(3);
+        emit sizeHasSet(QSize(x,y));
 }
 
 PixelFrame::~PixelFrame()

@@ -21,6 +21,8 @@ public:
 
 //        QSize minimumSizeHint() const override;
 
+signals:
+        void sizeHasSet(QSize);
 private:
         Ui::PixelFrame *ui;
         unsigned x,y;

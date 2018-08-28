@@ -4,8 +4,6 @@
 #include <QWidget>
 #include "properties/property.h"
 #include "properties/defprop.h"
-#include "properties/drawprop.h"
-#include "properties/brushprop.h"
 #include "toolbar.h"
 
 class Property;
@@ -18,19 +16,19 @@ class Properties : public QWidget
 {
         Q_OBJECT
 
-        int frameRate;
-        int frameSize;
+        int frameRate=30;
+        QSize frameSize;
         int brushSize=1;
-        int lineSize;
-        int textSize;
+        int lineSize=1;
+        int textSize=5;
         //drawPrimitive
 public:
         int getBrush();
-        void setBrush(int);
-
         int getFrameRate();
-        int getFrameSize();
+        QSize getFrameSize();
         int getLine();
+
+        void setBrush(int);
         void setLine(int);
 
         explicit Properties(QWidget *parent = 0);
@@ -39,31 +37,10 @@ public:
 private slots:
 
         void toolChanged(ToolState state);
+        void getFrameSize(QSize);
 
 private:
-        Property* actProp=new DefProp(this);
-        //ProertyModel* prop;
+        Property* actProp;
         Ui::Properties *ui;
 };
-/*
-class PropertyModel{
-        int frameRate;
-        int frameSize;
-        int brushSize;
-        int lineSize;
-        int textSize;
-        //drawPrimitive
-public:
-        int getBrush();
-        void setBrush(int);
-
-        int getFrameRate();
-        int getFrameSize();
-        int getLine();
-        void setLine(int);
-
-        int getLine();
-        void setLine(int);
-}
-*/
 #endif // PROPERTIES_H

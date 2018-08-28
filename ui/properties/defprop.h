@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "property.h"
+#include "../properties.h"
 
 namespace Ui {
 class DefProp;
