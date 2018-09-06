@@ -10,15 +10,15 @@ class TimeLineBar;
 
 class TimeLineBar : public QWidget
 {
-    Q_OBJECT
+        Q_OBJECT
 
 public:
-    explicit TimeLineBar(QWidget *parent = 0);
-    ~TimeLineBar();
+        explicit TimeLineBar(QWidget *parent = 0);
+        ~TimeLineBar();
 
 private:
-    Ui::TimeLineBar *ui;
-    TimeLineWidget* tlw;
+        Ui::TimeLineBar *ui;
+        TimeLineWidget* tlw;
 
 };
 

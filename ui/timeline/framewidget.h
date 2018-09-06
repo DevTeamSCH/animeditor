@@ -15,9 +15,6 @@ class FrameWidget : public QWidget
         Q_OBJECT
 
 public:
-
-
-
         explicit FrameWidget(QWidget *parent = 0);
         explicit FrameWidget( QString name, unsigned int duration = 1000, QWidget *parent = 0);
         virtual QSize sizeHint() const override;
@@ -43,11 +40,11 @@ private:
 
         void init();
 public slots:
-        void updateName(QString name);
+                void updateName(QString name);
         void updateDuration(int duration);
         void Close();
-signals:
-        void selectedFrame(FrameWidget* fw);
+        signals:
+                void selectedFrame(FrameWidget* fw);
         void closeFrame(FrameWidget* fw);
         void durationChanged(int change);
 };

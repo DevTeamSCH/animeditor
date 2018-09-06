@@ -39,7 +39,7 @@ void MainWindow::setFrame(unsigned x,unsigned y){
                 delete pf;
         }
         pf=new PixelFrame(x,y);
-      //  centralWidget()->layout()->addWidget(pf);
+        //  centralWidget()->layout()->addWidget(pf);
 }
 
 void MainWindow::setupCentralWidget(){
