@@ -12,6 +12,13 @@ namespace Ui {
 class Properties;
 }
 
+/*!
+ * \brief The Properties class
+ *
+ * Has the values of the properties, and fonction as
+ * a container widget for the different property widgets.
+ */
+
 class Properties : public QWidget
 {
         Q_OBJECT

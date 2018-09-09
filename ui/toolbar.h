@@ -45,6 +45,8 @@ private slots:
 
         void on_textButton_clicked();
 
+        void on_brushButton_toggled(bool checked);
+
 signals:
         void toolChanged(ToolState);
 private:

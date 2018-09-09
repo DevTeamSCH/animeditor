@@ -66,3 +66,8 @@ void Toolbar::on_textButton_clicked()
 {
     emit toolChanged(Text);
 }
+
+void Toolbar::on_brushButton_toggled(bool checked)
+{
+    on_brushButton_clicked();
+}

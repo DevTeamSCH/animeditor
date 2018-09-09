@@ -8,12 +8,24 @@
 namespace Ui {
 class DefProp;
 }
+/*!
+ * \brief The DefProp class
+ *
+ * Default property widget.
+ */
 
 class DefProp : public Property
 {
         Q_OBJECT
 
 public:
+        /*!
+         * \brief DefProp
+         * \param parent
+         * \param prop
+         *
+         * Constructor
+         */
         explicit DefProp(QWidget *parent = 0,Properties *prop=nullptr);
         ~DefProp();
 
