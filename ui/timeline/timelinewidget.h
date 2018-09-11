@@ -29,13 +29,15 @@ private:
         FrameWidget* selectedFrame = nullptr;
         int duration = 0;
 
+        QString milisecToTime(int milisec);
+
 public slots:
         void addFrame(FrameWidget* fw = new FrameWidget("Frame", 1000), int at = 0);
         void updateSelectedFrame(FrameWidget* fw);
         void removeFrame(FrameWidget* fw);
         void updateDuration(int change);
 signals:
-        void durationChanged(int duration);
+        void durationChanged(QString duration);
         void setRange(int min, int max);
 };
 

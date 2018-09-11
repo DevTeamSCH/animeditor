@@ -27,7 +27,8 @@ public:
 protected:
 //        void paintEvent(QPaintEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
-private:
+
+private:      
         int x = 0 , y = 0, width = 200, height = 115;
 //    int marginX = 5, marginY = 5;
         QString name;
@@ -36,15 +37,14 @@ private:
         QColor unselectedColor = QColor(216, 216, 216);
         QColor selectedColor = QColor(181, 209, 255);
         void setColor(QColor color);
-
-
         void init();
-public slots:
-                void updateName(QString name);
+
+public slots:       
+        void updateName(QString name);
         void updateDuration(int duration);
         void Close();
-        signals:
-                void selectedFrame(FrameWidget* fw);
+signals:
+        void selectedFrame(FrameWidget* fw);
         void closeFrame(FrameWidget* fw);
         void durationChanged(int change);
 };

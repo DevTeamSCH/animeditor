@@ -2,6 +2,13 @@
 #include "ui_framewidget.h"
 #include <iostream>
 
+/**
+ * @brief FrameWidget::FrameWidget
+ * @param name
+ * @param duration
+ * @param parent
+ */
+
 FrameWidget::FrameWidget(QString name, unsigned int duration, QWidget *parent) :
         name(name),
         duration(duration),
@@ -12,42 +19,91 @@ FrameWidget::FrameWidget(QString name, unsigned int duration, QWidget *parent) :
         init();
 }
 
+/**
+ * @brief FrameWidget::~FrameWidget
+ */
+
 FrameWidget::~FrameWidget()
 {
         delete ui;
 }
 
-QSize FrameWidget::sizeHint() const{
+/**
+ * @brief FrameWidget::sizeHint
+ * @return
+ */
+
+QSize FrameWidget::sizeHint() const
+{
         return QSize(width, height);
 }
 
-QSize FrameWidget::minimumSizeHint() const{
+/**
+ * @brief FrameWidget::minimumSizeHint
+ * @return
+ */
+
+QSize FrameWidget::minimumSizeHint() const
+{
         return QSize(width, height);
 }
 
-void FrameWidget::init(){
+/**
+ * @brief FrameWidget::init
+ */
+
+/**
+ * @brief FrameWidget::init
+ */
+
+void FrameWidget::init()
+{
         connect(ui->name, SIGNAL(textChanged(QString)), this, SLOT(updateName(QString)));
         connect(ui->duration, SIGNAL(valueChanged(int)), this, SLOT(updateDuration(int)));
         connect(ui->close, SIGNAL(clicked(bool)), this, SLOT(Close()));
 }
 
-void FrameWidget::updateName(QString name){
+/**
+ * @brief FrameWidget::updateName
+ * @param name
+ */
+
+void FrameWidget::updateName(QString name)
+{
         this->name = name;
 }
 
-void FrameWidget::updateDuration(int duration){
+/**
+ * @brief FrameWidget::updateDuration
+ * @param duration
+ */
+
+void FrameWidget::updateDuration(int duration)
+{
         emit durationChanged(duration - this->duration);
         this->duration = duration;
 }
 
-void FrameWidget::mousePressEvent(QMouseEvent *event){
-        if(event->button()==Qt::LeftButton){
+/**
+ * @brief FrameWidget::mousePressEvent
+ * @param event
+ */
+
+void FrameWidget::mousePressEvent(QMouseEvent *event)
+{
+        if (event->button() == Qt::LeftButton) {
                 emit selectedFrame(this);
         }
         update();
 }
 
-void FrameWidget::setColor(QColor color){
+/**
+ * @brief FrameWidget::setColor
+ * @param color
+ */
+
+void FrameWidget::setColor(QColor color)
+{
         QPalette pal = palette();
         pal.setColor(QPalette::Background, color);
         this->setAutoFillBackground(true);
@@ -55,19 +111,40 @@ void FrameWidget::setColor(QColor color){
         this->show();
 }
 
-void FrameWidget::selectFrame(){
+/**
+ * @brief FrameWidget::selectFrame
+ */
+
+void FrameWidget::selectFrame()
+{
         setColor(selectedColor);
 }
 
-void FrameWidget::unselectFrame(){
+/**
+ * @brief FrameWidget::unselectFrame
+ */
+
+void FrameWidget::unselectFrame()
+{
         setColor(unselectedColor);
 }
 
-void FrameWidget::Close(){
+/**
+ * @brief FrameWidget::Close
+ */
+
+void FrameWidget::Close()
+{
         emit durationChanged((-1) * duration);
         emit closeFrame(this);
 }
 
-int FrameWidget::getDuration(){
+/**
+ * @brief FrameWidget::getDuration
+ * @return
+ */
+
+int FrameWidget::getDuration()
+{
         return duration;
 }

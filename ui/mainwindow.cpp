@@ -9,6 +9,7 @@
 #include "colorwheel.h"
 #include "toolbar.h"
 
+#include <iostream>
 
 
 //Constructs a deafault window with 16*13 pixelframe, color picker, tools etc...
@@ -32,7 +33,8 @@ MainWindow::~MainWindow()
 
 //Sets the number of windows in the central area in the PixelFrame
 
-void MainWindow::setFrame(unsigned x,unsigned y){
+void MainWindow::setFrame(unsigned x,unsigned y)
+{
         if(pf!=nullptr)
         {
                 //centralWidget()->layout()->removeWidget(pf);
@@ -42,7 +44,8 @@ void MainWindow::setFrame(unsigned x,unsigned y){
         //  centralWidget()->layout()->addWidget(pf);
 }
 
-void MainWindow::setupCentralWidget(){
+void MainWindow::setupCentralWidget()
+{
 
         QWidget *client = new QWidget;
         QWidget *placeholder1 = new QWidget;
@@ -63,7 +66,8 @@ void MainWindow::setupCentralWidget(){
 
 }
 
-void MainWindow::setupRightSide(){
+void MainWindow::setupRightSide()
+{
         ColorIndicator* ci=new ColorIndicator();
         ColorWheel* cw=new ColorWheel();
         Toolbar* tb=new Toolbar();
@@ -92,8 +96,15 @@ void MainWindow::setupRightSide(){
 }
 
 
-void MainWindow::setupSouthWidget(){
+void MainWindow::setupSouthWidget()
+{
         tlb = new TimeLineBar();
         ui->southWidget->setWidget(tlb);
         ui->southWidget->setMinimumHeight(190);
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+        std::cout<<"MainWindow"<<std::endl;
+        this->releaseMouse();
 }

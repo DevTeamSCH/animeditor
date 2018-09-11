@@ -18,6 +18,8 @@ public:
         explicit MainWindow(QWidget *parent = 0);
         ~MainWindow();
         void setFrame(unsigned x,unsigned y);
+
+        void mouseMoveEvent(QMouseEvent *event) override;
 private:
         PixelFrame *pf;
         TimeLineBar* tlb = nullptr;
