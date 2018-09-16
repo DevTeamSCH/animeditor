@@ -10,7 +10,7 @@ class ColorIndicator;
 /*!
  * \brief The ColorIndicator class
  *
- * Clor indicar widget. It shows the actual drawing color
+ * Color indicar widget. It shows the actual drawing color
  *  and the last drawing color. If the last color clicked
  * it becomes the actual.
  */

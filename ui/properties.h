@@ -30,23 +30,31 @@ class Properties : public QWidget
         int textSize=5;
         //drawPrimitive
 public:
+        /// Gets the brush size
         int getBrush();
+        /// Gets the framerate
         int getFrameRate();
+        /// Gets the frame size
         QSize getFrameSize();
+        /// Gets the line size
         int getLine();
 
+        /// Sets the brush size
         void setBrush(int);
+        /// Gets the line size
         void setLine(int);
 
         explicit Properties(QWidget *parent = 0);
         ~Properties();
 
 private slots:
-
+        /// Wait for signal, when a tool changed
         void toolChanged(ToolState state);
+
         void getFrameSize(QSize);
 
 private:
+        /// Actually displayed poperty widget
         Property* actProp;
         Ui::Properties *ui;
 };
