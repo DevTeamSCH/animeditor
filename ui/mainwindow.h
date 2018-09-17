@@ -8,22 +8,25 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-        Q_OBJECT
+class MainWindow : public QMainWindow {
+Q_OBJECT
 
 public:
-        explicit MainWindow(QWidget *parent = 0);
-        ~MainWindow();
-        void setFrame(unsigned x,unsigned y);
+	explicit MainWindow(QWidget *parent = 0);
+
+	~MainWindow();
+
+	void setFrame(unsigned x, unsigned y);
 
 
 private:
-        PixelFrame *pf;
+	PixelFrame *pf;
 
-        void setupCentralWidget();
-        void setupRightSide();
-        Ui::MainWindow *ui;
+	void setupCentralWidget();
+
+	void setupRightSide();
+
+	Ui::MainWindow *ui;
 };
 
 #endif // MAINWINDOW_H

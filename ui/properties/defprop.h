@@ -14,23 +14,23 @@ class DefProp;
  * Default property widget.
  */
 
-class DefProp : public Property
-{
-        Q_OBJECT
+class DefProp : public Property {
+Q_OBJECT
 
 public:
-        /*!
-         * \brief DefProp
-         * \param parent
-         * \param prop
-         *
-         * Constructor
-         */
-        explicit DefProp(QWidget *parent = 0,Properties *prop=nullptr);
-        ~DefProp();
+	/*!
+	 * \brief DefProp
+	 * \param parent
+	 * \param prop
+	 *
+	 * Constructor
+	 */
+	explicit DefProp(QWidget *parent = 0, Properties *prop = nullptr);
+
+	~DefProp();
 
 private:
-        Ui::DefProp *ui;
+	Ui::DefProp *ui;
 };
 
 #endif // DEFPROP_H

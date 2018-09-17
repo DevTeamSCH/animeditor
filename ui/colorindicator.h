@@ -15,53 +15,58 @@ class ColorIndicator;
  * it becomes the actual.
  */
 
-class ColorIndicator : public QWidget
-{
-        Q_OBJECT
+class ColorIndicator : public QWidget {
+Q_OBJECT
 public:
 
-        /*!
-         * \brief ColorIndicator
-         * \param parent
-         *
-         * Consructor
-         */
-        explicit ColorIndicator(QWidget *parent = 0);
-        ~ColorIndicator();
-         QSize sizeHint() const override;
-private:
-       // Ui::ColorIndicator *ui;
-         /*!
-         * \brief actual, before
-         * color values
-         */
-        QColor actual, before;
-        void mousePressEvent(QMouseEvent *) override;
+	/*!
+	 * \brief ColorIndicator
+	 * \param parent
+	 *
+	 * Consructor
+	 */
+	explicit ColorIndicator(QWidget *parent = 0);
 
-        /*!
-         * \brief paintEvent
-         *
-         * Paints two rectangle with the colors.
-         */
-        void paintEvent(QPaintEvent *) override;
+	~ColorIndicator();
+
+	QSize sizeHint() const override;
+
+private:
+	// Ui::ColorIndicator *ui;
+	/*!
+	* \brief actual, before
+	* color values
+	*/
+	QColor actual, before;
+
+	void mousePressEvent(QMouseEvent *) override;
+
+	/*!
+	 * \brief paintEvent
+	 *
+	 * Paints two rectangle with the colors.
+	 */
+	void paintEvent(QPaintEvent *) override;
 
 public slots:
-        /*!
-         * \brief updateColor
-         * \param color
-         *
-         * When in other widget the actual color changes
-         * recieves its signal with the color.
-         */
-        void updateColor(QColor color);
+
+	/*!
+	 * \brief updateColor
+	 * \param color
+	 *
+	 * When in other widget the actual color changes
+	 * recieves its signal with the color.
+	 */
+	void updateColor(QColor color);
 
 signals:
-        /*!
+
+	/*!
        * \brief colorChanged
        *
        * Fire a signal when the color changing.
        */
-      void colorChanged(QColor);
+	void colorChanged(QColor);
 };
 
 #endif // COLORINDICATOR_H

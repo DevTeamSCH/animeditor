@@ -16,26 +16,27 @@ class Property;
  * Instance this isn't recommended, instead inherit this.
  */
 
-class Property : public QWidget
-{
-        Q_OBJECT
+class Property : public QWidget {
+Q_OBJECT
 
 public:
-        /*!
-         * \brief Property
-         * \param parent
-         * \param p
-         *
-         * Constructor, connect the Properties ("model") to property classes
-         */
-        explicit Property(QWidget *parent = 0,Properties* p=nullptr);
-        ~Property();
+	/*!
+	 * \brief Property
+	 * \param parent
+	 * \param p
+	 *
+	 * Constructor, connect the Properties ("model") to property classes
+	 */
+	explicit Property(QWidget *parent = 0, Properties *p = nullptr);
+
+	~Property();
+
 protected:
-        /// Pointer to the Properties ("model"), which holds the values of properties
-         Properties* prop;
+	/// Pointer to the Properties ("model"), which holds the values of properties
+	Properties *prop;
 
 private:
-        Ui::Property *ui;
+	Ui::Property *ui;
 };
 
 #endif // PROPERTY_H

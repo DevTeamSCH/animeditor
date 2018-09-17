@@ -14,23 +14,23 @@ class TextProp;
  *Property class for texts
  */
 
-class TextProp : public Property
-{
-        Q_OBJECT
+class TextProp : public Property {
+Q_OBJECT
 
 public:
-        /*!
-         * \brief TextProp
-         * \param parent
-         * \param prop
-         *
-         * Constructor
-         */
-        explicit TextProp(QWidget *parent = 0,Properties *prop=nullptr);
-        ~TextProp();
+	/*!
+	 * \brief TextProp
+	 * \param parent
+	 * \param prop
+	 *
+	 * Constructor
+	 */
+	explicit TextProp(QWidget *parent = 0, Properties *prop = nullptr);
+
+	~TextProp();
 
 private:
-        Ui::TextProp *ui;
+	Ui::TextProp *ui;
 };
 
 #endif // TEXTPROP_H

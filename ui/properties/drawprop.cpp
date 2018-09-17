@@ -2,13 +2,13 @@
 #include "ui_drawprop.h"
 
 DrawProp::DrawProp(QWidget *parent, Properties *prop) :
-        Property(parent,prop),
-        ui(new Ui::DrawProp)
+	Property(parent, prop),
+	ui(new Ui::DrawProp)
 {
-        ui->setupUi(this);
+	ui->setupUi(this);
 }
 
 DrawProp::~DrawProp()
 {
-        delete ui;
+	delete ui;
 }

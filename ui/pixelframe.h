@@ -8,30 +8,36 @@ namespace Ui {
 class PixelFrame;
 }
 
-class PixelFrame : public QWidget
-{
-        Q_OBJECT
+class PixelFrame : public QWidget {
+Q_OBJECT
 
 public:
 
-        explicit PixelFrame(unsigned sizeX, unsigned sizeY, QWidget *parent=0);
-        ~PixelFrame();
-        QColor getDrawColor();
-        QSize sizeHint() const override;
+	explicit PixelFrame(unsigned sizeX, unsigned sizeY, QWidget *parent = 0);
+
+	~PixelFrame();
+
+	QColor getDrawColor();
+
+	QSize sizeHint() const override;
 
 //        QSize minimumSizeHint() const override;
 
 signals:
-        void sizeHasSet(QSize);
+
+	void sizeHasSet(QSize);
+
 private:
-        Ui::PixelFrame *ui;
-        unsigned x,y;
-        QColor drawColor;
-        ToolState ts=Arrow;
+	Ui::PixelFrame *ui;
+	unsigned x, y;
+	QColor drawColor;
+	ToolState ts = Arrow;
 
 public slots:
-        void updateColor(QColor);
-        void setTool(ToolState);
+
+	void updateColor(QColor);
+
+	void setTool(ToolState);
 };
 
 #endif // PIXELFRAME_H
