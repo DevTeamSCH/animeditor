@@ -3,18 +3,19 @@
 
 #include <iostream>
 #include <QTextStream>
+
 /**
  * @brief TimeLineWidget::TimeLineWidget
  * @param parent
  */
 
 TimeLineWidget::TimeLineWidget(QWidget *parent) :
-        QWidget(parent),
-        ui(new Ui::TimeLineWidget)
+	QWidget(parent),
+	ui(new Ui::TimeLineWidget)
 {
-        layout->addStretch();
-        this->setLayout(layout);
-        ui->setupUi(this);
+	layout->addStretch();
+	this->setLayout(layout);
+	ui->setupUi(this);
 
 }
 
@@ -24,11 +25,11 @@ TimeLineWidget::TimeLineWidget(QWidget *parent) :
 
 TimeLineWidget::~TimeLineWidget()
 {
-        QLayoutItem *child;
-        while ((child = layout->takeAt(0)) != 0)  {
-                delete child;
-        }
-        delete ui;
+	QLayoutItem *child;
+	while ((child = layout->takeAt(0)) != 0) {
+		delete child;
+	}
+	delete ui;
 }
 
 /**
@@ -40,18 +41,18 @@ TimeLineWidget::~TimeLineWidget()
 
 void TimeLineWidget::addFrame(FrameWidget *fw, int at)
 {
-        if(0 <= at && at < layout->count()){
-                if (at != 0) {
-                        layout->insertWidget(at, fw);
-                } else {
-                        layout->insertWidget(layout->count()-1, fw);
-                }
-                connect(fw, SIGNAL(selectedFrame(FrameWidget*)), this, SLOT(updateSelectedFrame(FrameWidget*)));
-                connect(fw, SIGNAL(closeFrame(FrameWidget*)), this, SLOT(removeFrame(FrameWidget*)));
-                connect(fw, SIGNAL(durationChanged(int)), this, SLOT(updateDuration(int)));
-                updateSelectedFrame(fw);
-                updateDuration(fw->getDuration());
-        }
+	if (0 <= at && at < layout->count()) {
+		if (at != 0) {
+			layout->insertWidget(at, fw);
+		} else {
+			layout->insertWidget(layout->count() - 1, fw);
+		}
+		connect(fw, SIGNAL(selectedFrame(FrameWidget * )), this, SLOT(updateSelectedFrame(FrameWidget * )));
+		connect(fw, SIGNAL(closeFrame(FrameWidget * )), this, SLOT(removeFrame(FrameWidget * )));
+		connect(fw, SIGNAL(durationChanged(int)), this, SLOT(updateDuration(int)));
+		updateSelectedFrame(fw);
+		updateDuration(fw->getDuration());
+	}
 }
 
 /**
@@ -59,14 +60,14 @@ void TimeLineWidget::addFrame(FrameWidget *fw, int at)
  * @param fw
  */
 
-void TimeLineWidget::updateSelectedFrame(FrameWidget * fw)
+void TimeLineWidget::updateSelectedFrame(FrameWidget *fw)
 {
-        if (selectedFrame != nullptr && selectedFrame != fw) {
-                selectedFrame->unselectFrame();
-        }
-        selectedFrame = fw;
-        selectedFrame->selectFrame();
-        update();
+	if (selectedFrame != nullptr && selectedFrame != fw) {
+		selectedFrame->unselectFrame();
+	}
+	selectedFrame = fw;
+	selectedFrame->selectFrame();
+	update();
 }
 
 /**
@@ -74,15 +75,15 @@ void TimeLineWidget::updateSelectedFrame(FrameWidget * fw)
  * @param fw
  */
 
-void TimeLineWidget::removeFrame(FrameWidget* fw)
+void TimeLineWidget::removeFrame(FrameWidget *fw)
 {
-        layout->removeWidget(fw);
-        if (selectedFrame == fw) {
-                selectedFrame = nullptr;
-        }
-        delete fw;
-        fw = nullptr;
-        update();
+	layout->removeWidget(fw);
+	if (selectedFrame == fw) {
+		selectedFrame = nullptr;
+	}
+	delete fw;
+	fw = nullptr;
+	update();
 }
 
 /**
@@ -92,21 +93,21 @@ void TimeLineWidget::removeFrame(FrameWidget* fw)
 
 void TimeLineWidget::updateDuration(int change)
 {
-        duration += change;       
-        emit durationChanged(milisecToTime(duration));
-        emit setRange(0, duration);
+	duration += change;
+	emit durationChanged(milisecToTime(duration));
+	emit setRange(0, duration);
 }
 
 QString TimeLineWidget::milisecToTime(int milisec)
 {
-        QString str;
-        int min, sec, msec;
-        msec = milisec;
-        min = msec / 60000;
-        msec -= min * 60000;
-        sec = msec / 1000;
-        msec -= sec * 1000;
-        QTextStream strStream(&str);
-        strStream<<min<<":"<<sec<<":"<<msec;
-        return  str;
+	QString str;
+	int min, sec, msec;
+	msec = milisec;
+	min = msec / 60000;
+	msec -= min * 60000;
+	sec = msec / 1000;
+	msec -= sec * 1000;
+	QTextStream strStream(&str);
+	strStream << min << ":" << sec << ":" << msec;
+	return str;
 }

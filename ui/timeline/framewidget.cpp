@@ -10,13 +10,13 @@
  */
 
 FrameWidget::FrameWidget(QString name, unsigned int duration, QWidget *parent) :
-        name(name),
-        duration(duration),
-        QWidget(parent),
-        ui(new Ui::FrameWidget)
+	name(name),
+	duration(duration),
+	QWidget(parent),
+	ui(new Ui::FrameWidget)
 {
-        ui->setupUi(this);
-        init();
+	ui->setupUi(this);
+	init();
 }
 
 /**
@@ -25,7 +25,7 @@ FrameWidget::FrameWidget(QString name, unsigned int duration, QWidget *parent) :
 
 FrameWidget::~FrameWidget()
 {
-        delete ui;
+	delete ui;
 }
 
 /**
@@ -35,7 +35,7 @@ FrameWidget::~FrameWidget()
 
 QSize FrameWidget::sizeHint() const
 {
-        return QSize(width, height);
+	return QSize(width, height);
 }
 
 /**
@@ -45,7 +45,7 @@ QSize FrameWidget::sizeHint() const
 
 QSize FrameWidget::minimumSizeHint() const
 {
-        return QSize(width, height);
+	return QSize(width, height);
 }
 
 /**
@@ -58,9 +58,9 @@ QSize FrameWidget::minimumSizeHint() const
 
 void FrameWidget::init()
 {
-        connect(ui->name, SIGNAL(textChanged(QString)), this, SLOT(updateName(QString)));
-        connect(ui->duration, SIGNAL(valueChanged(int)), this, SLOT(updateDuration(int)));
-        connect(ui->close, SIGNAL(clicked(bool)), this, SLOT(Close()));
+	connect(ui->name, SIGNAL(textChanged(QString)), this, SLOT(updateName(QString)));
+	connect(ui->duration, SIGNAL(valueChanged(int)), this, SLOT(updateDuration(int)));
+	connect(ui->close, SIGNAL(clicked(bool)), this, SLOT(Close()));
 }
 
 /**
@@ -70,7 +70,7 @@ void FrameWidget::init()
 
 void FrameWidget::updateName(QString name)
 {
-        this->name = name;
+	this->name = name;
 }
 
 /**
@@ -80,8 +80,8 @@ void FrameWidget::updateName(QString name)
 
 void FrameWidget::updateDuration(int duration)
 {
-        emit durationChanged(duration - this->duration);
-        this->duration = duration;
+	emit durationChanged(duration - this->duration);
+	this->duration = duration;
 }
 
 /**
@@ -91,10 +91,10 @@ void FrameWidget::updateDuration(int duration)
 
 void FrameWidget::mousePressEvent(QMouseEvent *event)
 {
-        if (event->button() == Qt::LeftButton) {
-                emit selectedFrame(this);
-        }
-        update();
+	if (event->button() == Qt::LeftButton) {
+		emit selectedFrame(this);
+	}
+	update();
 }
 
 /**
@@ -104,11 +104,11 @@ void FrameWidget::mousePressEvent(QMouseEvent *event)
 
 void FrameWidget::setColor(QColor color)
 {
-        QPalette pal = palette();
-        pal.setColor(QPalette::Background, color);
-        this->setAutoFillBackground(true);
-        this->setPalette(pal);
-        this->show();
+	QPalette pal = palette();
+	pal.setColor(QPalette::Background, color);
+	this->setAutoFillBackground(true);
+	this->setPalette(pal);
+	this->show();
 }
 
 /**
@@ -117,7 +117,7 @@ void FrameWidget::setColor(QColor color)
 
 void FrameWidget::selectFrame()
 {
-        setColor(selectedColor);
+	setColor(selectedColor);
 }
 
 /**
@@ -126,7 +126,7 @@ void FrameWidget::selectFrame()
 
 void FrameWidget::unselectFrame()
 {
-        setColor(unselectedColor);
+	setColor(unselectedColor);
 }
 
 /**
@@ -135,8 +135,8 @@ void FrameWidget::unselectFrame()
 
 void FrameWidget::Close()
 {
-        emit durationChanged((-1) * duration);
-        emit closeFrame(this);
+	emit durationChanged((-1) * duration);
+	emit closeFrame(this);
 }
 
 /**
@@ -146,5 +146,5 @@ void FrameWidget::Close()
 
 int FrameWidget::getDuration()
 {
-        return duration;
+	return duration;
 }

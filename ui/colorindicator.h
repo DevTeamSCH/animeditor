@@ -7,26 +7,32 @@ namespace Ui {
 class ColorIndicator;
 }
 
-class ColorIndicator : public QWidget
-{
-        Q_OBJECT
+class ColorIndicator : public QWidget {
+Q_OBJECT
 public:
-        explicit ColorIndicator(QWidget *parent = 0);
-        ~ColorIndicator();
-         QSize sizeHint() const override;
-private:
-       // Ui::ColorIndicator *ui;
+	explicit ColorIndicator(QWidget *parent = 0);
 
-        QColor actual, before;
-        void mousePressEvent(QMouseEvent *) override;
-        void paintEvent(QPaintEvent *) override;
+	~ColorIndicator();
+
+	QSize sizeHint() const override;
+
+private:
+	// Ui::ColorIndicator *ui;
+
+	QColor actual, before;
+
+	void mousePressEvent(QMouseEvent *) override;
+
+	void paintEvent(QPaintEvent *) override;
 
 public slots:
-        void updateColor(QColor color);
+
+	void updateColor(QColor color);
 
 
 signals:
-      void colorChanged(QColor);
+
+	void colorChanged(QColor);
 };
 
 #endif // COLORINDICATOR_H
