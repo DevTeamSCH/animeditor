@@ -1,6 +1,8 @@
 # animeditor
 SCH Matrix new animeditor in Qt5
 
+This project now uses a library called libanimeditor. You can follow the development of that library [in its own repository](https://github.com/DevTeamSCH/libanimeditor).
+
 ## Schedule
  - Creating GUI elements: Timeline, Frame editor
  - Create basic GUI to see how the finale user interface will look like
