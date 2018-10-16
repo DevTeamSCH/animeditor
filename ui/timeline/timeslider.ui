@@ -1,19 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TimeLineWidget</class>
- <widget class="QWidget" name="TimeLineWidget">
+ <author/>
+ <comment/>
+ <exportmacro/>
+ <class>TimeSlider</class>
+ <widget name="TimeSlider" class="QWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>150</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
  </widget>
- <resources/>
+ <pixmapfunction/>
  <connections/>
 </ui>
