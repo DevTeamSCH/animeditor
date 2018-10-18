@@ -1,0 +1,6 @@
+[submodule "resources/oxygen-icons5"]
+	path = resources/oxygen-icons5
+	url = git://anongit.kde.org/oxygen-icons5.git
+[submodule "lib/libanimeditor"]
+	path = lib/libanimeditor
+	url = git@github.com:DevTeamSCH/libanimeditor.git

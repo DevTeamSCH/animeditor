@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/img/splash1.jpg</file>
+        <file>resources/img/splash2.jpg</file>
+        <file>resources/img/splash3.jpg</file>
+        <file>resources/img/splash4.jpg</file>
+        <file>resources/img/splash5.jpg</file>
+        <file>resources/img/splash6.jpg</file>
+        <file>resources/img/splash7.jpg</file>
+        <file>resources/img/splash8.jpg</file>
+    </qresource>
+</RCC>
