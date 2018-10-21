@@ -10,6 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = animeditor
 TEMPLATE = app
+INCLUDEPATH += lib/libanimeditor/include
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -26,12 +27,20 @@ CONFIG += c++11
 
 HEADERS += \
     src/aboutdialog.h \
-    src/mainwindow.h
+    src/mainwindow.h \
+    src/matrixview.h \
+    src/matrixscene.h \
+    src/pixelquartetwidget.h \
+    src/pixelwidget.h
 
 SOURCES += \
     src/aboutdialog.cpp \
     src/main.cpp \
-    src/mainwindow.cpp
+    src/mainwindow.cpp \
+    src/matrixview.cpp \
+    src/matrixscene.cpp \
+    src/pixelquartetwidget.cpp \
+    src/pixelwidget.cpp
 
 FORMS += \
     src/aboutdialog.ui \
