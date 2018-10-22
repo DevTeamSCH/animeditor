@@ -8,5 +8,7 @@
         <file>resources/img/splash6.jpg</file>
         <file>resources/img/splash7.jpg</file>
         <file>resources/img/splash8.jpg</file>
+        <file>resources/icon/highlightPixel.svg</file>
+        <file>resources/icon/highlightWindow.svg</file>
     </qresource>
 </RCC>

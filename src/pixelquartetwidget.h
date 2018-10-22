@@ -9,10 +9,10 @@ class PixelQuartetWidget : public QGraphicsWidget
     Q_OBJECT
 public:
     PixelQuartetWidget();
+
 signals:
     void clicked(QColor c = Qt::white);
 
-    // QGraphicsItem interface
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 };

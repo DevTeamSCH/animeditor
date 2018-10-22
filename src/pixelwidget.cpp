@@ -1,36 +1,39 @@
 #include "pixelwidget.h"
+#include "mainwindow.h"
+
 #include <QPalette>
 #include <QDebug>
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
 
+
 PixelWidget::PixelWidget()
 {
     // set black background
-    QPalette pal = palette();
-    pal.setColor(QPalette::Background, Qt::black);
+    setAcceptHoverEvents(true);
     setAutoFillBackground(true);
-    setPalette(pal);
+    highLigth(Qt::black);
 }
-
 
 void PixelWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (true) {
+    if (MainWindow::isPaintWindow) {
+        // pass event to pixelquartet to paint all pixels
         event->ignore();
     } else {
-        // set black background
-        QPalette pal = palette();
-        pal.setColor(QPalette::Background, Qt::red);
-        setPalette(pal);
+        // set background color
+        if (event->button() == Qt::LeftButton) {
+            highLigth(MainWindow::FGColor);
+        } else if(event->button() == Qt::RightButton) {
+            highLigth(MainWindow::BGColor);
+        }
     }
 }
 
 void PixelWidget::highLigth(QColor c)
 {
-    // set black background
+    // set background
     QPalette pal = palette();
     pal.setColor(QPalette::Background, c);
-    setAutoFillBackground(true);
     setPalette(pal);
 }

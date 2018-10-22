@@ -7,7 +7,7 @@
 
 MatrixScene::MatrixScene(int x, int y)
 {
-    QGraphicsGridLayout *layout = new QGraphicsGridLayout;
+    auto layout = new QGraphicsGridLayout;
     layout->setVerticalSpacing(100);
     for(int i = 0; i < x; i++){
         for(int j = 0; j < y; j++)

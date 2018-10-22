@@ -4,3 +4,6 @@
 [submodule "lib/libanimeditor"]
 	path = lib/libanimeditor
 	url = git@github.com:DevTeamSCH/libanimeditor.git
+[submodule "lib/Qt-Color-Widgets"]
+	path = lib/Qt-Color-Widgets
+	url = https://gitlab.com/mattia.basaglia/Qt-Color-Widgets.git

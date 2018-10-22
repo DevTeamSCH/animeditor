@@ -1,4 +1,5 @@
 #include "matrixview.h"
+
 #include <QDebug>
 #include <QKeyEvent>
 #include <math.h>

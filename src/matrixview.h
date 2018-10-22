@@ -6,14 +6,12 @@
 class MatrixView : public QGraphicsView
 {
     Q_OBJECT
-
 public:
     explicit MatrixView(QWidget *parent = nullptr);
 public slots:
     void zoomIn();
     void zoomOut();
 
-    // QWidget interface
 protected:
     void keyPressEvent(QKeyEvent *event);
     void wheelEvent(QWheelEvent *event);
