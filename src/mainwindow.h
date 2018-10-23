@@ -11,14 +11,25 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     static QColor BGColor; // Background color
     static QColor FGColor; // Foreground color
     static bool isPaintWindow; // false == pixel, true == window
-    static bool isMousePressed; // todo
+    static bool isMousePressed; // Stores mouse click on PixelWidget
+
+    // tool id
+    enum tool{
+        Pointer,
+        DrawFree,
+        FillColor,
+        DrawLine,
+        DrawRect,
+        DrawEllipse,
+        DrawTextbtn
+    };
+    static tool activeTool;
 
 private slots:
     void on_actionAbout_triggered();
@@ -34,6 +45,8 @@ private slots:
     void switchtoFG();
 
     void switchWindow();
+
+    void setTool(int);
 
 private:
     Ui::MainWindow *ui;

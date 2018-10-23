@@ -10,18 +10,21 @@
 PixelWidget::PixelWidget()
 {
     // set black background
-    setAcceptHoverEvents(true);
     setAutoFillBackground(true);
     highLigth(Qt::black);
+
+    setAcceptHoverEvents(true);
 }
 
 void PixelWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (MainWindow::isPaintWindow) {
+    MainWindow::isMousePressed = true;
+    if (MainWindow::isPaintWindow || MainWindow::activeTool == MainWindow::Pointer) {
         // pass event to pixelquartet to paint all pixels
-        event->ignore();
+        event->ignore(); return;
     } else {
         // set background color
+        qDebug() << "pixel click";
         if (event->button() == Qt::LeftButton) {
             highLigth(MainWindow::FGColor);
         } else if(event->button() == Qt::RightButton) {

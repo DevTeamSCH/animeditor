@@ -7,12 +7,13 @@
 #include <QtGui>
 #include <QtWidgets>
 
-
+// set static variables
 QColor MainWindow::BGColor = Qt::white;
 QColor MainWindow::FGColor = Qt::white;
 bool MainWindow::isPaintWindow = false;
 bool MainWindow::isFGSelected = true;
 bool MainWindow::isMousePressed = false;
+MainWindow::tool MainWindow::activeTool = Pointer;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,12 +22,27 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->toolDockWidget->setTitleBarWidget(new QWidget());
     ui->toolDockWidget->setFixedWidth(45);
+
+    // set scene
+    auto scene = new MatrixScene;
+    ui->graphicsView->setScene(scene);
+
+    // set BG, FG color
     ui->BGColorPreview->setColor(MainWindow::BGColor);
+    ui->FGColorPreview->setColor(MainWindow::FGColor);
+
+    // set ColorPreview style
     ui->FGColorPreview->setStyleSheet("border: 3px solid black");
     ui->BGColorPreview->setStyleSheet("border: 3px inset grey");
-    ui->FGColorPreview->setColor(MainWindow::FGColor);
-    MatrixScene *scene = new MatrixScene;
-    ui->graphicsView->setScene(scene);
+
+	// set the id for the buttons in the buttonGroup
+    ui->ToolbuttonGroup->setId(ui->pointerButton, Pointer);
+    ui->ToolbuttonGroup->setId(ui->drawFreeButton, DrawFree);
+    ui->ToolbuttonGroup->setId(ui->fillColorButton, FillColor);
+    ui->ToolbuttonGroup->setId(ui->drawLineButton, DrawLine);
+    ui->ToolbuttonGroup->setId(ui->drawRectButton, DrawRect);
+    ui->ToolbuttonGroup->setId(ui->drawEllipseButton, DrawEllipse);
+    ui->ToolbuttonGroup->setId(ui->drawTextButton, DrawTextbtn);
 }
 
 MainWindow::~MainWindow()
@@ -36,7 +52,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    AboutDialog *about = new AboutDialog;
+    auto about = new AboutDialog;
     about->show();
 }
 
@@ -84,4 +100,14 @@ void MainWindow::switchWindow()
         ui->windowButton->setIcon(QIcon(":/resources/icon/highlightWindow.svg"));
     }
     MainWindow::isPaintWindow = !MainWindow::isPaintWindow;
+}
+
+void MainWindow::setTool(int t)
+{
+    MainWindow::activeTool = static_cast<tool>(t);
+    if(activeTool == Pointer){
+        ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+    }else{
+        ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+    }
 }

@@ -61,8 +61,8 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>../resources/oxygen-icons5/32x32/actions/zoom-in.png</normaloff>../resources/oxygen-icons5/32x32/actions/zoom-in.png</iconset>
+          <iconset resource="../resource.qrc">
+           <normaloff>:/resources/oxygen-icons5/32x32/actions/zoom-in.png</normaloff>:/resources/oxygen-icons5/32x32/actions/zoom-in.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -78,8 +78,8 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>../resources/oxygen-icons5/32x32/actions/zoom-out.png</normaloff>../resources/oxygen-icons5/32x32/actions/zoom-out.png</iconset>
+          <iconset resource="../resource.qrc">
+           <normaloff>:/resources/oxygen-icons5/32x32/actions/zoom-out.png</normaloff>:/resources/oxygen-icons5/32x32/actions/zoom-out.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -169,6 +169,9 @@
    <property name="locale">
     <locale language="English" country="UnitedStates"/>
    </property>
+   <property name="allowedAreas">
+    <set>Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea|Qt::TopDockWidgetArea</set>
+   </property>
    <property name="windowTitle">
     <string>Timeline</string>
    </property>
@@ -189,6 +192,9 @@
      <width>300</width>
      <height>300</height>
     </size>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea|Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
     <string>Palette</string>
@@ -272,6 +278,9 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="propertiesDockWidget">
+   <property name="allowedAreas">
+    <set>Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea|Qt::TopDockWidgetArea</set>
+   </property>
    <property name="windowTitle">
     <string>Properties</string>
    </property>
@@ -281,6 +290,9 @@
    <widget class="QWidget" name="dockWidgetContents_3"/>
   </widget>
   <widget class="QDockWidget" name="TreeDockWidget">
+   <property name="allowedAreas">
+    <set>Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea|Qt::TopDockWidgetArea</set>
+   </property>
    <property name="windowTitle">
     <string>Frame Tree</string>
    </property>
@@ -323,8 +335,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../resources/oxygen-icons5/32x32/actions/draw-freehand.png</normaloff>../resources/oxygen-icons5/32x32/actions/draw-freehand.png</iconset>
+        <iconset resource="../resource.qrc">
+         <normaloff>:/resources/oxygen-icons5/32x32/actions/draw-freehand.png</normaloff>:/resources/oxygen-icons5/32x32/actions/draw-freehand.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -349,8 +361,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../resources/oxygen-icons5/32x32/actions/fill-color.png</normaloff>../resources/oxygen-icons5/32x32/actions/fill-color.png</iconset>
+        <iconset resource="../resource.qrc">
+         <normaloff>:/resources/oxygen-icons5/32x32/actions/fill-color.png</normaloff>:/resources/oxygen-icons5/32x32/actions/fill-color.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -372,8 +384,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../resources/oxygen-icons5/16x16/actions/draw-line.png</normaloff>../resources/oxygen-icons5/16x16/actions/draw-line.png</iconset>
+        <iconset resource="../resource.qrc">
+         <normaloff>:/resources/oxygen-icons5/16x16/actions/draw-line.png</normaloff>:/resources/oxygen-icons5/16x16/actions/draw-line.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -395,8 +407,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../resources/oxygen-icons5/32x32/actions/draw-rectangle.png</normaloff>../resources/oxygen-icons5/32x32/actions/draw-rectangle.png</iconset>
+        <iconset resource="../resource.qrc">
+         <normaloff>:/resources/oxygen-icons5/32x32/actions/draw-rectangle.png</normaloff>:/resources/oxygen-icons5/32x32/actions/draw-rectangle.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -418,8 +430,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../resources/oxygen-icons5/32x32/actions/draw-ellipse.png</normaloff>../resources/oxygen-icons5/32x32/actions/draw-ellipse.png</iconset>
+        <iconset resource="../resource.qrc">
+         <normaloff>:/resources/oxygen-icons5/32x32/actions/draw-ellipse.png</normaloff>:/resources/oxygen-icons5/32x32/actions/draw-ellipse.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -441,8 +453,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../resources/oxygen-icons5/32x32/actions/draw-text.png</normaloff>../resources/oxygen-icons5/32x32/actions/draw-text.png</iconset>
+        <iconset resource="../resource.qrc">
+         <normaloff>:/resources/oxygen-icons5/32x32/actions/draw-text.png</normaloff>:/resources/oxygen-icons5/32x32/actions/draw-text.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -464,8 +476,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../resources/oxygen-icons5/32x32/actions/edit-select.png</normaloff>../resources/oxygen-icons5/32x32/actions/edit-select.png</iconset>
+        <iconset resource="../resource.qrc">
+         <normaloff>:/resources/oxygen-icons5/32x32/actions/edit-select.png</normaloff>:/resources/oxygen-icons5/32x32/actions/edit-select.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -509,8 +521,8 @@
   </widget>
   <action name="action_Exit">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/application-exit.png</normaloff>../resources/oxygen-icons5/16x16/actions/application-exit.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/application-exit.png</normaloff>:/resources/oxygen-icons5/16x16/actions/application-exit.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Exit</string>
@@ -521,8 +533,8 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/document-open.png</normaloff>../resources/oxygen-icons5/16x16/actions/document-open.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/document-open.png</normaloff>:/resources/oxygen-icons5/16x16/actions/document-open.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Open...</string>
@@ -533,8 +545,8 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/document-save.png</normaloff>../resources/oxygen-icons5/16x16/actions/document-save.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/document-save.png</normaloff>:/resources/oxygen-icons5/16x16/actions/document-save.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -545,8 +557,8 @@
   </action>
   <action name="actionSave_as">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/document-save-as.png</normaloff>../resources/oxygen-icons5/16x16/actions/document-save-as.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/document-save-as.png</normaloff>:/resources/oxygen-icons5/16x16/actions/document-save-as.png</iconset>
    </property>
    <property name="text">
     <string>Save &amp;As...</string>
@@ -554,8 +566,8 @@
   </action>
   <action name="actionNew">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/document-new.png</normaloff>../resources/oxygen-icons5/16x16/actions/document-new.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/document-new.png</normaloff>:/resources/oxygen-icons5/16x16/actions/document-new.png</iconset>
    </property>
    <property name="text">
     <string>&amp;New</string>
@@ -566,8 +578,8 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/edit-undo.png</normaloff>../resources/oxygen-icons5/16x16/actions/edit-undo.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/edit-undo.png</normaloff>:/resources/oxygen-icons5/16x16/actions/edit-undo.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Undo</string>
@@ -578,8 +590,8 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/edit-redo.png</normaloff>../resources/oxygen-icons5/16x16/actions/edit-redo.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/edit-redo.png</normaloff>:/resources/oxygen-icons5/16x16/actions/edit-redo.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Redo</string>
@@ -590,8 +602,8 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/help-about.png</normaloff>../resources/oxygen-icons5/16x16/actions/help-about.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/help-about.png</normaloff>:/resources/oxygen-icons5/16x16/actions/help-about.png</iconset>
    </property>
    <property name="text">
     <string>&amp;About</string>
@@ -599,8 +611,8 @@
   </action>
   <action name="actionShow_help">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/help-hint.png</normaloff>../resources/oxygen-icons5/16x16/actions/help-hint.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/help-hint.png</normaloff>:/resources/oxygen-icons5/16x16/actions/help-hint.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Show help</string>
@@ -627,8 +639,8 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/edit-copy.png</normaloff>../resources/oxygen-icons5/16x16/actions/edit-copy.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/edit-copy.png</normaloff>:/resources/oxygen-icons5/16x16/actions/edit-copy.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Copy</string>
@@ -639,8 +651,8 @@
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/edit-paste.png</normaloff>../resources/oxygen-icons5/16x16/actions/edit-paste.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/edit-paste.png</normaloff>:/resources/oxygen-icons5/16x16/actions/edit-paste.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Paste</string>
@@ -651,8 +663,8 @@
   </action>
   <action name="actioncut">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/edit-cut.png</normaloff>../resources/oxygen-icons5/16x16/actions/edit-cut.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/edit-cut.png</normaloff>:/resources/oxygen-icons5/16x16/actions/edit-cut.png</iconset>
    </property>
    <property name="text">
     <string>Cu&amp;t</string>
@@ -663,8 +675,8 @@
   </action>
   <action name="actionSelect_All">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/edit-select-all.png</normaloff>../resources/oxygen-icons5/16x16/actions/edit-select-all.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/edit-select-all.png</normaloff>:/resources/oxygen-icons5/16x16/actions/edit-select-all.png</iconset>
    </property>
    <property name="text">
     <string>Select &amp;All</string>
@@ -675,8 +687,8 @@
   </action>
   <action name="actionPen">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/32x32/actions/draw-freehand.png</normaloff>../resources/oxygen-icons5/32x32/actions/draw-freehand.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/32x32/actions/draw-freehand.png</normaloff>:/resources/oxygen-icons5/32x32/actions/draw-freehand.png</iconset>
    </property>
    <property name="text">
     <string>Pen</string>
@@ -687,8 +699,8 @@
   </action>
   <action name="actionRectangle">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/32x32/actions/draw-rectangle.png</normaloff>../resources/oxygen-icons5/32x32/actions/draw-rectangle.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/32x32/actions/draw-rectangle.png</normaloff>:/resources/oxygen-icons5/32x32/actions/draw-rectangle.png</iconset>
    </property>
    <property name="text">
     <string>Rectangle</string>
@@ -699,8 +711,8 @@
   </action>
   <action name="actionCircle">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/32x32/actions/draw-circle.png</normaloff>../resources/oxygen-icons5/32x32/actions/draw-circle.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/32x32/actions/draw-circle.png</normaloff>:/resources/oxygen-icons5/32x32/actions/draw-circle.png</iconset>
    </property>
    <property name="text">
     <string>Circle</string>
@@ -711,8 +723,8 @@
   </action>
   <action name="actionText">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/32x32/actions/draw-text.png</normaloff>../resources/oxygen-icons5/32x32/actions/draw-text.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/32x32/actions/draw-text.png</normaloff>:/resources/oxygen-icons5/32x32/actions/draw-text.png</iconset>
    </property>
    <property name="text">
     <string>Text</string>
@@ -723,8 +735,8 @@
   </action>
   <action name="actionStroke">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/draw-line.png</normaloff>../resources/oxygen-icons5/16x16/actions/draw-line.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/draw-line.png</normaloff>:/resources/oxygen-icons5/16x16/actions/draw-line.png</iconset>
    </property>
    <property name="text">
     <string>Stroke</string>
@@ -735,8 +747,8 @@
   </action>
   <action name="actionExport_animation">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/document-export.png</normaloff>../resources/oxygen-icons5/16x16/actions/document-export.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/document-export.png</normaloff>:/resources/oxygen-icons5/16x16/actions/document-export.png</iconset>
    </property>
    <property name="text">
     <string>E&amp;xport Animation...</string>
@@ -744,8 +756,8 @@
   </action>
   <action name="actionImport_sound">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/mimetypes/audio-mp3.png</normaloff>../resources/oxygen-icons5/16x16/mimetypes/audio-mp3.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/mimetypes/audio-ac3.png</normaloff>:/resources/oxygen-icons5/16x16/mimetypes/audio-ac3.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Import Audio file...</string>
@@ -753,8 +765,8 @@
   </action>
   <action name="actionEdit_tags">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/oxygen-icons5/16x16/actions/story-editor.png</normaloff>../resources/oxygen-icons5/16x16/actions/story-editor.png</iconset>
+    <iconset resource="../resource.qrc">
+     <normaloff>:/resources/oxygen-icons5/16x16/actions/story-editor.png</normaloff>:/resources/oxygen-icons5/16x16/actions/story-editor.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Edit tags</string>
@@ -892,6 +904,22 @@
     <hint type="destinationlabel">
      <x>53</x>
      <y>66</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ToolbuttonGroup</sender>
+   <signal>buttonClicked(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>setTool(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>530</x>
+     <y>371</y>
     </hint>
    </hints>
   </connection>

@@ -3,7 +3,7 @@
 #include "mainwindow.h"
 
 #include <QGraphicsGridLayout>
-#include <QtDebug>
+#include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 
 PixelQuartetWidget::PixelQuartetWidget()
@@ -29,21 +29,28 @@ PixelQuartetWidget::PixelQuartetWidget()
     layout->addItem(px4, 1, 1);
     setLayout(layout);
 
-    // connect pixels whith quartet
+    // connect pixels with quartet
     connect(this, &PixelQuartetWidget::clicked, px1, &PixelWidget::highLigth);
     connect(this, &PixelQuartetWidget::clicked, px2, &PixelWidget::highLigth);
     connect(this, &PixelQuartetWidget::clicked, px3, &PixelWidget::highLigth);
     connect(this, &PixelQuartetWidget::clicked, px4, &PixelWidget::highLigth);
 }
 
-
-void PixelQuartetWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void PixelQuartetWidget::paintWindow(bool leftClick)
 {
-    if (MainWindow::isPaintWindow) {
-        if (event->button() == Qt::LeftButton) {
+    if (MainWindow::isPaintWindow && MainWindow::activeTool != MainWindow::Pointer) {
+        if (leftClick) {
             emit clicked(MainWindow::FGColor);
         } else {
             emit clicked(MainWindow::BGColor);
         }
     }
+}
+
+
+void PixelQuartetWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "quartet click";
+    paintWindow(event->button() == Qt::LeftButton);
+    event->ignore(); return;
 }

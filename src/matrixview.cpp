@@ -3,11 +3,12 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <math.h>
+#include "mainwindow.h"
 
 MatrixView::MatrixView(QWidget *parent) :
     QGraphicsView (parent)
 {
-
+    setDragMode(ScrollHandDrag);
 }
 
 void MatrixView::zoomIn()
