@@ -24,7 +24,7 @@ signals:
     void clicked(QColor c = Qt::white);
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // PIXELQUARTETGRAPHICSWIDGET_H

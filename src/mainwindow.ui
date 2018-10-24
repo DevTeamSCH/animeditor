@@ -90,6 +90,26 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="toggleSpacingButton">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../resource.qrc">
+           <normaloff>:/resources/oxygen-icons5/32x32/actions/distribute-vertical-y.png</normaloff>:/resources/oxygen-icons5/32x32/actions/distribute-vertical-y.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -113,7 +133,7 @@
      <x>0</x>
      <y>0</y>
      <width>1061</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -173,7 +193,7 @@
     <set>Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea|Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Timeline</string>
+    <string>&amp;Timeline</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -197,7 +217,7 @@
     <set>Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea|Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Palette</string>
+    <string>Pa&amp;lette</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -282,7 +302,7 @@
     <set>Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea|Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Properties</string>
+    <string>&amp;Properties</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -294,7 +314,7 @@
     <set>Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea|Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Frame Tree</string>
+    <string>Fra&amp;me Tree</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -303,6 +323,9 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="toolDockWidget">
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
    <property name="features">
     <set>QDockWidget::NoDockWidgetFeatures</set>
    </property>
@@ -329,6 +352,32 @@
      <property name="bottomMargin">
       <number>0</number>
      </property>
+     <item row="7" column="0">
+      <widget class="QPushButton" name="pointerButton">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resource.qrc">
+         <normaloff>:/resources/oxygen-icons5/32x32/actions/edit-select.png</normaloff>:/resources/oxygen-icons5/32x32/actions/edit-select.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">ToolbuttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
      <item row="9" column="0">
       <widget class="QPushButton" name="drawFreeButton">
        <property name="text">
@@ -463,32 +512,6 @@
         </size>
        </property>
        <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <attribute name="buttonGroup">
-        <string notr="true">ToolbuttonGroup</string>
-       </attribute>
-      </widget>
-     </item>
-     <item row="7" column="0">
-      <widget class="QPushButton" name="pointerButton">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../resource.qrc">
-         <normaloff>:/resources/oxygen-icons5/32x32/actions/edit-select.png</normaloff>:/resources/oxygen-icons5/32x32/actions/edit-select.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>32</width>
-         <height>32</height>
-        </size>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
         <bool>true</bool>
        </property>
        <attribute name="buttonGroup">
@@ -785,6 +808,7 @@
    <slots>
     <slot>zoomIn()</slot>
     <slot>zoomOut()</slot>
+    <slot>toggleSpacing()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -811,38 +835,6 @@
   <include location="../resource.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>zoomInButton</sender>
-   <signal>clicked()</signal>
-   <receiver>graphicsView</receiver>
-   <slot>zoomIn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>942</x>
-     <y>70</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>351</x>
-     <y>79</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoomOutButton</sender>
-   <signal>clicked()</signal>
-   <receiver>graphicsView</receiver>
-   <slot>zoomOut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>942</x>
-     <y>110</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>351</x>
-     <y>120</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>colorWheel</sender>
    <signal>colorChanged(QColor)</signal>
@@ -892,22 +884,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>windowButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>switchWindow()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>22</x>
-     <y>70</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>53</x>
-     <y>66</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>ToolbuttonGroup</sender>
    <signal>buttonClicked(int)</signal>
    <receiver>MainWindow</receiver>
@@ -920,6 +896,70 @@
     <hint type="destinationlabel">
      <x>530</x>
      <y>371</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toggleSpacingButton</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>toggleSpacing()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>722</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>371</x>
+     <y>349</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoomInButton</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>zoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>942</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>351</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoomOutButton</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>zoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>942</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>351</x>
+     <y>120</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>windowButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>switchWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>22</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>53</x>
+     <y>66</y>
     </hint>
    </hints>
   </connection>

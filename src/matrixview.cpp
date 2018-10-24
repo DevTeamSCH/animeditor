@@ -4,6 +4,7 @@
 #include <QKeyEvent>
 #include <math.h>
 #include "mainwindow.h"
+#include "matrixscene.h"
 
 MatrixView::MatrixView(QWidget *parent) :
     QGraphicsView (parent)
@@ -21,6 +22,11 @@ void MatrixView::zoomOut()
     scale(1/1.2, 1/1.2);
 }
 
+void MatrixView::toggleSpacing()
+{
+    auto matrixScene = static_cast<MatrixScene*>(scene());
+    matrixScene->toggleSpacing();
+}
 
 void MatrixView::keyPressEvent(QKeyEvent *event)
 {
