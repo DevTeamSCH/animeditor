@@ -18,7 +18,7 @@ public:
     PixelWidget();
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 public slots:
     void highLigth(QColor c = Qt::white);

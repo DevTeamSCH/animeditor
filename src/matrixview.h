@@ -12,6 +12,7 @@ public:
 public slots:
     void zoomIn();
     void zoomOut();
+    void toggleSpacing();
 
 protected:
     void keyPressEvent(QKeyEvent *event);
