@@ -21,17 +21,14 @@ void PixelWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
     MainWindow::isMousePressed = true;
     if (MainWindow::isPaintWindow || MainWindow::activeTool == MainWindow::Pointer) {
         // pass event to pixelquartet to paint all pixels
+        // or if activeTool is Pointer handle mouse drag
         event->ignore();
 
         return;
-    } else {
+    } else if(MainWindow::activeTool == MainWindow::DrawFree){
         // set background color
         qDebug() << "pixel click";
-        if (event->button() == Qt::LeftButton) {
-            highLigth(MainWindow::FGColor);
-        } else if(event->button() == Qt::RightButton) {
-            highLigth(MainWindow::BGColor);
-        }
+        highLigth(event->buttons());
     }
 }
 
@@ -41,4 +38,13 @@ void PixelWidget::highLigth(QColor c)
     QPalette pal = palette();
     pal.setColor(QPalette::Background, c);
     setPalette(pal);
+}
+
+void PixelWidget::highLigth(Qt::MouseButtons btns)
+{
+    if (btns == Qt::LeftButton) {
+        highLigth(MainWindow::FGColor);
+    } else if(btns == Qt::RightButton){
+        highLigth(MainWindow::BGColor);
+    }
 }

@@ -133,7 +133,7 @@
      <x>0</x>
      <y>0</y>
      <width>1061</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -240,7 +240,7 @@
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="color_widgets::ColorWheel" name="colorWheel" native="true">
+      <widget class="color_widgets::ColorWheel" name="colorWheel">
        <property name="minimumSize">
         <size>
          <width>200</width>
@@ -261,7 +261,7 @@
         <number>20</number>
        </property>
        <item>
-        <widget class="color_widgets::ColorPreview" name="FGColorPreview" native="true">
+        <widget class="color_widgets::ColorPreview" name="FGColorPreview">
          <property name="minimumSize">
           <size>
            <width>100</width>
@@ -277,7 +277,7 @@
         </widget>
        </item>
        <item>
-        <widget class="color_widgets::ColorPreview" name="BGColorPreview" native="true">
+        <widget class="color_widgets::ColorPreview" name="BGColorPreview">
          <property name="minimumSize">
           <size>
            <width>100</width>
@@ -802,13 +802,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>MatrixView</class>
-   <extends>QGraphicsView</extends>
-   <header>src/matrixview.h</header>
+   <class>color_widgets::ColorPreview</class>
+   <extends>QWidget</extends>
+   <header>color_preview.hpp</header>
+   <container>1</container>
    <slots>
-    <slot>zoomIn()</slot>
-    <slot>zoomOut()</slot>
-    <slot>toggleSpacing()</slot>
+    <signal>clicked()</signal>
+    <slot>setColor(const QColor)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -821,13 +821,13 @@
    </slots>
   </customwidget>
   <customwidget>
-   <class>color_widgets::ColorPreview</class>
-   <extends>QWidget</extends>
-   <header>color_preview.hpp</header>
-   <container>1</container>
+   <class>MatrixView</class>
+   <extends>QGraphicsView</extends>
+   <header>src/matrixview.h</header>
    <slots>
-    <signal>clicked()</signal>
-    <slot>setColor(const QColor)</slot>
+    <slot>zoomIn()</slot>
+    <slot>zoomOut()</slot>
+    <slot>toggleSpacing()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -842,8 +842,8 @@
    <slot>setColor(QColor)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1009</x>
-     <y>162</y>
+     <x>999</x>
+     <y>183</y>
     </hint>
     <hint type="destinationlabel">
      <x>956</x>
@@ -858,8 +858,8 @@
    <slot>switchtoFG()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1017</x>
-     <y>336</y>
+     <x>900</x>
+     <y>309</y>
     </hint>
     <hint type="destinationlabel">
      <x>592</x>
@@ -874,8 +874,8 @@
    <slot>switchtoBG()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1195</x>
-     <y>359</y>
+     <x>1020</x>
+     <y>309</y>
     </hint>
     <hint type="destinationlabel">
      <x>593</x>
@@ -906,8 +906,8 @@
    <slot>toggleSpacing()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>722</x>
-     <y>157</y>
+     <x>740</x>
+     <y>150</y>
     </hint>
     <hint type="destinationlabel">
      <x>371</x>
@@ -922,7 +922,7 @@
    <slot>zoomIn()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>942</x>
+     <x>740</x>
      <y>70</y>
     </hint>
     <hint type="destinationlabel">
@@ -938,7 +938,7 @@
    <slot>zoomOut()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>942</x>
+     <x>740</x>
      <y>110</y>
     </hint>
     <hint type="destinationlabel">
@@ -951,15 +951,15 @@
    <sender>windowButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>switchWindow()</slot>
+   <slot>switchPaintUnit()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>22</x>
      <y>70</y>
     </hint>
     <hint type="destinationlabel">
-     <x>53</x>
-     <y>66</y>
+     <x>50</x>
+     <y>65</y>
     </hint>
    </hints>
   </connection>
@@ -968,7 +968,7 @@
   <slot>setColor(QColor)</slot>
   <slot>switchtoBG()</slot>
   <slot>switchtoFG()</slot>
-  <slot>switchWindow()</slot>
+  <slot>switchPaintUnit()</slot>
  </slots>
  <buttongroups>
   <buttongroup name="ToolbuttonGroup"/>

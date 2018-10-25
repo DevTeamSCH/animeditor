@@ -22,6 +22,7 @@ protected:
 
 public slots:
     void highLigth(QColor c = Qt::white);
+    void highLigth(Qt::MouseButtons);
 };
 
 #endif // PIXELGRAPHICSWIDGET_H

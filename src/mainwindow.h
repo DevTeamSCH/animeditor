@@ -17,9 +17,9 @@ public:
     static QColor BGColor; // Background color
     static QColor FGColor; // Foreground color
     static bool isPaintWindow; // false == pixel, true == window
-    static bool isMousePressed; // Stores mouse click on PixelWidget
+    static bool isMousePressed; // Stores mouse state(used for mouse drag)
 
-    // tool id
+    // id of the current selected tool
     enum tool{
         Pointer,
         DrawFree,
@@ -38,19 +38,19 @@ private slots:
 
     void on_actionOpen_triggered();
 
-    void setColor(QColor c);
+    void setColor(QColor c); //sets current colorPreview's color
 
     void switchtoBG();
 
     void switchtoFG();
 
-    void switchWindow();
+    void switchPaintUnit();
 
     void setTool(int);
 
 private:
     Ui::MainWindow *ui;
-    static bool isFGSelected; // which colorPreview is selected
+    bool isFGSelected; // which colorPreview is selected
 };
 
 #endif // MAINWINDOW_H

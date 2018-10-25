@@ -18,10 +18,10 @@ public:
     PixelQuartetWidget();
 
 public slots:
-    void paintWindow(bool leftClick);
+    void paintWindow(Qt::MouseButtons);
 
 signals:
-    void clicked(QColor c = Qt::white);
+    void clicked(Qt::MouseButtons);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

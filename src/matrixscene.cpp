@@ -21,6 +21,11 @@ MatrixScene::MatrixScene(int x, int y)
     }
     auto form = new QGraphicsWidget;
     form->setLayout(m_layout);
+    // set form background for testing
+    form->setAutoFillBackground(true);
+    QPalette pal = palette();
+    pal.setColor(QPalette::Background, Qt::darkCyan);
+    form->setPalette(pal);
     addItem(form);
 }
 
@@ -40,19 +45,13 @@ void MatrixScene::toggleSpacing()
 // handle mouse drag
 void MatrixScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(!items(event->scenePos()).isEmpty() && MainWindow::activeTool != MainWindow::Pointer && MainWindow::isMousePressed){
+    if(!items(event->scenePos()).isEmpty() && MainWindow::activeTool == MainWindow::DrawFree && MainWindow::isMousePressed){
         if(MainWindow::isPaintWindow && items(event->scenePos()).size() > 1){
             auto px = qgraphicsitem_cast<PixelQuartetWidget *>(items(event->scenePos())[1]);
-            if(px) px->paintWindow(event->buttons() == Qt::LeftButton);
+            if(px) px->paintWindow(event->buttons());
         } else {
             auto px = qgraphicsitem_cast<PixelWidget *>(items(event->scenePos())[0]);
-            if(px){
-                if (event->buttons() == Qt::LeftButton) {
-                    px->highLigth(MainWindow::FGColor);
-                } else if(event->buttons() == Qt::RightButton) {
-                    px->highLigth(MainWindow::BGColor);
-                }
-            }
+            if(px) px->highLigth(event->buttons());
         }
     } else{
         QGraphicsScene::mouseMoveEvent(event);

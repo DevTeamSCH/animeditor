@@ -23,20 +23,16 @@ PixelQuartetWidget::PixelQuartetWidget()
         for (int j=0; j <= 1; j++) {
             auto pixel = new PixelWidget;
             layout->addItem(pixel, i, j);
-            connect(this, &PixelQuartetWidget::clicked, pixel, &PixelWidget::highLigth);
+            connect(this, SIGNAL(clicked(Qt::MouseButtons)), pixel, SLOT(highLigth(Qt::MouseButtons)));
         }
     }
     setLayout(layout);
 }
 
-void PixelQuartetWidget::paintWindow(bool leftClick)
+void PixelQuartetWidget::paintWindow(Qt::MouseButtons btns)
 {
-    if (MainWindow::isPaintWindow && MainWindow::activeTool != MainWindow::Pointer) {
-        if (leftClick) {
-            emit clicked(MainWindow::FGColor);
-        } else {
-            emit clicked(MainWindow::BGColor);
-        }
+    if (MainWindow::isPaintWindow && MainWindow::activeTool == MainWindow::DrawFree) {
+        emit clicked(btns);
     }
 }
 
@@ -44,6 +40,6 @@ void PixelQuartetWidget::paintWindow(bool leftClick)
 void PixelQuartetWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "quartet click";
-    paintWindow(event->button() == Qt::LeftButton);
+    paintWindow(event->button());
     event->ignore(); return;
 }

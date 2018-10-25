@@ -11,7 +11,6 @@
 QColor MainWindow::BGColor = Qt::white;
 QColor MainWindow::FGColor = Qt::white;
 bool MainWindow::isPaintWindow = false;
-bool MainWindow::isFGSelected = true;
 bool MainWindow::isMousePressed = false;
 MainWindow::tool MainWindow::activeTool = Pointer;
 
@@ -20,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    isFGSelected = true;
+
+    // set toolDockWidget TitleBar to invisible
     ui->toolDockWidget->setTitleBarWidget(new QWidget());
     ui->toolDockWidget->setFixedWidth(45);
 
@@ -27,11 +29,11 @@ MainWindow::MainWindow(QWidget *parent) :
     auto scene = new MatrixScene;
     ui->graphicsView->setScene(scene);
 
-    // set BG, FG color
+    // set Previews' BG, FG color
     ui->BGColorPreview->setColor(MainWindow::BGColor);
     ui->FGColorPreview->setColor(MainWindow::FGColor);
 
-    // set ColorPreview style
+    // set ColorPreviews' style
     ui->FGColorPreview->setStyleSheet("border: 3px solid black");
     ui->BGColorPreview->setStyleSheet("border: 3px inset grey");
 
@@ -92,7 +94,7 @@ void MainWindow::switchtoFG()
     ui->BGColorPreview->setStyleSheet("border: 3px inset grey");
 }
 
-void MainWindow::switchWindow()
+void MainWindow::switchPaintUnit()
 {
     if(MainWindow::isPaintWindow){
         ui->windowButton->setIcon(QIcon(":/resources/icon/highlightPixel.svg"));
