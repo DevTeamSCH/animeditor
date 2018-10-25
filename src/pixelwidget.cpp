@@ -12,8 +12,8 @@ PixelWidget::PixelWidget()
     // set black background
     setAutoFillBackground(true);
     highLigth(Qt::black);
-
-    setAcceptHoverEvents(true);
+    setMinimumSize(50, 50);
+    setMaximumSize(50, 50);
 }
 
 void PixelWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)

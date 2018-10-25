@@ -45,7 +45,7 @@ void MatrixView::keyPressEvent(QKeyEvent *event)
 
 void MatrixView::wheelEvent(QWheelEvent *event)
 {
-    scaleView(pow((double)2, event->delta() / 240.0));
+    scaleView(pow(2.0, event->delta() / 240.0));
 }
 
 void MatrixView::scaleView(qreal scaleFactor)

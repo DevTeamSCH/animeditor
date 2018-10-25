@@ -12,11 +12,11 @@
 
 MatrixScene::MatrixScene(int x, int y)
 {
-    // connect(MainWindow::toggleSpacing, &QPushButton::clicked, this, &MatrixScene::toggleSpacing);
     m_layout = new QGraphicsGridLayout;
     m_layout->setVerticalSpacing(100);
-    for(int i = 0; i < x; i++){
-        for(int j = 0; j < y; j++)
+    m_layout->setHorizontalSpacing(20);
+    for(int i = 0; i < y; i++){
+        for(int j = 0; j < x; j++)
             m_layout->addItem(new PixelQuartetWidget, i, j);
     }
     auto form = new QGraphicsWidget;
@@ -28,8 +28,10 @@ void MatrixScene::toggleSpacing()
 {
     if (m_has_spacing) {
         m_layout->setVerticalSpacing(0);
+        m_layout->setHorizontalSpacing(0);
     } else {
         m_layout->setVerticalSpacing(100);
+        m_layout->setHorizontalSpacing(20);
     }
 
     m_has_spacing = !m_has_spacing;

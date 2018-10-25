@@ -2,13 +2,12 @@
 #define MATRIXGRAPHICSSCENE_H
 
 #include <QGraphicsScene>
-
-class QGraphicsGridLayout;
+#include <QGraphicsGridLayout>
 
 class MatrixScene : public QGraphicsScene
 {
 public:
-    MatrixScene(int x = 13, int y = 16);
+    MatrixScene(int x = 16, int y = 13);
     void toggleSpacing();
 
 protected:
