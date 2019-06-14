@@ -1,5 +1,13 @@
-# C++ objects and libs
+# Ignore all
+*
 
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+# C++ objects and libs
 *.slo
 *.lo
 *.o
@@ -11,9 +19,11 @@
 *.dylib
 
 # Qt-es
-
-/.qmake.cache
-/.qmake.stash
+object_script.*.Release
+object_script.*.Debug
+*_plugin_import.cpp
+.qmake.cache
+.qmake.stash
 *.pro.user
 *.pro.user.*
 *.qbs.user
@@ -23,17 +33,32 @@ moc_*.cpp
 moc_*.h
 qrc_*.cpp
 ui_*.h
+*.qmlc
+*.jsc
 Makefile*
 *build-*
 
-# QtCreator
+# Qt unit tests
+target_wrapper.*
 
+# QtCreator
 *.autosave
 
-# QtCtreator Qml
+# QtCreator Qml
 *.qmlproject.user
 *.qmlproject.user.*
 
-# QtCtreator CMake
+# QtCreator CMake
 CMakeLists.txt.user*
 
+# QtCreator 4.8< compilation database 
+compile_commands.json
+
+# QtCreator local machine specific files for imported projects
+*creator.user*
+
+# debug, release
+debug/
+release/
+
+Makefile
