@@ -21,9 +21,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        animationmodel.cpp \
         animeditorcore.cpp
 
 HEADERS += \
+        animationmodel.h \
         animeditorcore.h \
         core_global.h 
 
