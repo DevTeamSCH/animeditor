@@ -4,6 +4,8 @@
 #
 #-------------------------------------------------
 
+QT += widgets
+
 TARGET = libanimeditor
 TEMPLATE = lib
 
