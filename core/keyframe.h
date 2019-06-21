@@ -1,9 +1,10 @@
 #ifndef KEYFRAME_H
 #define KEYFRAME_H
 
-#include <QGraphicsObject>
+#include <QGraphicsWidget>
 #include <QHash>
 #include <QParallelAnimationGroup>
+#include <QSharedPointer>
 
 namespace SchMatrix {
 
@@ -12,11 +13,12 @@ class Keyframe : public QParallelAnimationGroup {
 
  public:
   explicit Keyframe(QObject *parent = nullptr);
-  void assignProperty(QGraphicsObject *object, const char *name,
+  void assignProperty(QGraphicsWidget *object, const char *name,
                       const QVariant &value);
 
  private:
-  QHash<QGraphicsObject *, QHash<QString, QVariant>> propertyAssignments;
+  QHash<QSharedPointer<QGraphicsWidget>, QHash<QString, QVariant>>
+      propertyAssignments;
 };
 
 }  // namespace SchMatrix

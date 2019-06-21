@@ -4,7 +4,7 @@ namespace SchMatrix {
 
 Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {}
 
-void Keyframe::assignProperty(QGraphicsObject *object, const char *name,
+void Keyframe::assignProperty(QGraphicsWidget *object, const char *name,
                               const QVariant &value) {
   if (!object) {
     qWarning(
@@ -13,12 +13,14 @@ void Keyframe::assignProperty(QGraphicsObject *object, const char *name,
     return;
   }
 
-  if (propertyAssignments.contains(object)) {
-    propertyAssignments[object][name] = value;
+  QSharedPointer<QGraphicsWidget> objectPtr(object);
+
+  if (propertyAssignments.contains(objectPtr)) {
+    propertyAssignments[objectPtr][name] = value;
     return;
   }
 
-  propertyAssignments[object] = QHash<QString, QVariant>{{name, value}};
+  propertyAssignments[objectPtr] = QHash<QString, QVariant>{{name, value}};
 }
 
 }  // namespace SchMatrix
