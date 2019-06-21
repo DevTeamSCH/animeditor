@@ -3,7 +3,9 @@
 
 #include <QGraphicsWidget>
 #include <QHash>
+#include <QList>
 #include <QParallelAnimationGroup>
+#include <QPropertyAnimation>
 #include <QSharedPointer>
 
 namespace SchMatrix {
@@ -14,11 +16,14 @@ class Keyframe : public QParallelAnimationGroup {
  public:
   explicit Keyframe(QObject *parent = nullptr);
   void assignProperty(QGraphicsWidget *object, const char *name,
-                      const QVariant &value);
+                      const QVariant &value, bool start = true);
+  QPropertyAnimation *getAnimation(QGraphicsWidget *object, const char *name);
+  void removeObject(QGraphicsWidget *object);
+  QList<QGraphicsWidget *> objects();
 
  private:
-  QHash<QSharedPointer<QGraphicsWidget>, QHash<QString, QVariant>>
-      propertyAssignments;
+  QHash<QSharedPointer<QGraphicsWidget>, QHash<QString, QPropertyAnimation *>>
+      animationAssignments;
 };
 
 }  // namespace SchMatrix
