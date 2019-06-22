@@ -1,8 +1,22 @@
 #include "animationmodel.h"
 
+#include <QList>
+#include <QSequentialAnimationGroup>
+#include <algorithm>
+#include "keyframe.h"
+
 namespace SchMatrix {
 
-AnimationModel::AnimationModel(QObject *parent) : QAbstractTableModel(parent) {}
+AnimationModel::AnimationModel(QObject *parent)
+    : QAbstractTableModel(parent), root(this) {
+  // build basic animation tree
+  auto layer_1 = new QSequentialAnimationGroup(&root);
+  root.addAnimation(layer_1);
+  auto keyframe = new SchMatrix::Keyframe(layer_1);
+  layer_1->addAnimation(keyframe);
+
+  animData = {{{FrameTypes::Key, keyframe}}};
+}
 
 QVariant AnimationModel::headerData(int section, Qt::Orientation orientation,
                                     int role) const {
@@ -11,21 +25,35 @@ QVariant AnimationModel::headerData(int section, Qt::Orientation orientation,
 }
 
 int AnimationModel::rowCount(const QModelIndex &parent) const {
-  if (parent.isValid()) return 0;
-
-  // FIXME: Implement me!
+  if (parent.isValid()) return root.animationCount();
 }
 
 int AnimationModel::columnCount(const QModelIndex &parent) const {
-  if (parent.isValid()) return 0;
+  QList<int> durations;
 
-  // FIXME: Implement me!
+  for (int i = 0; i < root.animationCount(); ++i) {
+    durations.append(root.animationAt(i)->duration());
+  }
+
+  auto longestAnim = *std::max_element(durations.begin(), durations.end());
+  auto basicAnimLength = 180 * fps;  // 3 min * FPS
+
+  if (parent.isValid())
+    return (longestAnim > basicAnimLength) ? longestAnim : basicAnimLength;
 }
 
 QVariant AnimationModel::data(const QModelIndex &index, int role) const {
   if (!index.isValid()) return QVariant();
 
-  // FIXME: Implement me!
+  int row = index.row();
+  int col = index.column();
+
+  switch (role) {
+    case Qt::DisplayRole:
+      return animData[row][col].first;
+      break;
+  }
+
   return QVariant();
 }
 

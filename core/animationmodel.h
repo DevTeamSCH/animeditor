@@ -1,9 +1,14 @@
 #ifndef ANIMATIONMODEL_H
 #define ANIMATIONMODEL_H
 
+#include <QAbstractAnimation>
 #include <QAbstractTableModel>
+#include <QList>
+#include <QParallelAnimationGroup>
 
 namespace SchMatrix {
+
+enum FrameTypes { Frame, EndOfFrame, Key, BlankKey, PotentialFrame };
 
 class AnimationModel : public QAbstractTableModel {
   Q_OBJECT
@@ -35,6 +40,10 @@ class AnimationModel : public QAbstractTableModel {
                      const QModelIndex &parent = QModelIndex()) override;
 
  private:
+  QParallelAnimationGroup root;  // root animation
+  int fps = 30;
+  int frameLength = 1000 / fps;
+  QList<QList<QPair<int, QAbstractAnimation *>>> animData;
 };
 
 }  // namespace SchMatrix
