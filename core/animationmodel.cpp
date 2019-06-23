@@ -4,13 +4,14 @@
 #include <QSequentialAnimationGroup>
 #include <algorithm>
 #include "keyframe.h"
+#include "layer.h"
 
 namespace SchMatrix {
 
 AnimationModel::AnimationModel(QObject *parent)
     : QAbstractTableModel(parent), root(this) {
   // build basic animation tree
-  auto layer_1 = new QSequentialAnimationGroup(&root);
+  auto layer_1 = new SchMatrix::Layer(&root);
   root.addAnimation(layer_1);
   auto keyframe = new SchMatrix::Keyframe(layer_1);
   layer_1->addAnimation(keyframe);
