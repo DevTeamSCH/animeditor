@@ -44,6 +44,7 @@ class AnimationModel : public QAbstractTableModel {
   int fps = 30;
   int frameLength = 1000 / fps;
   QList<QList<int>> animTimeline;
+  static int lastLayerNumber;
 };
 
 }  // namespace SchMatrix

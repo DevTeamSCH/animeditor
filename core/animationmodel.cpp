@@ -2,10 +2,13 @@
 
 #include <QList>
 #include <QSequentialAnimationGroup>
+#include <cstdlib>
 #include "keyframe.h"
 #include "layer.h"
 
 namespace SchMatrix {
+
+int AnimationModel::lastLayerNumber = 1;
 
 AnimationModel::AnimationModel(QObject *parent)
     : QAbstractTableModel(parent), root(this) {
@@ -18,7 +21,11 @@ AnimationModel::AnimationModel(QObject *parent)
 
 QVariant AnimationModel::headerData(int section, Qt::Orientation orientation,
                                     int role) const {
-  // FIXME: Implement me!
+  if (role == Qt::DisplayRole && orientation == Qt::Vertical) {
+    auto layer = static_cast<Layer *>(root.animationAt(section));
+    return layer->getName();
+  }
+
   return QVariant();
 }
 
@@ -54,9 +61,32 @@ QVariant AnimationModel::data(const QModelIndex &index, int role) const {
 
 bool AnimationModel::insertRows(int row, int count, const QModelIndex &parent) {
   beginInsertRows(parent, row, row + count - 1);
-  // FIXME: Implement me!
+
+  auto longestAnim = root.duration();
+
+  for (int i = 0; i < count; ++i) {
+    auto layer =
+        new Layer(QString("layer %1").arg(lastLayerNumber++), row, &root);
+    root.insertAnimation(row, layer);
+
+    layer->addAnimation(new Keyframe(layer));
+    layer->addPause(longestAnim);
+
+    animTimeline.insert(row, {FrameTypes::Key});
+
+    for (int i = 0; i < (longestAnim / frameLength) - 1; ++i) {
+      animTimeline[row].push_back(FrameTypes::Frame);
+    }
+
+    animTimeline[row].push_back(FrameTypes::EndOfFrame);
+  }
+
+  for (int i = row; i < count; ++i) {
+    static_cast<Layer *>(root.animationAt(i))->setZOrder(i);
+  }
+
   endInsertRows();
-  return false;
+  return true;
 }
 
 bool AnimationModel::insertColumns(int column, int count,
@@ -68,10 +98,25 @@ bool AnimationModel::insertColumns(int column, int count,
 }
 
 bool AnimationModel::removeRows(int row, int count, const QModelIndex &parent) {
+  if (root.animationCount() < count || abs(root.animationCount() - count) == 1)
+    return false;
+
   beginRemoveRows(parent, row, row + count - 1);
-  // FIXME: Implement me!
+  auto animCount = root.animationCount();
+
+  if (animCount < count) return false;
+
+  for (int i = row; i < count; ++i) {
+    root.takeAnimation(i);
+    animTimeline.removeAt(i);
+  }
+
+  for (int i = row; i < animCount; ++i) {
+    static_cast<Layer *>(root.animationAt(i))->setZOrder(i);
+  }
+
   endRemoveRows();
-  return false;
+  return true;
 }
 
 bool AnimationModel::removeColumns(int column, int count,
