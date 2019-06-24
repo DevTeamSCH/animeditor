@@ -15,8 +15,6 @@ AnimationModel::AnimationModel(QObject *parent)
   root.addAnimation(layer_1);
   auto keyframe = new SchMatrix::Keyframe(layer_1);
   layer_1->addAnimation(keyframe);
-
-  animData = {{{FrameTypes::Key, keyframe}}};
 }
 
 QVariant AnimationModel::headerData(int section, Qt::Orientation orientation,
@@ -51,7 +49,7 @@ QVariant AnimationModel::data(const QModelIndex &index, int role) const {
 
   switch (role) {
     case Qt::DisplayRole:
-      return animData[row][col].first;
+      return animTimeline[row][col];
       break;
   }
 

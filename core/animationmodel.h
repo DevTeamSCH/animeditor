@@ -43,7 +43,7 @@ class AnimationModel : public QAbstractTableModel {
   QParallelAnimationGroup root;  // root animation
   int fps = 30;
   int frameLength = 1000 / fps;
-  QList<QList<QPair<int, QAbstractAnimation *>>> animData;
+  QList<QList<int>> animTimeline;
 };
 
 }  // namespace SchMatrix
