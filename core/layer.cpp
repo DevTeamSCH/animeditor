@@ -6,6 +6,9 @@ namespace SchMatrix {
 
 Layer::Layer(QObject *parent) : QSequentialAnimationGroup(parent) {}
 
+Layer::Layer(QString name, int zOrder, QObject *parent)
+    : QSequentialAnimationGroup(parent), name(name), zOrder(zOrder) {}
+
 QList<Keyframe *> Layer::keyframes() {
   QList<Keyframe *> keyframes;
 
@@ -48,5 +51,13 @@ Keyframe *Layer::prevKeyframe() {
 
   return keys[idx - 1];
 }
+
+QString Layer::getName() { return name; }
+
+int Layer::getZOrder() { return zOrder; };
+
+void Layer::setName(const QString &newName) { name = newName; }
+
+void Layer::setZOrder(const int &order) { zOrder = order; };
 
 }  // namespace SchMatrix
