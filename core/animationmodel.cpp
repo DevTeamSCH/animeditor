@@ -2,7 +2,6 @@
 
 #include <QList>
 #include <QSequentialAnimationGroup>
-#include <algorithm>
 #include "keyframe.h"
 #include "layer.h"
 
@@ -24,21 +23,18 @@ QVariant AnimationModel::headerData(int section, Qt::Orientation orientation,
 }
 
 int AnimationModel::rowCount(const QModelIndex &parent) const {
-  if (parent.isValid()) return root.animationCount();
+  if (parent.isValid()) return 0;
+
+  return root.animationCount();
 }
 
 int AnimationModel::columnCount(const QModelIndex &parent) const {
-  QList<int> durations;
+  if (parent.isValid()) return 0;
 
-  for (int i = 0; i < root.animationCount(); ++i) {
-    durations.append(root.animationAt(i)->duration());
-  }
-
-  auto longestAnim = *std::max_element(durations.begin(), durations.end());
+  auto longestAnim = root.duration();
   auto basicAnimLength = 180 * fps;  // 3 min * FPS
 
-  if (parent.isValid())
-    return (longestAnim > basicAnimLength) ? longestAnim : basicAnimLength;
+  return (longestAnim > basicAnimLength) ? longestAnim : basicAnimLength;
 }
 
 QVariant AnimationModel::data(const QModelIndex &index, int role) const {
