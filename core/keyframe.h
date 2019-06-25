@@ -7,10 +7,11 @@
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
 #include <QSharedPointer>
+#include "core_global.h"
 
 namespace SchMatrix {
 
-class Keyframe : public QParallelAnimationGroup {
+class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
   Q_OBJECT
 
  public:

@@ -5,16 +5,17 @@
 #include <QPauseAnimation>
 #include <QSequentialAnimationGroup>
 #include <QString>
+#include "core_global.h"
 #include "keyframe.h"
 
 namespace SchMatrix {
 
-class Layer : public QSequentialAnimationGroup {
+class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   Q_OBJECT
+
  public:
-  explicit Layer(QObject *parent = nullptr);
-  explicit Layer(QString name = "layer", int zOrder = 0,
-                 QObject *parent = nullptr);
+  explicit Layer(QObject *parent = nullptr, QString name = "layer",
+                 int zOrder = 0);
   QList<Keyframe *> keyframes();
   Keyframe *currentKeyframe();
   Keyframe *nextKeyframe();
