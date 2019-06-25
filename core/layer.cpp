@@ -4,9 +4,7 @@
 
 namespace SchMatrix {
 
-Layer::Layer(QObject *parent) : QSequentialAnimationGroup(parent) {}
-
-Layer::Layer(QString name, int zOrder, QObject *parent)
+Layer::Layer(QObject *parent, QString name, int zOrder)
     : QSequentialAnimationGroup(parent), name(name), zOrder(zOrder) {}
 
 QList<Keyframe *> Layer::keyframes() {

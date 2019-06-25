@@ -5,12 +5,13 @@
 #include <QAbstractTableModel>
 #include <QList>
 #include <QParallelAnimationGroup>
+#include "core_global.h"
 
 namespace SchMatrix {
 
 enum FrameTypes { Frame, EndOfFrame, Key, BlankKey, PotentialFrame };
 
-class AnimationModel : public QAbstractTableModel {
+class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   Q_OBJECT
 
  public:
