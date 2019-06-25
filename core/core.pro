@@ -4,6 +4,8 @@
 #
 #-------------------------------------------------
 
+QT += widgets
+
 TARGET = libanimeditor
 TEMPLATE = lib
 
@@ -21,11 +23,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        animeditorcore.cpp
+        animationmodel.cpp \
+        animeditorcore.cpp \
+        keyframe.cpp \
+        layer.cpp
 
 HEADERS += \
+        animationmodel.h \
         animeditorcore.h \
-        core_global.h 
+        core_global.h  \
+        keyframe.h \
+        layer.h
 
 unix {
     target.path = /usr/lib
