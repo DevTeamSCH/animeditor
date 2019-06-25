@@ -70,15 +70,17 @@ bool AnimationModel::insertRows(int row, int count, const QModelIndex &parent) {
     root.insertAnimation(row, layer);
 
     layer->addAnimation(new Keyframe(layer));
-    layer->addPause(longestAnim);
-
     animTimeline.insert(row, {FrameTypes::Key});
 
-    for (int i = 0; i < (longestAnim / frameLength) - 1; ++i) {
-      animTimeline[row].push_back(FrameTypes::Frame);
-    }
+    if (root.animationCount() > 1) {
+      layer->addPause(longestAnim);
 
-    animTimeline[row].push_back(FrameTypes::EndOfFrame);
+      for (int i = 0; i < (longestAnim / frameLength) - 1; ++i) {
+        animTimeline[row].push_back(FrameTypes::Frame);
+      }
+
+      animTimeline[row].push_back(FrameTypes::EndOfFrame);
+    }
   }
 
   for (int i = row; i < count; ++i) {
