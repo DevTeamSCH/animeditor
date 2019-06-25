@@ -94,9 +94,15 @@ bool AnimationModel::insertRows(int row, int count, const QModelIndex &parent) {
 bool AnimationModel::insertColumns(int column, int count,
                                    const QModelIndex &parent) {
   beginInsertColumns(parent, column, column + count - 1);
-  // FIXME: Implement me!
+
+  for (auto &list : animTimeline) {
+    for (int i = 0; i < count; ++i) {
+      list.insert(column, FrameTypes::PotentialFrame);
+    }
+  }
+
   endInsertColumns();
-  return false;
+  return true;
 }
 
 bool AnimationModel::removeRows(int row, int count, const QModelIndex &parent) {
