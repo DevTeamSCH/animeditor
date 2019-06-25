@@ -20,7 +20,7 @@ AnimationModel::AnimationModel(QObject *parent)
 
   // init animTimeline
   animTimelineRow.reserve(180 * fps);
-  animTimelineRow[0] = FrameTypes::BlankKey;
+  animTimelineRow.insert(0, FrameTypes::BlankKey);
 
   animTimeline.insert(0, animTimelineRow);
 }
