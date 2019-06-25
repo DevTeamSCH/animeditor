@@ -42,6 +42,7 @@ class AnimationModel : public QAbstractTableModel {
   int fps = 30;
   int frameLength = 1000 / fps;
   QList<QList<int>> animTimeline;
+  QList<int> animTimelineRow;
   static int lastLayerNumber;
 };
 

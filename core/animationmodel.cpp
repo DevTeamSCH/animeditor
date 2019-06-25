@@ -17,6 +17,12 @@ AnimationModel::AnimationModel(QObject *parent)
   root.addAnimation(layer_1);
   auto keyframe = new SchMatrix::Keyframe(layer_1);
   layer_1->addAnimation(keyframe);
+
+  // init animTimeline
+  animTimelineRow.reserve(180 * fps);
+  animTimelineRow[0] = FrameTypes::BlankKey;
+
+  animTimeline.insert(0, animTimelineRow);
 }
 
 QVariant AnimationModel::headerData(int section, Qt::Orientation orientation,
@@ -52,6 +58,9 @@ QVariant AnimationModel::data(const QModelIndex &index, int role) const {
 
   switch (role) {
     case Qt::DisplayRole:
+      auto colSize = animTimeline[row].size() - 1;
+      if (col > colSize) return FrameTypes::PotentialFrame;
+
       return animTimeline[row][col];
       break;
   }
@@ -68,9 +77,9 @@ bool AnimationModel::insertRows(int row, int count, const QModelIndex &parent) {
     auto layer =
         new Layer(QString("layer %1").arg(lastLayerNumber++), row, &root);
     root.insertAnimation(row, layer);
-
     layer->addAnimation(new Keyframe(layer));
-    animTimeline.insert(row, {FrameTypes::Key});
+
+    animTimeline.insert(row, animTimelineRow);
 
     if (root.animationCount() > 1) {
       layer->addPause(longestAnim);
