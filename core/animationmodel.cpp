@@ -127,12 +127,4 @@ bool AnimationModel::removeRows(int row, int count, const QModelIndex &parent) {
   return true;
 }
 
-bool AnimationModel::removeColumns(int column, int count,
-                                   const QModelIndex &parent) {
-  beginRemoveColumns(parent, column, column + count - 1);
-  // FIXME: Implement me!
-  endRemoveColumns();
-  return false;
-}
-
 }  // namespace SchMatrix
