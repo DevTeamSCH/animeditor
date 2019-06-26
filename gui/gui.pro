@@ -27,11 +27,13 @@ CONFIG += c++11
 SOURCES += \
         framedelegate.cpp \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        timelinemenu.cpp
 
 HEADERS += \
         framedelegate.h \
-        mainwindow.h
+        mainwindow.h \
+        timelinemenu.h
 
 FORMS += \
         mainwindow.ui
