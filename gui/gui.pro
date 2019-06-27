@@ -25,11 +25,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        framedelegate.cpp \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        timelinemenu.cpp
 
 HEADERS += \
-        mainwindow.h
+        framedelegate.h \
+        mainwindow.h \
+        timelinemenu.h
 
 FORMS += \
         mainwindow.ui
