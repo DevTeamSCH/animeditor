@@ -42,7 +42,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   // Used for Frame insertion, addition, modification
   // Not used for deletion!
   bool setData(const QModelIndex &index, const QVariant &value,
-               int role) override;
+               int role = Qt::EditRole) override;
 
   // Used for Frame deletion only
   bool removeData(const QModelIndex &index);
