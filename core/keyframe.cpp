@@ -4,12 +4,25 @@ namespace SchMatrix {
 
 Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {}
 
-void Keyframe::assignProperty(QGraphicsWidget *object, const char *name,
+Keyframe::Keyframe(const Keyframe &other) {
+  auto &animAssign = other.animationAssignments;
+
+  // set the root animation as parent
+  setParent(other.parent());
+
+  for (auto &obj : animAssign.keys()) {
+    for (auto &name : animAssign[obj].keys()) {
+      assignProperty(obj.get(), name, animAssign[obj][name]->startValue());
+    }
+  }
+}
+
+void Keyframe::assignProperty(QGraphicsWidget *object, const QByteArray &name,
                               const QVariant &value, bool start) {
   if (!object) {
     qWarning(
         "Keyframe::assignProperty: cannot assign property '%s' of null object",
-        name);
+        name.data());
     return;
   }
 
@@ -39,7 +52,7 @@ void Keyframe::assignProperty(QGraphicsWidget *object, const char *name,
 }
 
 QPropertyAnimation *Keyframe::getAnimation(QGraphicsWidget *object,
-                                           const char *name) {
+                                           const QByteArray &name) {
   QSharedPointer<QGraphicsWidget> objectPtr(object);
   return animationAssignments[objectPtr][name];
 }
