@@ -256,6 +256,53 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
   return true;
 }
 
+bool AnimationModel::removeData(const QModelIndex &index) {
+  auto row = index.row();
+  auto col = index.column();
+
+  if (row > root.animationCount() || col == 0) return false;
+
+  auto layerSize = animTimeline[row].size();
+  auto layer = static_cast<Layer *>(root.animationAt(row));
+  auto currentAnimation = layer->currentAnimation();
+  auto currentAnimationIdx = layer->indexOfAnimation(currentAnimation);
+  auto currentIsPause = qobject_cast<QPauseAnimation *>(currentAnimation);
+
+  QPauseAnimation *pause =
+      (currentIsPause) ? static_cast<QPauseAnimation *>(currentAnimation)
+                       : nullptr;
+
+  if (currentIsPause) {  // current is Frame
+    // decrase current pause by one frame
+    pause->setDuration(pause->duration() - frameLength);
+  } else {  // current is (Blank)Keyframe
+    // check for pause merge
+    auto leftIsPause = qobject_cast<QPauseAnimation *>(
+        layer->animationAt(currentAnimationIdx - 1));
+    auto rightIsPause = qobject_cast<QPauseAnimation *>(
+        layer->animationAt(currentAnimationIdx + 1));
+    auto leftPause = (leftIsPause)
+                         ? static_cast<QPauseAnimation *>(
+                               layer->animationAt(currentAnimationIdx - 1))
+                         : nullptr;
+    auto rightPause = (rightIsPause)
+                          ? static_cast<QPauseAnimation *>(
+                                layer->animationAt(currentAnimationIdx + 1))
+                          : nullptr;
+
+    if (col - 1 != 0 && col + 1 != layerSize && leftIsPause && rightIsPause) {
+      // remove right pause
+      layer->removeAnimation(rightPause);
+      leftPause->setDuration(leftPause->duration() + rightPause->duration());
+    }
+  }
+
+  delete currentAnimation;
+  animTimeline[row].removeAt(col);
+
+  return true;
+}
+
 Qt::ItemFlags SchMatrix::AnimationModel::flags(const QModelIndex &index) const {
   return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled |
          Qt::ItemIsEnabled;

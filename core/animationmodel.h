@@ -44,6 +44,9 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   bool setData(const QModelIndex &index, const QVariant &value,
                int role) override;
 
+  // Used for Frame deletion only
+  bool removeData(const QModelIndex &index);
+
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
  private:
