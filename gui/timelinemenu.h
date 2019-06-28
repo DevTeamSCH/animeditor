@@ -5,6 +5,16 @@
 
 namespace SchMatrix {
 
+enum MenuEntry {
+  CreateClassicTween,
+  InsertFrame,
+  RemoveFrame,
+  InsertKeyframe,
+  InsertBlankKeyframe,
+  ClearFrames,
+  SelectAllFrames
+};
+
 class TimelineMenu : public QMenu {
   Q_OBJECT
 
