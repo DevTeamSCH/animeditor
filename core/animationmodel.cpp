@@ -1,7 +1,9 @@
 #include "animationmodel.h"
 
 #include <QList>
+#include <QModelIndex>
 #include <QSequentialAnimationGroup>
+#include <algorithm>
 #include <cstdlib>
 #include "keyframe.h"
 #include "layer.h"
@@ -134,6 +136,129 @@ bool AnimationModel::removeRows(int row, int count, const QModelIndex &parent) {
 
   endRemoveRows();
   return true;
+}
+
+bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
+                                        const QVariant &value, int role) {
+  auto row = index.row();
+  auto col = index.column();
+
+  if (row > root.animationCount()) return false;
+
+  auto val = value.toInt();
+  auto layerSize = animTimeline[row].size();
+  auto layer = static_cast<Layer *>(root.animationAt(row));
+  auto currentAnimation = layer->currentAnimation();
+  auto currentAnimationIdx = layer->indexOfAnimation(currentAnimation);
+  auto currentIsPause = qobject_cast<QPauseAnimation *>(currentAnimation);
+
+  QPauseAnimation *pause =
+      (currentIsPause) ? static_cast<QPauseAnimation *>(currentAnimation)
+                       : nullptr;
+
+  if (col > layerSize) {  // setting data in PotentialFrame
+    auto start = animTimeline[row].end();
+
+    if (val == FrameTypes::Frame)
+      animTimeline[row].insert(col, FrameTypes::EndOfFrame);
+    else
+      animTimeline[row].insert(col, val);
+
+    // this can only be calculated after the insertion
+    auto pauseDuration = animTimeline[row].size() - layerSize;
+
+    if (currentIsPause) {
+      // replace EndOfFrame with Frame
+      animTimeline[row][layerSize - 1] = FrameTypes::Frame;
+      pause->setDuration(pause->duration() + frameLength * pauseDuration);
+    } else {  // current is (Blank)Keyframe
+      layer->addPause(frameLength * pauseDuration);  // Add missing pause
+    }
+
+    std::fill(start + 1, animTimeline[row].end(), FrameTypes::Frame);
+
+    // data changes from layerSize(original size) to animTimeline[row].size()
+    emit dataChanged(createIndex(row, layerSize),
+                     createIndex(row, animTimeline[row].size()));
+  } else {  // setting data inside, before potentialFrames
+    if (currentIsPause) {
+      if (val == FrameTypes::Frame) {
+        animTimeline[row].insert(col, val);
+        pause->setDuration(pause->duration() + frameLength);
+      }
+
+      if (val == FrameTypes::BlankKey || val == FrameTypes::Key) {
+        animTimeline[row][col] = val;
+        animTimeline[row][col - 1] = FrameTypes::EndOfFrame;
+
+        // TODO find builtin algorithm
+        int pauseStartIdx = col;
+        for (; pauseStartIdx != 0 ||
+               animTimeline[row][pauseStartIdx] != FrameTypes::Frame;
+             --pauseStartIdx)
+
+          pauseStartIdx++;
+
+        auto pauseLeftDuration = frameLength * (col - pauseStartIdx);
+        auto pauseRightDuration =
+            frameLength * (pause->duration() - pauseLeftDuration + frameLength);
+
+        // shrink current pause
+        pause->setDuration(pauseLeftDuration);
+
+        // insert Keyframe inside Frame
+        if (val == FrameTypes::Key) {
+          auto currentKey = layer->currentKeyframe();
+          auto newKey = new Keyframe(currentKey);
+          layer->insertAnimation(currentAnimationIdx + 1, newKey);
+        } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
+          layer->insertAnimation(currentAnimationIdx + 1, new Keyframe(&root));
+        }
+
+        // add new pause after (Blank)Keyframe
+        layer->insertPause(currentAnimationIdx + 2,
+                           frameLength * pauseRightDuration);
+      }
+
+      // data changes from col - 1 to col + 1
+      emit dataChanged(createIndex(row, col - 1), createIndex(row, col + 1));
+    } else {  // current is (Blank)Keyframe
+      auto nextIsFrame = qobject_cast<QPauseAnimation *>(
+          root.animationAt(currentAnimationIdx + 1));
+
+      if (val == FrameTypes::Frame) {
+        if (col + 1 > layerSize || !nextIsFrame) {
+          animTimeline[row].insert(col + 1, FrameTypes::EndOfFrame);
+          layer->insertPause(currentAnimationIdx + 1, frameLength);
+        } else {  // next is Frame and inside before PotentialFrame
+          animTimeline[row].insert(col + 1, val);
+
+          auto nextPause = static_cast<QPauseAnimation *>(
+              root.animationAt(currentAnimationIdx + 1));
+          nextPause->setDuration(nextPause->duration() + frameLength);
+        }
+      }
+
+      // insert Keyframe after (Blank)Keyframe
+      if (val == FrameTypes::Key) {
+        auto currentKey = layer->currentKeyframe();
+        auto newKey = new Keyframe(currentKey);
+        layer->insertAnimation(currentAnimationIdx + 1, newKey);
+      } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
+        layer->insertAnimation(currentAnimationIdx + 1, new Keyframe(&root));
+      }
+
+      // data changes from col to col + 1
+      emit dataChanged(createIndex(row, col), createIndex(row, col + 1));
+    }
+  }
+
+  return true;
+}
+
+Qt::ItemFlags SchMatrix::AnimationModel::flags(const QModelIndex &index) const {
+  return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled |
+         Qt::ItemIsEnabled;
 }
 
 }  // namespace SchMatrix

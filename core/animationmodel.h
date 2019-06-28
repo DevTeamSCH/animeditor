@@ -38,6 +38,14 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   bool removeRows(int row, int count,
                   const QModelIndex &parent = QModelIndex()) override;
 
+  // QAbstractItemModel interface
+  // Used for Frame insertion, addition, modification
+  // Not used for deletion!
+  bool setData(const QModelIndex &index, const QVariant &value,
+               int role) override;
+
+  Qt::ItemFlags flags(const QModelIndex &index) const override;
+
  private:
   QParallelAnimationGroup root;  // root animation
   int fps = 30;
