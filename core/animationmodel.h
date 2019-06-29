@@ -3,9 +3,10 @@
 
 #include <QAbstractAnimation>
 #include <QAbstractTableModel>
-#include <QList>
 #include <QParallelAnimationGroup>
+#include <QVector>
 #include "core_global.h"
+#include "layer.h"
 
 namespace SchMatrix {
 
@@ -49,12 +50,15 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
+  void setTime(int mscec);
+  int getTime() const;
+  int getDuration() const;
+  const SchMatrix::Layer *getLayer(int row = 0) const;
+
  private:
   QParallelAnimationGroup root;  // root animation
-  int fps = 30;
-  int frameLength = 1000 / fps;
-  QList<QList<int>> animTimeline;
-  QList<int> animTimelineRow;
+  QVector<QVector<int>> animTimeline;
+  QVector<int> animTimelineRow;
   static int lastLayerNumber;
 };
 
