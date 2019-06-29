@@ -1,8 +1,13 @@
 #include "keyframe.h"
 
+#include <QPauseAnimation>
+#include "config.h"
+
 namespace SchMatrix {
 
-Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {}
+Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {
+  addAnimation(new QPauseAnimation(fps, this));
+}
 
 Keyframe::Keyframe(const Keyframe &other) {
   auto &animAssign = other.animationAssignments;
