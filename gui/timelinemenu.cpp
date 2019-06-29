@@ -8,7 +8,7 @@ TimelineMenu::TimelineMenu(QWidget *parent) : QMenu(parent) {
   addAction(tr("Insert Frame"))->setData(MenuEntry::InsertFrame);
   addAction(tr("Remove Frame"))->setData(MenuEntry::RemoveFrame);
   addSeparator();
-  addAction(tr("Insert Keyframe"))->setData(MenuEntry::InsertFrame);
+  addAction(tr("Insert Keyframe"))->setData(MenuEntry::InsertKeyframe);
   addAction(tr("Insert Blank Keyframe"))
       ->setData(MenuEntry::InsertBlankKeyframe);
   addSeparator();
