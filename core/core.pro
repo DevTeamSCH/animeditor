@@ -25,12 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         animationmodel.cpp \
         animeditorcore.cpp \
+        config.cpp \
         keyframe.cpp \
         layer.cpp
 
 HEADERS += \
         animationmodel.h \
         animeditorcore.h \
+        config.h \
         core_global.h  \
         keyframe.h \
         layer.h
