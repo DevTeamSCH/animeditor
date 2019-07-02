@@ -13,9 +13,10 @@ void FrameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
   auto col = index.column();
 
   auto &optionRect = option.rect;
-  auto keyY = optionRect.center().y() - 3;
+  auto keyY = optionRect.height() / 2 - 5;
 
   painter->save();
+
   painter->setPen(Qt::NoPen);
   painter->setBrush(QColor("#d6d6d6"));  // Non potential frame color
   painter->setRenderHint(QPainter::Antialiasing, true);
@@ -30,7 +31,7 @@ void FrameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
       painter->setBrush(Qt::NoBrush);
       painter->setPen(Qt::black);
       painter->drawRect(optionRect.center().x(),
-                        optionRect.center().y() + optionRect.center().y() - 10,
+                        optionRect.center().y() + optionRect.height() / 2 - 12,
                         5, 10);
       break;
     case SchMatrix::Key:
