@@ -76,6 +76,8 @@ bool AnimationModel::insertRows(int row, int count, const QModelIndex &parent) {
 
   auto longestAnim = root.duration();
 
+  if (row > animTimeline.size()) animTimeline.resize(row);
+
   for (int i = 0; i < count; ++i) {
     auto layer =
         new Layer(&root, QString("layer %1").arg(lastLayerNumber++), row);
@@ -107,9 +109,11 @@ bool AnimationModel::insertColumns(int column, int count,
                                    const QModelIndex &parent) {
   beginInsertColumns(parent, column, column + count - 1);
 
-  for (auto &list : animTimeline) {
+  for (auto &row : animTimeline) {
     for (int i = 0; i < count; ++i) {
-      list.insert(column, FrameTypes::PotentialFrame);
+      if (row.size() > column) row.resize(column);
+
+      row.insert(column, FrameTypes::PotentialFrame);
     }
   }
 
@@ -127,7 +131,9 @@ bool AnimationModel::removeRows(int row, int count, const QModelIndex &parent) {
   if (animCount < count) return false;
 
   for (int i = row; i < count; ++i) {
-    root.takeAnimation(i);
+    auto anim = root.takeAnimation(i);
+    delete anim;
+
     animTimeline.removeAt(i);
   }
 
