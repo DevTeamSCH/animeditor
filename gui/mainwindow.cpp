@@ -61,5 +61,10 @@ void MainWindow::handleTimelineMenu(QAction* action) {
       break;
   }
 
-  qDebug() << animModel.getLayer(index.row())->animations();
+  auto layer = animModel.getLayer(index.row());
+
+  qDebug() << layer->animations();
+  for (auto l : layer->pauses()) {
+    qDebug() << l << l->duration();
+  }
 }
