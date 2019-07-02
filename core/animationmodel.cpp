@@ -80,13 +80,14 @@ bool AnimationModel::insertRows(int row, int count, const QModelIndex &parent) {
 
   for (int i = 0; i < count; ++i) {
     auto layer =
-        new Layer(&root, QString("layer %1").arg(lastLayerNumber++), row);
+        new Layer(&root, QString("layer %1").arg(++lastLayerNumber), row);
+
     root.insertAnimation(row, layer);
     layer->addAnimation(new Keyframe(layer));
 
     animTimeline.insert(row, animTimelineRow);
 
-    if (root.animationCount() > 1) {
+    if (root.animationCount() > 1 && longestAnim > frameLength) {
       layer->addPause(longestAnim);
 
       for (int i = 0; i < (longestAnim / frameLength) - 1; ++i) {
