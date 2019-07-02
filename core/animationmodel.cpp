@@ -175,7 +175,7 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
 
     if (currentIsPause) {
       // replace EndOfFrame with Frame
-      if (col != layerSize)
+      if (val == FrameTypes::Frame)
         animTimeline[row][layerSize - 1] = FrameTypes::Frame;
       pause->setDuration(pause->duration() + frameLength * pauseDuration);
     } else {  // current is (Blank)Keyframe
@@ -205,6 +205,7 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
       if (val == FrameTypes::BlankKey || val == FrameTypes::Key) {
         animTimeline[row][col] = val;
 
+        // Frame/Pause split starts here
         // TODO find builtin algorithm
         int pauseStartIdx = col - 1;
         for (; pauseStartIdx != 0 &&
@@ -217,32 +218,28 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
         if (animTimeline[row][col - 1] == FrameTypes::Frame)
           animTimeline[row][col - 1] = FrameTypes::EndOfFrame;
 
-        int pauseLeftDuration = 0;
-        int pauseRightDuration = 0;
+        auto pauseLeftDuration = frameLength * (col - pauseStartIdx);
+        auto pauseRightDuration =
+            pause->duration() - pauseLeftDuration - frameLength;
 
-        if (pause->duration() > frameLength) {
-          pauseLeftDuration = frameLength * (col - pauseStartIdx);
-          pauseRightDuration =
-              pause->duration() - pauseLeftDuration - frameLength;
-        }
-
-        // shrink current pause
-        pause->setDuration(pauseLeftDuration);
+        // shrink or delete current pause
+        if (pauseLeftDuration == 0)
+          delete pause;
+        else
+          pause->setDuration(pauseLeftDuration);
 
         // insert Keyframe inside Frame
         if (val == FrameTypes::Key) {
-          auto currentKey = layer->currentKeyframe();
-          auto newKey = new Keyframe(currentKey);
+          auto newKey = new Keyframe(layer->currentKeyframe());
           layer->insertAnimation(currentAnimationIdx + 1, newKey);
         } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
           layer->insertAnimation(currentAnimationIdx + 1, new Keyframe(&root));
         }
 
         // add new pause after (Blank)Keyframe
-        // only if its bigger than 1 frame
-        if (pause->duration() > frameLength) {
-          layer->insertPause(currentAnimationIdx + 2,
-                             frameLength * pauseRightDuration);
+        // only if pauseRightDuration is at least 1 frame long
+        if (pauseRightDuration >= frameLength) {
+          layer->insertPause(currentAnimationIdx + 2, pauseRightDuration);
         }
       }
 
@@ -273,8 +270,7 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
 
       // insert Keyframe after (Blank)Keyframe
       if (val == FrameTypes::Key) {
-        auto currentKey = layer->currentKeyframe();
-        auto newKey = new Keyframe(currentKey);
+        auto newKey = new Keyframe(layer->currentKeyframe());
         layer->insertAnimation(currentAnimationIdx + 1, newKey);
       } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
         layer->insertAnimation(currentAnimationIdx + 1, new Keyframe(&root));
@@ -284,8 +280,6 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
       emit dataChanged(createIndex(row, col), createIndex(row, col + 1));
     }
   }
-
-  layer->deleteEmptyPauses();
 
   return true;
 }
@@ -310,8 +304,18 @@ bool AnimationModel::removeData(const QModelIndex &index) {
 
   if (currentIsPause) {
     // decrase current pause by one frame
-    pause->setDuration(pause->duration() - frameLength);
+    auto duration = pause->duration() - frameLength;
+
+    // shrink or delete current pause
+    if (duration == 0)
+      delete pause;
+    else
+      pause->setDuration(duration);
+
     if (prevCell == FrameTypes::Frame) prevCell = FrameTypes::EndOfFrame;
+
+    // data changes from col - 1 to col
+    emit dataChanged(createIndex(row, col - 1), createIndex(row, col));
   } else {  // current is (Blank)Keyframe
     // check for pause merge
     if (col - 1 != 0 && col + 1 != layerSize) {
@@ -335,18 +339,25 @@ bool AnimationModel::removeData(const QModelIndex &index) {
         // pause merge
         leftPause->setDuration(leftPause->duration() + rightPause->duration());
 
+        // delete right pause
+        delete rightPause;
+
         prevCell = FrameTypes::Frame;
       }
 
       if (prevCell == FrameTypes::EndOfFrame) prevCell = FrameTypes::Frame;
+
+      // data changes from col - 1 to col + 1
+      emit dataChanged(createIndex(row, col - 1), createIndex(row, col + 1));
+    } else {
+      // data changes at col
+      emit dataChanged(createIndex(row, col), createIndex(row, col));
     }
 
     delete currentAnimation;
   }
 
   animTimeline[row].removeAt(col);
-
-  layer->deleteEmptyPauses();
 
   return true;
 }
