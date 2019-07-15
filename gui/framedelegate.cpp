@@ -30,7 +30,7 @@ void FrameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 
       painter->setBrush(Qt::NoBrush);
       painter->setPen(Qt::black);
-      painter->drawRect(optionRect.center().x(),
+      painter->drawRect(optionRect.center().x() - 2,
                         optionRect.center().y() + optionRect.height() / 2 - 12,
                         5, 10);
       break;
