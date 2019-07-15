@@ -182,7 +182,7 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
 
     if (currentIsPause) {
       // replace EndOfFrame with Frame
-      if (val == FrameTypes::Frame)
+      if (val == FrameTypes::Frame || col != layerSize)
         animTimeline[row][layerSize - 1] = FrameTypes::Frame;
       pause->setDuration(pause->duration() + frameLength * pauseDuration);
     } else {  // current is (Blank)Keyframe
