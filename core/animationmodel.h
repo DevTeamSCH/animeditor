@@ -61,6 +61,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   QVector<QVector<int>> animTimeline;
   QVector<int> animTimelineRow;
   static int lastLayerNumber;
+  int lastLayerNumber = 1;
 };
 
 }  // namespace SchMatrix

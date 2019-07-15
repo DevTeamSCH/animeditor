@@ -11,8 +11,6 @@
 
 namespace SchMatrix {
 
-int AnimationModel::lastLayerNumber = 1;
-
 AnimationModel::AnimationModel(QObject *parent)
     : QAbstractTableModel(parent), root(this) {
   // build basic animation tree
