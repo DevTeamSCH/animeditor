@@ -54,6 +54,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   int getTime() const;
   int getDuration() const;
   const SchMatrix::Layer *getLayer(int row = 0) const;
+  int elementCount(int row);
 
  private:
   QParallelAnimationGroup root;  // root animation

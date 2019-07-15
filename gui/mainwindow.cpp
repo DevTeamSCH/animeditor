@@ -58,6 +58,15 @@ void MainWindow::handleTimelineMenu(QAction* action) {
     case SchMatrix::MenuEntry::ClearFrames:
       break;
     case SchMatrix::MenuEntry::SelectAllFrames:
+      int row = index.row();
+
+      QModelIndex left = animModel.index(row, 0);
+      QModelIndex right = animModel.index(row, animModel.elementCount(row) - 1);
+
+      QItemSelection selection(left, right);
+      ui->tableView->selectionModel()->clear();
+      ui->tableView->selectionModel()->select(selection,
+                                              QItemSelectionModel::Select);
       break;
   }
 

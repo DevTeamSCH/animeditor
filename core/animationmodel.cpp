@@ -384,4 +384,6 @@ const Layer *AnimationModel::getLayer(int row) const {
   return static_cast<Layer *>(root.animationAt(row));
 }
 
+int AnimationModel::elementCount(int row) { return animTimeline[row].size(); }
+
 }  // namespace SchMatrix
