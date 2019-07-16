@@ -19,12 +19,14 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
  private slots:
+  void handleTimelineMenuRequest(const QPoint &idx);
   void handleTimelineMenu(QAction *action);
 
  private:
   Ui::MainWindow *ui;
   QModelIndex index;
   SchMatrix::AnimationModel animModel;
+  SchMatrix::TimelineMenu timelineMenu;
 };
 
 #endif  // MAINWINDOW_H

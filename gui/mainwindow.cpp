@@ -4,34 +4,38 @@
 #include <QDebug>
 #include <QModelIndex>
 #include "animationmodel.h"
+#include "config.h"
 #include "framedelegate.h"
 #include "layer.h"
-#include "timelinemenu.h"
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), animModel(this) {
+    : QMainWindow(parent),
+      ui(new Ui::MainWindow),
+      animModel(this),
+      timelineMenu(this) {
   ui->setupUi(this);
 
   ui->tableView->setModel(&animModel);
   ui->tableView->setItemDelegate(new SchMatrix::FrameDelegate(this));
   ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
 
-  auto menu = new SchMatrix::TimelineMenu(this);
-
-  connect(ui->tableView, &QTableView::customContextMenuRequested, this,
-          [=](const QPoint& idx) {
-            if (ui->tableView->indexAt(idx).isValid())
-              index = ui->tableView->indexAt(idx);
-            animModel.setTime(33 * ui->tableView->indexAt(idx).column());
-            qDebug() << ui->tableView->indexAt(idx);
-            qDebug() << animModel.getTime() << '/' << animModel.getDuration();
-            menu->exec(QCursor::pos());
-          });
-
-  connect(menu, &QMenu::triggered, this, &MainWindow::handleTimelineMenu);
+  connect(ui->tableView, &QWidget::customContextMenuRequested, this,
+          &MainWindow::handleTimelineMenuRequest);
+  connect(&timelineMenu, &QMenu::triggered, this,
+          &MainWindow::handleTimelineMenu);
 }
 
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::handleTimelineMenuRequest(const QPoint& idx) {
+  if (ui->tableView->indexAt(idx).isValid())
+    index = ui->tableView->indexAt(idx);
+
+  animModel.setTime(SchMatrix::frameLength *
+                    ui->tableView->indexAt(idx).column());
+
+  timelineMenu.exec(QCursor::pos());
+}
 
 void MainWindow::handleTimelineMenu(QAction* action) {
   switch (action->data().toInt()) {
