@@ -3,6 +3,7 @@
 
 #include <QAbstractAnimation>
 #include <QAbstractTableModel>
+#include <QGraphicsScene>
 #include <QParallelAnimationGroup>
 #include <QVector>
 #include "core_global.h"
@@ -55,12 +56,13 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   int getDuration() const;
   const SchMatrix::Layer *getLayer(int row = 0) const;
   int elementCount(int row);
+  QGraphicsScene *getScene();
 
  private:
   QParallelAnimationGroup root;  // root animation
   QVector<QVector<int>> animTimeline;
   QVector<int> animTimelineRow;
-  static int lastLayerNumber;
+  QGraphicsScene scene;
   int lastLayerNumber = 1;
 };
 

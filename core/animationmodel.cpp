@@ -12,7 +12,7 @@
 namespace SchMatrix {
 
 AnimationModel::AnimationModel(QObject *parent)
-    : QAbstractTableModel(parent), root(this) {
+    : QAbstractTableModel(parent), root(this), scene(0, 0, 32, 26, this) {
   // build basic animation tree
   auto layer_1 = new SchMatrix::Layer(&root, "layer 1");
   root.addAnimation(layer_1);
@@ -383,5 +383,7 @@ const Layer *AnimationModel::getLayer(int row) const {
 }
 
 int AnimationModel::elementCount(int row) { return animTimeline[row].size(); }
+
+QGraphicsScene *AnimationModel::getScene() { return &scene; }
 
 }  // namespace SchMatrix
