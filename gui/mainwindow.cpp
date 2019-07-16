@@ -28,8 +28,9 @@ MainWindow::MainWindow(QWidget* parent)
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::handleTimelineMenuRequest(const QPoint& idx) {
-  if (ui->tableView->indexAt(idx).isValid())
-    index = ui->tableView->indexAt(idx);
+  if (!ui->tableView->indexAt(idx).isValid()) return;
+
+  index = ui->tableView->indexAt(idx);
 
   animModel.setTime(SchMatrix::frameLength *
                     ui->tableView->indexAt(idx).column());
