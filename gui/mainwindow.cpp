@@ -55,10 +55,14 @@ void MainWindow::handleTimelineMenu(QAction* action) {
       animModel.setData(index, (layer->currentKeyframe()->animationCount())
                                    ? SchMatrix::FrameTypes::BlankKey
                                    : SchMatrix::FrameTypes::BlankKey);
+
+      animModel.setTime(SchMatrix::frameLength * index.column());
       break;
     }
     case SchMatrix::MenuEntry::InsertBlankKeyframe:
       animModel.setData(index, SchMatrix::FrameTypes::BlankKey);
+
+      animModel.setTime(SchMatrix::frameLength * index.column());
       break;
     case SchMatrix::MenuEntry::ClearFrames:
       break;
