@@ -59,10 +59,11 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   QGraphicsScene *getScene();
 
  private:
+  // Note: QGraphicsScene should be deleted last/constructed first
+  QGraphicsScene scene;
   QParallelAnimationGroup root;  // root animation
   QVector<QVector<int>> animTimeline;
   QVector<int> animTimelineRow;
-  QGraphicsScene scene;
   int lastLayerNumber = 1;
 };
 
