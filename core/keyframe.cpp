@@ -6,7 +6,9 @@
 namespace SchMatrix {
 
 Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {
-  addAnimation(new QPauseAnimation(fps, this));
+  // Add 1 frame long pause
+  // 1 Keyframe is always 1 frame long
+  addAnimation(new QPauseAnimation(SchMatrix::frameLength, this));
 }
 
 Keyframe::Keyframe(const Keyframe &other) {
