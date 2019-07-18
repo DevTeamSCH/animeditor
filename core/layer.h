@@ -1,6 +1,7 @@
 #ifndef LAYER_H
 #define LAYER_H
 
+#include <QGraphicsItemGroup>
 #include <QHash>
 #include <QPauseAnimation>
 #include <QSequentialAnimationGroup>
@@ -14,8 +15,8 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   Q_OBJECT
 
  public:
-  explicit Layer(QObject *parent = nullptr, QString name = "layer",
-                 int zOrder = 0);
+  explicit Layer(QGraphicsScene *scene, QObject *parent = nullptr,
+                 QString name = "layer", int zOrder = 0);
   QList<QAbstractAnimation *> animations() const;
   QList<QPauseAnimation *> pauses() const;
   QList<Keyframe *> keyframes() const;
@@ -33,9 +34,17 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
 
   QAbstractAnimation *animationAtMsec(int msec) const;
 
+  void addItem(QGraphicsWidget *item);
+  void removeItem(QGraphicsWidget *item);
+
+ private slots:
+  void updateLayer(QAbstractAnimation *current);
+
  private:
   QString name;
   int zOrder;
+  QGraphicsItemGroup *layerItem;
+  Keyframe *lastKeyframe;
 };
 
 }  // namespace SchMatrix

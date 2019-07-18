@@ -54,7 +54,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   void setTime(int mscec);
   int getTime() const;
   int getDuration() const;
-  const SchMatrix::Layer *getLayer(int row = 0) const;
+  SchMatrix::Layer *getLayer(int row = 0) const;
   int elementCount(int row);
   QGraphicsScene *getScene();
 

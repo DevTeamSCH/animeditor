@@ -16,7 +16,7 @@ AnimationModel::AnimationModel(QObject *parent)
       scene(0, 0, SchMatrix::width, SchMatrix::height, this),
       root(this) {
   // build basic animation tree
-  auto layer_1 = new SchMatrix::Layer(&root, "layer 1");
+  auto layer_1 = new SchMatrix::Layer(&scene, &root, "layer 1");
   root.addAnimation(layer_1);
   auto keyframe = new SchMatrix::Keyframe(layer_1);
   layer_1->addAnimation(keyframe);
@@ -79,8 +79,8 @@ bool AnimationModel::insertRows(int row, int count, const QModelIndex &parent) {
   if (row > animTimeline.size()) animTimeline.resize(row);
 
   for (int i = 0; i < count; ++i) {
-    auto layer =
-        new Layer(&root, QString("layer %1").arg(++lastLayerNumber), row);
+    auto layer = new Layer(&scene, &root,
+                           QString("layer %1").arg(++lastLayerNumber), row);
 
     root.insertAnimation(row, layer);
     layer->addAnimation(new Keyframe(layer));
@@ -379,7 +379,7 @@ int AnimationModel::getTime() const { return root.currentTime(); }
 
 int AnimationModel::getDuration() const { return root.duration(); }
 
-const Layer *AnimationModel::getLayer(int row) const {
+Layer *AnimationModel::getLayer(int row) const {
   return static_cast<Layer *>(root.animationAt(row));
 }
 

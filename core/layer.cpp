@@ -1,11 +1,19 @@
 #include "layer.h"
 
+#include <QGraphicsScene>
 #include <QList>
+#include "config.h"
 
 namespace SchMatrix {
 
-Layer::Layer(QObject *parent, QString name, int zOrder)
-    : QSequentialAnimationGroup(parent), name(name), zOrder(zOrder) {}
+Layer::Layer(QGraphicsScene *scene, QObject *parent, QString name, int zOrder)
+    : QSequentialAnimationGroup(parent), name(name), zOrder(zOrder) {
+  layerItem = scene->createItemGroup(QList<QGraphicsItem *>());
+  layerItem->setZValue(zOrder);
+
+  connect(this, &QSequentialAnimationGroup::currentAnimationChanged, this,
+          &Layer::updateLayer);
+}
 
 QList<QAbstractAnimation *> Layer::animations() const {
   QList<QAbstractAnimation *> anims;
@@ -78,7 +86,10 @@ int Layer::getZOrder() const { return zOrder; };
 
 void Layer::setName(const QString &newName) { name = newName; }
 
-void Layer::setZOrder(const int &order) { zOrder = order; }
+void Layer::setZOrder(const int &order) {
+  zOrder = order;
+  layerItem->setZValue(zOrder);
+}
 
 void Layer::deleteEmptyPauses() {
   for (auto p : pauses()) {
@@ -87,11 +98,60 @@ void Layer::deleteEmptyPauses() {
 }
 
 QAbstractAnimation *Layer::animationAtMsec(int msec) const {
-  auto root = static_cast<QAbstractAnimation *>(parent());
+  if (msec <= 0) return animationAt(0);
+  if (msec >= duration()) return animationAt(animationCount() - 1);
 
-  root->setCurrentTime(msec);
+  int dur = 0;
 
-  return currentAnimation();
-};
+  for (auto i : animations()) {
+    dur += i->duration();
+
+    if (msec < dur) return i;
+  }
+
+  return nullptr;
+}
+
+void Layer::addItem(QGraphicsWidget *item) {
+  layerItem->addToGroup(item);
+  currentKeyframe()->addObject(item);
+}
+
+void Layer::removeItem(QGraphicsWidget *item) {
+  layerItem->removeFromGroup(item);
+  currentKeyframe()->removeObject(item);
+}
+
+// Note: this function will be called for all the animations before/after the
+// current animation
+void Layer::updateLayer(QAbstractAnimation *current) {
+  auto keyframe = (!qobject_cast<Keyframe *>(current))
+                      ? currentKeyframe()
+                      : static_cast<Keyframe *>(current);
+
+  // Skip invalid and same keyframe before pause
+  if (keyframe == lastKeyframe || !keyframe) return;
+
+  lastKeyframe = keyframe;
+
+  // Skip unwanted animations and pauses
+  if (current != animationAtMsec(currentTime())) return;
+
+  // remove previous objects
+  for (auto item : layerItem->childItems()) {
+    layerItem->removeFromGroup(item);
+    layerItem->scene()->removeItem(item);
+  }
+
+  // skip blank keyframe
+  if (keyframe->animationCount() == 1) return;
+
+  // add current objects
+  for (auto item : keyframe->objects()) {
+    layerItem->addToGroup(item);
+  }
+
+  layerItem->scene()->update();
+}
 
 }  // namespace SchMatrix
