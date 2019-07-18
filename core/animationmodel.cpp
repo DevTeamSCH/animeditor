@@ -190,8 +190,7 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
     }
 
     if (val == FrameTypes::Key) {
-      auto currentKey = layer->currentKeyframe();
-      auto newKey = new Keyframe(currentKey);
+      auto newKey = new Keyframe(*layer->currentKeyframe());
       layer->insertAnimation(currentAnimationIdx + ((currentIsPause) ? 1 : 2),
                              newKey);
     } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
@@ -237,7 +236,7 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
 
         // insert Keyframe inside Frame
         if (val == FrameTypes::Key) {
-          auto newKey = new Keyframe(layer->currentKeyframe());
+          auto newKey = new Keyframe(*layer->currentKeyframe());
           layer->insertAnimation(currentAnimationIdx + 1, newKey);
         } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
           layer->insertAnimation(currentAnimationIdx + 1, new Keyframe(&root));
@@ -277,7 +276,7 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
 
       // insert Keyframe after (Blank)Keyframe
       if (val == FrameTypes::Key) {
-        auto newKey = new Keyframe(layer->currentKeyframe());
+        auto newKey = new Keyframe(*layer->currentKeyframe());
         layer->insertAnimation(currentAnimationIdx + 1, newKey);
       } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
         layer->insertAnimation(currentAnimationIdx + 1, new Keyframe(&root));

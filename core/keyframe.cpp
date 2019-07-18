@@ -11,15 +11,18 @@ Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {
   addAnimation(new QPauseAnimation(SchMatrix::frameLength, this));
 }
 
-Keyframe::Keyframe(const Keyframe &other) {
+Keyframe::Keyframe(const Keyframe &other) : Keyframe(other.parent()) {
   auto &animAssign = other.animationAssignments;
 
   // set the root animation as parent
   setParent(other.parent());
 
-  for (auto &obj : animAssign.keys()) {
+  for (auto obj : animAssign.keys()) {
     for (auto &name : animAssign[obj].keys()) {
-      assignProperty(obj.get(), name, animAssign[obj][name]->startValue());
+      assignProperty(obj, name, animAssign[obj][name]->startValue());
+
+      // Must copy shared pointer to increase ref count
+      sharedPointers.insert(obj, other.sharedPointers[obj]);
     }
   }
 }
@@ -33,10 +36,8 @@ void Keyframe::assignProperty(QGraphicsWidget *object, const QByteArray &name,
     return;
   }
 
-  QSharedPointer<QGraphicsWidget> objectPtr(object);
-
-  if (animationAssignments[objectPtr].contains(name)) {
-    auto objectAnim = animationAssignments[objectPtr][name];
+  if (animationAssignments[object].contains(name)) {
+    auto objectAnim = animationAssignments[object][name];
     if (objectAnim->duration() == 0) {  // no interpolation
       objectAnim->setStartValue(value);
       objectAnim->setEndValue(value);
@@ -54,32 +55,38 @@ void Keyframe::assignProperty(QGraphicsWidget *object, const QByteArray &name,
   objectAnim->setStartValue(value);
   objectAnim->setEndValue(value);
   objectAnim->setDuration(0);
-  animationAssignments[objectPtr][name] = objectAnim;
+  animationAssignments[object][name] = objectAnim;
   addAnimation(objectAnim);
 }
 
 QPropertyAnimation *Keyframe::getAnimation(QGraphicsWidget *object,
                                            const QByteArray &name) {
-  QSharedPointer<QGraphicsWidget> objectPtr(object);
-  return animationAssignments[objectPtr][name];
+  return animationAssignments[object][name];
+}
+
+void Keyframe::addObject(QGraphicsWidget *object) {
+  if (sharedPointers.contains(object)) return;
+
+  sharedPointers.insert(object, QSharedPointer<QGraphicsWidget>(object));
 }
 
 void Keyframe::removeObject(QGraphicsWidget *object) {
-  QSharedPointer<QGraphicsWidget> objectPtr(object);
+  if (!sharedPointers.contains(object)) return;
 
-  for (auto anim : animationAssignments[objectPtr]) {
+  for (auto anim : animationAssignments[object]) {
     removeAnimation(anim);
     delete anim;
   }
 
-  animationAssignments.remove(objectPtr);
+  animationAssignments.remove(object);
+  sharedPointers.remove(object);
 }
 
 QList<QGraphicsWidget *> Keyframe::objects() {
   QList<QGraphicsWidget *> list;
 
-  for (auto objectPtr : animationAssignments.keys()) {
-    list.append(objectPtr.get());
+  for (auto object : animationAssignments.keys()) {
+    list.append(object);
   }
 
   return list;

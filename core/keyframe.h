@@ -22,13 +22,14 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
                       const QVariant &value, bool start = true);
   QPropertyAnimation *getAnimation(QGraphicsWidget *object,
                                    const QByteArray &name);
+  void addObject(QGraphicsWidget *object);
   void removeObject(QGraphicsWidget *object);
   QList<QGraphicsWidget *> objects();
 
  private:
-  QHash<QSharedPointer<QGraphicsWidget>,
-        QHash<QByteArray, QPropertyAnimation *>>
+  QHash<QGraphicsWidget *, QHash<QByteArray, QPropertyAnimation *>>
       animationAssignments;
+  QHash<QGraphicsWidget *, QSharedPointer<QGraphicsWidget>> sharedPointers;
 };
 
 }  // namespace SchMatrix
