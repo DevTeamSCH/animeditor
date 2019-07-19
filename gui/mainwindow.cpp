@@ -56,9 +56,9 @@ void MainWindow::handleTimelineMenu(QAction* action) {
       auto layer = animModel.getLayer(index.row());
 
       // check if previous Keyframe is empty
-      animModel.setData(index, (layer->currentKeyframe()->animationCount())
+      animModel.setData(index, (layer->currentKeyframe()->animationCount() == 1)
                                    ? SchMatrix::FrameTypes::BlankKey
-                                   : SchMatrix::FrameTypes::BlankKey);
+                                   : SchMatrix::FrameTypes::Key);
 
       animModel.setTime(SchMatrix::frameLength * index.column());
       break;
