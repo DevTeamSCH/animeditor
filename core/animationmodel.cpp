@@ -185,17 +185,21 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
       if (val == FrameTypes::Frame || col != layerSize)
         animTimeline[row][layerSize - 1] = FrameTypes::Frame;
       pause->setDuration(pause->duration() + frameLength * pauseDuration);
-    } else {  // current is (Blank)Keyframe
+    } else if (pauseDuration > 0) {  // current is (Blank)Keyframe
       layer->addPause(frameLength * pauseDuration);  // Add missing pause
     }
 
     if (val == FrameTypes::Key) {
       auto newKey = new Keyframe(*layer->currentKeyframe());
-      layer->insertAnimation(currentAnimationIdx + ((currentIsPause) ? 1 : 2),
-                             newKey);
+      layer->insertAnimation(
+          currentAnimationIdx +
+              ((currentIsPause || pauseDuration == 0) ? 1 : 2),
+          newKey);
     } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
-      layer->insertAnimation(currentAnimationIdx + ((currentIsPause) ? 1 : 2),
-                             new Keyframe(&root));
+      layer->insertAnimation(
+          currentAnimationIdx +
+              ((currentIsPause || pauseDuration == 0) ? 1 : 2),
+          new Keyframe(&root));
     }
 
     // data changes from layerSize(original size) to animTimeline[row].size()
@@ -253,13 +257,13 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
       emit dataChanged(createIndex(row, col - 1), createIndex(row, col + 1));
     } else {  // current is (Blank)Keyframe
       QPauseAnimation *nextIsPause =
-          (col + 1 > layerSize)
+          (col + 1 >= layerSize)
               ? nullptr
               : qobject_cast<QPauseAnimation *>(
                     layer->animationAt(currentAnimationIdx + 1));
 
       if (val == FrameTypes::Frame) {
-        if (col + 1 > layerSize || !nextIsPause) {
+        if (col + 1 >= layerSize || !nextIsPause) {
           animTimeline[row].insert(col + 1, FrameTypes::EndOfFrame);
           layer->insertPause(currentAnimationIdx + 1, frameLength);
         } else {  // next is Frame and inside before PotentialFrame
@@ -295,7 +299,8 @@ bool AnimationModel::removeData(const QModelIndex &index) {
   auto col = index.column();
   auto layerSize = animTimeline[row].size();
 
-  if (row > root.animationCount() || col == 0 || col > layerSize) return false;
+  if (row < 0 || row >= root.animationCount() || col <= 0 || col >= layerSize)
+    return false;
 
   auto layer = static_cast<Layer *>(root.animationAt(row));
   auto currentAnimation = layer->currentAnimation();
