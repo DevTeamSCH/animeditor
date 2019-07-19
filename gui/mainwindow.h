@@ -3,6 +3,7 @@
 
 #include <timelinemenu.h>
 #include <QAction>
+#include <QGraphicsScene>
 #include <QMainWindow>
 #include <QModelIndex>
 #include "animationmodel.h"
@@ -25,6 +26,7 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow *ui;
   QModelIndex index;
+  QGraphicsScene *currentScene;
   SchMatrix::AnimationModel animModel;
   SchMatrix::TimelineMenu timelineMenu;
 };

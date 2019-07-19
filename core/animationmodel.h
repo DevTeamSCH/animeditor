@@ -17,7 +17,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   Q_OBJECT
 
  public:
-  explicit AnimationModel(QObject *parent = nullptr);
+  explicit AnimationModel(QGraphicsScene *scene, QObject *parent = nullptr);
 
   // Header:
   QVariant headerData(int section, Qt::Orientation orientation,
@@ -60,7 +60,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
 
  private:
   // Note: QGraphicsScene should be deleted last/constructed first
-  QGraphicsScene scene;
+  QGraphicsScene *scene;
   QParallelAnimationGroup root;  // root animation
   QVector<QVector<int>> animTimeline;
   QVector<int> animTimelineRow;

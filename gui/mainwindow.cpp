@@ -11,13 +11,17 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      animModel(this),
+      currentScene(
+          new QGraphicsScene(0, 0, SchMatrix::width, SchMatrix::height, this)),
+      animModel(currentScene, this),
       timelineMenu(this) {
   ui->setupUi(this);
 
   ui->tableView->setModel(&animModel);
   ui->tableView->setItemDelegate(new SchMatrix::FrameDelegate(this));
   ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+
+  ui->graphicsView->setScene(currentScene);
 
   connect(ui->tableView, &QWidget::customContextMenuRequested, this,
           &MainWindow::handleTimelineMenuRequest);
