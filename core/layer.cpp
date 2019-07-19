@@ -54,8 +54,10 @@ Keyframe *Layer::currentKeyframe() const {
 
   if (qobject_cast<Keyframe *>(anim))
     return static_cast<Keyframe *>(anim);
-  else
+  else if (animationCount() > 1)
     return static_cast<Keyframe *>(animationAt(indexOfAnimation(anim) - 1));
+
+  return nullptr;
 }
 
 Keyframe *Layer::nextKeyframe() const {
