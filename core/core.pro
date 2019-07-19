@@ -27,7 +27,8 @@ SOURCES += \
         animeditorcore.cpp \
         config.cpp \
         keyframe.cpp \
-        layer.cpp
+        layer.cpp \
+        symbol.cpp
 
 HEADERS += \
         animationmodel.h \
@@ -35,7 +36,8 @@ HEADERS += \
         config.h \
         core_global.h  \
         keyframe.h \
-        layer.h
+        layer.h \
+        symbol.h
 
 unix {
     target.path = /usr/lib
