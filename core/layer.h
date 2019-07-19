@@ -45,6 +45,10 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   int zOrder;
   QGraphicsItemGroup *layerItem;
   Keyframe *lastKeyframe;
+
+  // QAbstractAnimation interface
+ protected:
+  void updateCurrentTime(int currentTime) override;
 };
 
 }  // namespace SchMatrix

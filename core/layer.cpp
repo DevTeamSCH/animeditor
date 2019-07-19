@@ -156,4 +156,18 @@ void Layer::updateLayer(QAbstractAnimation *current) {
   layerItem->scene()->update();
 }
 
+void Layer::updateCurrentTime(int currentTime) {
+  QSequentialAnimationGroup::updateCurrentTime(currentTime);
+
+  auto rootDuration =
+      static_cast<QParallelAnimationGroup *>(parent())->duration();
+
+  // Hide layerItem only if the layer is finished and it isn't at the end
+  if (currentTime == duration() && currentTime != rootDuration)
+    layerItem->hide();
+  else if (currentTime < duration()) {
+    layerItem->show();
+  }
+}
+
 }  // namespace SchMatrix
