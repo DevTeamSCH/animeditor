@@ -125,6 +125,9 @@ void Layer::removeItem(QGraphicsWidget *item) {
 // Note: this function will be called for all the animations before/after the
 // current animation
 void Layer::updateLayer(QAbstractAnimation *current) {
+  // Skip unwanted animations and pauses
+  if (current != animationAtMsec(currentTime())) return;
+
   auto keyframe = (!qobject_cast<Keyframe *>(current))
                       ? currentKeyframe()
                       : static_cast<Keyframe *>(current);
@@ -133,9 +136,6 @@ void Layer::updateLayer(QAbstractAnimation *current) {
   if (keyframe == lastKeyframe || !keyframe) return;
 
   lastKeyframe = keyframe;
-
-  // Skip unwanted animations and pauses
-  if (current != animationAtMsec(currentTime())) return;
 
   // remove previous objects
   for (auto item : layerItem->childItems()) {
