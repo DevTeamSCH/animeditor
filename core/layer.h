@@ -17,6 +17,8 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
  public:
   explicit Layer(QGraphicsScene *scene, QObject *parent = nullptr,
                  QString name = "layer", int zOrder = 0);
+  ~Layer() override;
+
   QList<QAbstractAnimation *> animations() const;
   QList<QPauseAnimation *> pauses() const;
   QList<Keyframe *> keyframes() const;
@@ -43,7 +45,7 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
  private:
   QString name;
   int zOrder;
-  QGraphicsItemGroup *layerItem;
+  QGraphicsItemGroup layerItem;
   Keyframe *lastKeyframe;
 
   // QAbstractAnimation interface

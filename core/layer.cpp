@@ -8,11 +8,17 @@ namespace SchMatrix {
 
 Layer::Layer(QGraphicsScene *scene, QObject *parent, QString name, int zOrder)
     : QSequentialAnimationGroup(parent), name(name), zOrder(zOrder) {
-  layerItem = scene->createItemGroup(QList<QGraphicsItem *>());
-  layerItem->setZValue(zOrder);
+  scene->addItem(&layerItem);
+  layerItem.setZValue(zOrder);
 
   connect(this, &QSequentialAnimationGroup::currentAnimationChanged, this,
           &Layer::updateLayer);
+}
+
+Layer::~Layer() {
+  for (auto i : layerItem.childItems()) {
+    layerItem.removeFromGroup(i);
+  }
 }
 
 QList<QAbstractAnimation *> Layer::animations() const {
@@ -90,7 +96,7 @@ void Layer::setName(const QString &newName) { name = newName; }
 
 void Layer::setZOrder(const int &order) {
   zOrder = order;
-  layerItem->setZValue(zOrder);
+  layerItem.setZValue(zOrder);
 }
 
 void Layer::deleteEmptyPauses() {
@@ -115,12 +121,12 @@ QAbstractAnimation *Layer::animationAtMsec(int msec) const {
 }
 
 void Layer::addItem(QGraphicsWidget *item) {
-  layerItem->addToGroup(item);
+  layerItem.addToGroup(item);
   currentKeyframe()->addObject(item);
 }
 
 void Layer::removeItem(QGraphicsWidget *item) {
-  layerItem->removeFromGroup(item);
+  layerItem.removeFromGroup(item);
   currentKeyframe()->removeObject(item);
 }
 
@@ -140,9 +146,9 @@ void Layer::updateLayer(QAbstractAnimation *current) {
   lastKeyframe = keyframe;
 
   // remove previous objects
-  for (auto item : layerItem->childItems()) {
-    layerItem->removeFromGroup(item);
-    layerItem->scene()->removeItem(item);
+  for (auto item : layerItem.childItems()) {
+    layerItem.removeFromGroup(item);
+    layerItem.scene()->removeItem(item);
   }
 
   // skip blank keyframe
@@ -150,10 +156,10 @@ void Layer::updateLayer(QAbstractAnimation *current) {
 
   // add current objects
   for (auto item : keyframe->objects()) {
-    layerItem->addToGroup(item);
+    layerItem.addToGroup(item);
   }
 
-  layerItem->scene()->update();
+  layerItem.scene()->update();
 }
 
 void Layer::updateCurrentTime(int currentTime) {
@@ -164,9 +170,9 @@ void Layer::updateCurrentTime(int currentTime) {
 
   // Hide layerItem only if the layer is finished and it isn't at the end
   if (currentTime == duration() && currentTime != rootDuration)
-    layerItem->hide();
+    layerItem.hide();
   else if (currentTime < duration()) {
-    layerItem->show();
+    layerItem.show();
   }
 }
 
