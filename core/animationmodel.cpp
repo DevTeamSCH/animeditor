@@ -378,9 +378,21 @@ Qt::ItemFlags SchMatrix::AnimationModel::flags(const QModelIndex &index) const {
 
 void AnimationModel::setTime(int mscec) { root.setCurrentTime(mscec); }
 
+void AnimationModel::setFrame(int frame) {
+  root.setCurrentTime(SchMatrix::frameLength * frame);
+}
+
 int AnimationModel::getTime() const { return root.currentTime(); }
 
 int AnimationModel::getDuration() const { return root.duration(); }
+
+int AnimationModel::getCurrentFrame() const {
+  return root.currentTime() / SchMatrix::frameLength;
+}
+
+int AnimationModel::getLastFrame() const {
+  return root.duration() / SchMatrix::frameLength;
+}
 
 Layer *AnimationModel::getLayer(int row) const {
   return static_cast<Layer *>(root.animationAt(row));
