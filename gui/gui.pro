@@ -28,12 +28,14 @@ SOURCES += \
         framedelegate.cpp \
         main.cpp \
         mainwindow.cpp \
-        timelinemenu.cpp
+        timelinemenu.cpp \
+        timelineview.cpp
 
 HEADERS += \
         framedelegate.h \
         mainwindow.h \
-        timelinemenu.h
+        timelinemenu.h \
+        timelineview.h
 
 FORMS += \
         mainwindow.ui
