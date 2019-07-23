@@ -48,6 +48,7 @@ void MainWindow::handleTimelineMenu(QAction* action) {
       break;
     case SchMatrix::MenuEntry::InsertFrame:
       animModel.setData(index, SchMatrix::FrameTypes::Frame);
+      animModel.setFrame(index.column());
       break;
     case SchMatrix::MenuEntry::RemoveFrame:
       animModel.removeData(index);
@@ -56,17 +57,17 @@ void MainWindow::handleTimelineMenu(QAction* action) {
       auto layer = animModel.getLayer(index.row());
 
       // check if previous Keyframe is empty
-      animModel.setData(index, (layer->currentKeyframe()->animationCount() == 1)
+      animModel.setData(index, (layer->currentKeyframe()->empty())
                                    ? SchMatrix::FrameTypes::BlankKey
                                    : SchMatrix::FrameTypes::Key);
 
-      animModel.setTime(SchMatrix::frameLength * index.column());
+      animModel.setFrame(index.column());
       break;
     }
     case SchMatrix::MenuEntry::InsertBlankKeyframe:
       animModel.setData(index, SchMatrix::FrameTypes::BlankKey);
 
-      animModel.setTime(SchMatrix::frameLength * index.column());
+      animModel.setFrame(index.column());
       break;
     case SchMatrix::MenuEntry::ClearFrames:
       break;
