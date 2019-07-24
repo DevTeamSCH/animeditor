@@ -3,6 +3,7 @@
 
 #include <QTableView>
 #include "animationmodel.h"
+#include "horizontalheader.h"
 
 namespace SchMatrix {
 
@@ -23,6 +24,9 @@ class TimelineView : public QTableView {
   // QAbstractItemView interface
  public:
   void setModel(QAbstractItemModel *model) override;
+
+ private:
+  SchMatrix::HorizontalHeader header;
 };
 
 }  // namespace SchMatrix

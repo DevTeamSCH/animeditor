@@ -10,7 +10,9 @@
 
 namespace SchMatrix {
 
-TimelineView::TimelineView(QWidget *parent) : QTableView(parent) {}
+TimelineView::TimelineView(QWidget *parent) : QTableView(parent), header(this) {
+  setHorizontalHeader(&header);
+}
 
 void TimelineView::paintEvent(QPaintEvent *event) {
   // use default render
