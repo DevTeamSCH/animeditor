@@ -26,6 +26,7 @@ CONFIG += c++11
 
 SOURCES += \
         framedelegate.cpp \
+        horizontalheader.cpp \
         horizontalheadercontrols.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -34,6 +35,7 @@ SOURCES += \
 
 HEADERS += \
         framedelegate.h \
+        horizontalheader.h \
         horizontalheadercontrols.h \
         mainwindow.h \
         timelinemenu.h \
