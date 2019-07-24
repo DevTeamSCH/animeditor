@@ -56,3 +56,6 @@ else:unix: LIBS += -L$$OUT_PWD/../core/ -llibanimeditor
 
 INCLUDEPATH += $$PWD/../core
 DEPENDPATH += $$PWD/../core
+
+RESOURCES += \
+    resources.qrc

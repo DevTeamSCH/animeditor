@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../resources/breeze-icons/icons/actions/16/media-skip-forward.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/media-skip-backward.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/media-seek-forward.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/media-seek-backward.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/media-playback-stop.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/media-playback-start.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/media-playback-pause.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/go-previous.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/go-next.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/zoom-out.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/zoom-original.svg</file>
+        <file>../resources/breeze-icons/icons/actions/16/zoom-in.svg</file>
+    </qresource>
+</RCC>
