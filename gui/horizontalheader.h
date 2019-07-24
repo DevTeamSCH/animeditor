@@ -15,6 +15,7 @@ class HorizontalHeader : public QHeaderView {
   // QWidget interface
  protected:
   void paintEvent(QPaintEvent *event) override;
+  void resizeEvent(QResizeEvent *event) override;
 
  private:
   SchMatrix::HorizontalHeaderControls header;

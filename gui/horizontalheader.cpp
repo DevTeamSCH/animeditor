@@ -61,3 +61,7 @@ void HorizontalHeader::paintEvent(QPaintEvent *) {
 }
 
 }  // namespace SchMatrix
+
+void SchMatrix::HorizontalHeader::resizeEvent(QResizeEvent *event) {
+  header.setFixedWidth(width());
+}
