@@ -1,0 +1,3 @@
+[submodule "resources/breeze-icons"]
+	path = resources/breeze-icons
+	url = git://anongit.kde.org/breeze-icons.git
