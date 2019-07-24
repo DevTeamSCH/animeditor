@@ -26,6 +26,7 @@ CONFIG += c++11
 
 SOURCES += \
         framedelegate.cpp \
+        horizontalheadercontrols.cpp \
         main.cpp \
         mainwindow.cpp \
         timelinemenu.cpp \
@@ -33,11 +34,13 @@ SOURCES += \
 
 HEADERS += \
         framedelegate.h \
+        horizontalheadercontrols.h \
         mainwindow.h \
         timelinemenu.h \
         timelineview.h
 
 FORMS += \
+        horizontalheadercontrols.ui \
         mainwindow.ui
 
 # Default rules for deployment.
