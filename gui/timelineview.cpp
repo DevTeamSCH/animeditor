@@ -1,5 +1,6 @@
 #include "timelineview.h"
 
+#include <QCursor>
 #include <QDebug>
 #include <QHeaderView>
 #include <QModelIndex>
@@ -7,11 +8,20 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QScrollBar>
+#include "config.h"
+#include "framedelegate.h"
 
 namespace SchMatrix {
 
-TimelineView::TimelineView(QWidget *parent) : QTableView(parent), header(this) {
+TimelineView::TimelineView(QWidget *parent)
+    : QTableView(parent), header(this), timelineMenu(this) {
   setHorizontalHeader(&header);
+  setContextMenuPolicy(Qt::CustomContextMenu);
+  setItemDelegate(new SchMatrix::FrameDelegate(this));
+
+  connect(this, &QWidget::customContextMenuRequested, this,
+          &TimelineView::handleMenuRequest);
+  connect(&timelineMenu, &QMenu::triggered, this, &TimelineView::handleMenu);
 }
 
 void TimelineView::paintEvent(QPaintEvent *event) {
@@ -56,6 +66,67 @@ void TimelineView::mousePressEvent(QMouseEvent *event) {
 
   animModel->setFrame(index.column());
   viewport()->update();
+  header.viewport()->update();
+}
+
+void TimelineView::handleMenuRequest(const QPoint &idx) {
+  if (!indexAt(idx).isValid()) return;
+
+  index = indexAt(idx);
+
+  animModel->setTime(SchMatrix::frameLength * indexAt(idx).column());
+
+  timelineMenu.exec(QCursor::pos());
+}
+
+void TimelineView::handleMenu(QAction *action) {
+  switch (action->data().toInt()) {
+    case SchMatrix::MenuEntry::CreateClassicTween:
+      break;
+    case SchMatrix::MenuEntry::InsertFrame:
+      animModel->setData(index, SchMatrix::FrameTypes::Frame);
+      animModel->setFrame(index.column());
+      break;
+    case SchMatrix::MenuEntry::RemoveFrame:
+      animModel->removeData(index);
+      break;
+    case SchMatrix::MenuEntry::InsertKeyframe: {
+      auto layer = animModel->getLayer(index.row());
+
+      // check if previous Keyframe is empty
+      animModel->setData(index, (layer->currentKeyframe()->empty())
+                                    ? SchMatrix::FrameTypes::BlankKey
+                                    : SchMatrix::FrameTypes::Key);
+
+      animModel->setFrame(index.column());
+      break;
+    }
+    case SchMatrix::MenuEntry::InsertBlankKeyframe:
+      animModel->setData(index, SchMatrix::FrameTypes::BlankKey);
+
+      animModel->setFrame(index.column());
+      break;
+    case SchMatrix::MenuEntry::ClearFrames:
+      break;
+    case SchMatrix::MenuEntry::SelectAllFrames:
+      int row = index.row();
+
+      QModelIndex left = animModel->index(row, 0);
+      QModelIndex right =
+          animModel->index(row, animModel->elementCount(row) - 1);
+
+      QItemSelection selection(left, right);
+      selectionModel()->clear();
+      selectionModel()->select(selection, QItemSelectionModel::Select);
+      break;
+  }
+
+  auto layer = animModel->getLayer(index.row());
+
+  qDebug() << layer->animations();
+  for (auto l : layer->pauses()) {
+    qDebug() << l << l->duration();
+  }
 }
 
 void TimelineView::setModel(QAbstractItemModel *model) {
