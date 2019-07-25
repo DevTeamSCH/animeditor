@@ -5,7 +5,6 @@
 #include <QPainter>
 #include <QString>
 #include <QTableView>
-#include "animationmodel.h"
 #include "config.h"
 
 namespace SchMatrix {
@@ -22,10 +21,11 @@ void HorizontalHeader::paintEvent(QPaintEvent *) {
   if (firstVisualColumn == -1) firstVisualColumn = 0;
   if (lastVisualColumn == -1) lastVisualColumn = count() - 1;
 
-  auto currentColumn =
-      static_cast<SchMatrix::AnimationModel *>(model())->getCurrentFrame();
+  auto currentColumn = animModel->getCurrentFrame();
   auto table = static_cast<QTableView *>(parent());
-  auto headerX = table->columnViewportPosition(currentColumn);
+  auto headerX = (currentColumn < animModel->getLastFrame())
+                     ? table->columnViewportPosition(currentColumn)
+                     : table->columnViewportPosition(currentColumn - 1);
 
   QPainter painter(viewport());
 
@@ -64,4 +64,10 @@ void HorizontalHeader::paintEvent(QPaintEvent *) {
 
 void SchMatrix::HorizontalHeader::resizeEvent(QResizeEvent *event) {
   header.setFixedWidth(width());
+}
+
+void SchMatrix::HorizontalHeader::setModel(QAbstractItemModel *model) {
+  QHeaderView::setModel(model);
+
+  animModel = static_cast<SchMatrix::AnimationModel *>(model);
 }

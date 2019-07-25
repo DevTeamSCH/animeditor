@@ -2,6 +2,7 @@
 #define HORIZONTALHEADER_H
 
 #include <QHeaderView>
+#include "animationmodel.h"
 #include "horizontalheadercontrols.h"
 
 namespace SchMatrix {
@@ -12,6 +13,9 @@ class HorizontalHeader : public QHeaderView {
  public:
   explicit HorizontalHeader(QWidget *parent = nullptr);
 
+  // QAbstractItemView interface
+  void setModel(QAbstractItemModel *model) override;
+
   // QWidget interface
  protected:
   void paintEvent(QPaintEvent *event) override;
@@ -19,6 +23,7 @@ class HorizontalHeader : public QHeaderView {
 
  private:
   SchMatrix::HorizontalHeaderControls header;
+  SchMatrix::AnimationModel *animModel;
 };
 
 }  // namespace SchMatrix
