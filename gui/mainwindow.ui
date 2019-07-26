@@ -21,8 +21,20 @@
     <item>
      <widget class="SchMatrix::TimelineView" name="tableView">
       <property name="showGrid">
+       <bool>true</bool>
+      </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
+      </property>
+      <property name="cornerButtonEnabled">
        <bool>false</bool>
       </property>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>5</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>10</number>
+      </attribute>
      </widget>
     </item>
     <item>
