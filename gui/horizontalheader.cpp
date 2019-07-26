@@ -4,13 +4,14 @@
 #include <QDebug>
 #include <QPainter>
 #include <QString>
-#include <QTableView>
 #include "config.h"
 
 namespace SchMatrix {
 
 HorizontalHeader::HorizontalHeader(QWidget *parent)
-    : QHeaderView(Qt::Horizontal, parent), header(this) {
+    : QHeaderView(Qt::Horizontal, parent),
+      header(this),
+      table(static_cast<QTableView *>(parent)) {
   setFixedHeight(60);
 }
 
@@ -22,10 +23,9 @@ void HorizontalHeader::paintEvent(QPaintEvent *) {
   if (lastVisualColumn == -1) lastVisualColumn = count() - 1;
 
   auto currentColumn = animModel->getCurrentFrame();
-  auto table = static_cast<QTableView *>(parent());
-  auto headerX = (currentColumn < animModel->getLastFrame())
-                     ? table->columnViewportPosition(currentColumn)
-                     : table->columnViewportPosition(currentColumn - 1);
+  auto headerX = (currentColumn > animModel->getLastFrame())
+                     ? table->columnViewportPosition(currentColumn - 1)
+                     : table->columnViewportPosition(currentColumn);
 
   QPainter painter(viewport());
 
@@ -69,5 +69,20 @@ void SchMatrix::HorizontalHeader::resizeEvent(QResizeEvent *event) {
 void SchMatrix::HorizontalHeader::setModel(QAbstractItemModel *model) {
   QHeaderView::setModel(model);
 
+  // skip default model
+  if (!qobject_cast<SchMatrix::AnimationModel *>(model)) return;
+
   animModel = static_cast<SchMatrix::AnimationModel *>(model);
+  header.setModel(animModel);
+
+  viewport()->update();
+}
+
+// Only for communicaton between controls and this widget
+void SchMatrix::HorizontalHeader::updateFrame(int frame) {
+  // Update player indicators
+  viewport()->update();
+  table->viewport()->update();
+}
+
 }
