@@ -13,6 +13,7 @@ HorizontalHeader::HorizontalHeader(QWidget *parent)
       header(this),
       table(static_cast<QTableView *>(parent)) {
   setFixedHeight(60);
+  setSectionResizeMode(QHeaderView::Fixed);
 }
 
 void HorizontalHeader::paintEvent(QPaintEvent *) {
@@ -63,6 +64,8 @@ void HorizontalHeader::paintEvent(QPaintEvent *) {
 }  // namespace SchMatrix
 
 void SchMatrix::HorizontalHeader::resizeEvent(QResizeEvent *event) {
+  QHeaderView::resizeEvent(event);
+
   header.setFixedWidth(width());
 }
 
