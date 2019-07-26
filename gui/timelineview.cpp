@@ -24,6 +24,8 @@ void TimelineView::paintEvent(QPaintEvent *event) {
   // use default render
   QTableView::paintEvent(event);
 
+  header.viewport()->update();
+
   // use custom render
   auto firstVisualColumn = horizontalHeader()->visualIndexAt(0);
   auto lastVisualColumn = horizontalHeader()->visualIndexAt(
@@ -42,7 +44,7 @@ void TimelineView::paintEvent(QPaintEvent *event) {
   auto colWidth = columnWidth(0);
   auto posX = columnViewportPosition(currentColumn);
 
-  if (currentColumn < animModel->getLastFrame())
+  if (currentColumn <= animModel->getLastFrame())
     posX += colWidth / 2;
   else
     posX -= colWidth / 2;
@@ -61,8 +63,6 @@ void TimelineView::mousePressEvent(QMouseEvent *event) {
   if (!index.isValid()) return;
 
   animModel->setFrame(index.column());
-  viewport()->update();
-  header.viewport()->update();
 }
 
 void TimelineView::handleMenu(QAction *action) {
@@ -124,6 +124,14 @@ void TimelineView::setModel(QAbstractItemModel *model) {
 
   QTableView::setModel(model);
   animModel = static_cast<SchMatrix::AnimationModel *>(model);
+
+  connect(animModel, SIGNAL(frameChanged(int)), this, SLOT(updateFrame(int)));
+}
+
+void TimelineView::updateFrame(int frame) {
+  // Update player indicators
+  viewport()->update();
+  header.viewport()->update();
 }
 
 }  // namespace SchMatrix

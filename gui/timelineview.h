@@ -21,6 +21,9 @@ class TimelineView : public QTableView {
   void mousePressEvent(QMouseEvent *event) override;
   void contextMenuEvent(QContextMenuEvent *event) override;
 
+ public slots:
+  void updateFrame(int frame);
+
  private slots:
   void handleMenu(QAction *action);
 
