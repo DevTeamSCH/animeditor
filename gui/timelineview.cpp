@@ -58,6 +58,10 @@ void TimelineView::paintEvent(QPaintEvent *event) {
 void TimelineView::mousePressEvent(QMouseEvent *event) {
   QTableView::mousePressEvent(event);
 
+  if (!(event->buttons() & Qt::LeftButton) &&
+      !(event->buttons() & Qt::RightButton))
+    return;
+
   auto index = indexAt(event->pos());
 
   if (!index.isValid()) return;
@@ -126,6 +130,18 @@ void TimelineView::setModel(QAbstractItemModel *model) {
   animModel = static_cast<SchMatrix::AnimationModel *>(model);
 
   connect(animModel, SIGNAL(frameChanged(int)), this, SLOT(updateFrame(int)));
+}
+
+void TimelineView::mouseMoveEvent(QMouseEvent *event) {
+  QTableView::mouseMoveEvent(event);
+
+  if (!(event->buttons() & Qt::LeftButton)) return;
+
+  auto index = indexAt(event->pos());
+
+  if (!index.isValid()) return;
+
+  animModel->setFrame(index.column());
 }
 
 void TimelineView::updateFrame(int frame) {
