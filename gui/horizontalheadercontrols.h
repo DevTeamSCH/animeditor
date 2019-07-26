@@ -54,8 +54,6 @@ class HorizontalHeaderControls : public QWidget {
 
   void on_nextKeyframe_clicked();
 
-  void on_lastFrame_clicked();
-
   void on_firstFrame_clicked();
 
   void on_prevFrame_clicked();
@@ -64,12 +62,20 @@ class HorizontalHeaderControls : public QWidget {
 
   void on_nextFrame_clicked();
 
+  void on_lastFrame_clicked();
+
+  void timelineFinished();
+
+  void timelineFrameChanged(int frame);
+
  private:
   Ui::HorizontalHeaderControls *ui;
   QTimeLine timeLine;
   SchMatrix::HorizontalHeader *parentHeader;
   int defaultSectionSize;
   SchMatrix::AnimationModel *animModel;
+
+  void toggleTimeline();
 };
 
 }  // namespace SchMatrix

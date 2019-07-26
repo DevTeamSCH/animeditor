@@ -16,8 +16,14 @@ HorizontalHeaderControls::HorizontalHeaderControls(QHeaderView *parent)
       defaultSectionSize(10) {
   ui->setupUi(this);
 
+  // Timeline init
   timeLine.setUpdateInterval(SchMatrix::fps);
   timeLine.setFrameRange(0, 1);
+  timeLine.setCurveShape(QTimeLine::LinearCurve);
+
+  connect(&timeLine, SIGNAL(finished()), this, SLOT(timelineFinished()));
+  connect(&timeLine, SIGNAL(frameChanged(int)), this,
+          SLOT(timelineFrameChanged(int)));
 }
 
 HorizontalHeaderControls::~HorizontalHeaderControls() { delete ui; }
@@ -33,10 +39,14 @@ void HorizontalHeaderControls::updateFrame(int frame) {
   // Prevent recursion
   QSignalBlocker b(ui->currentFrame);
   QSignalBlocker b2(ui->ellapsedTime);
+  QSignalBlocker b3(timeLine);
 
   // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setValue(frame + 1);
   ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000.0);
+
+  if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+  timeLine.setCurrentTime(animModel->getTime());
 }
 
 void HorizontalHeaderControls::updateTimeline() {
@@ -45,6 +55,9 @@ void HorizontalHeaderControls::updateTimeline() {
   // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setMaximum(lastFrame + 1);
   ui->ellapsedTime->setMaximum(animModel->getDurationDouble() / 1000.0);
+
+  // Update timeline
+  timeLine.setDuration(animModel->getDuration());
   timeLine.setFrameRange(0, lastFrame);
 }
 
@@ -74,6 +87,7 @@ void SchMatrix::HorizontalHeaderControls::on_currentFrame_valueChanged(
   // Prevent recursion
   QSignalBlocker b(animModel);
   QSignalBlocker b2(ui->ellapsedTime);
+  QSignalBlocker b3(timeLine);
 
   animModel->setFrame(frame);
   timeLine.setCurrentTime(animModel->getTime());
@@ -86,6 +100,7 @@ void SchMatrix::HorizontalHeaderControls::on_ellapsedTime_valueChanged(
   // Prevent recursion
   QSignalBlocker b(animModel);
   QSignalBlocker b2(ui->currentFrame);
+  QSignalBlocker b3(timeLine);
 
   animModel->setTime(qRound(seconds * 1000));
   timeLine.setCurrentTime(animModel->getTime());
@@ -104,28 +119,85 @@ void SchMatrix::HorizontalHeaderControls::on_frameRate_valueChanged(int fps) {
   emit fpsChanged(fps);
 }
 
-void SchMatrix::HorizontalHeaderControls::on_prevKeyframe_clicked() {}
+void SchMatrix::HorizontalHeaderControls::on_prevKeyframe_clicked() {
+  if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+}
 
-void SchMatrix::HorizontalHeaderControls::on_insertKeyframe_clicked() {}
+void SchMatrix::HorizontalHeaderControls::on_insertKeyframe_clicked() {
+  if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+}
 
-void SchMatrix::HorizontalHeaderControls::on_nextKeyframe_clicked() {}
+void SchMatrix::HorizontalHeaderControls::on_nextKeyframe_clicked() {
+  if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+}
 
-void SchMatrix::HorizontalHeaderControls::on_firstFrame_clicked() {}
+void SchMatrix::HorizontalHeaderControls::on_firstFrame_clicked() {
+  if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+  animModel->setFrame(0);
+}
 
-void SchMatrix::HorizontalHeaderControls::on_prevFrame_clicked() {}
+void SchMatrix::HorizontalHeaderControls::on_prevFrame_clicked() {
+  if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+
+  auto currentFrame = animModel->getCurrentFrame();
+  auto prevFrame = (currentFrame == 0) ? 0 : currentFrame - 1;
+  animModel->setFrame(prevFrame);
+}
 
 void SchMatrix::HorizontalHeaderControls::on_play_clicked() {
+  toggleTimeline();
+}
+
+void SchMatrix::HorizontalHeaderControls::on_nextFrame_clicked() {
+  if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+
+  auto currentFrame = animModel->getCurrentFrame();
+  auto lastFrame = animModel->getLastFrame();
+  auto nextFrame = (currentFrame > lastFrame) ? lastFrame : currentFrame + 1;
+
+  animModel->setFrame(nextFrame);
+}
+
+void SchMatrix::HorizontalHeaderControls::on_lastFrame_clicked() {
+  if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+
+  auto lastFrame = animModel->getLastFrame();
+  animModel->setFrame(lastFrame);
+}
+
+void SchMatrix::HorizontalHeaderControls::toggleTimeline() {
   if (timeLine.state() == QTimeLine::Running) {
     timeLine.setPaused(true);
     ui->play->setIcon(QIcon(
         ":/resources/breeze-icons/icons/actions/16/media-playback-start.svg"));
   } else {
-    timeLine.start();
+    if (timeLine.state() == QTimeLine::NotRunning)
+      timeLine.start();
+    else
+      timeLine.resume();
+
     ui->play->setIcon(QIcon(
         ":/resources/breeze-icons/icons/actions/16/media-playback-pause.svg"));
   }
 }
 
-void SchMatrix::HorizontalHeaderControls::on_nextFrame_clicked() {}
+void SchMatrix::HorizontalHeaderControls::timelineFinished() {
+  ui->play->setIcon(QIcon(
+      ":/resources/breeze-icons/icons/actions/16/media-playback-start.svg"));
+}
 
-void SchMatrix::HorizontalHeaderControls::on_lastFrame_clicked() {}
+void SchMatrix::HorizontalHeaderControls::timelineFrameChanged(int frame) {
+  qDebug() << "timeline" << frame;
+
+  // Prevent recursion
+  QSignalBlocker b(animModel);
+  QSignalBlocker b1(ui->currentFrame);
+  QSignalBlocker b2(ui->ellapsedTime);
+
+  animModel->setFrame(frame);
+
+  // + 1 because spinner starts at 1 not 0
+  ui->currentFrame->setValue(frame + 1);
+  ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000.0);
+  parentHeader->updateFrame(frame);
+}
