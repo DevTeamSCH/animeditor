@@ -36,14 +36,15 @@ void HorizontalHeaderControls::updateFrame(int frame) {
 
   // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setValue(frame + 1);
-
-  ui->ellapsedTime->setValue((double)animModel->getTime() / 1000);
+  ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000.0);
 }
 
 void HorizontalHeaderControls::updateTimeline() {
   auto lastFrame = animModel->getLastFrame();
 
+  // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setMaximum(lastFrame + 1);
+  ui->ellapsedTime->setMaximum(animModel->getDurationDouble() / 1000.0);
   timeLine.setFrameRange(0, lastFrame);
 }
 
@@ -69,21 +70,30 @@ void SchMatrix::HorizontalHeaderControls::on_zoomOut_clicked() {
 void SchMatrix::HorizontalHeaderControls::on_currentFrame_valueChanged(
     int val) {
   auto frame = val - 1;
-  timeLine.setCurrentTime(frame);
 
   // Prevent recursion
   QSignalBlocker b(animModel);
+  QSignalBlocker b2(ui->ellapsedTime);
 
   animModel->setFrame(frame);
+  timeLine.setCurrentTime(animModel->getTime());
+  ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000);
   parentHeader->updateFrame(frame);
 }
 
 void SchMatrix::HorizontalHeaderControls::on_ellapsedTime_valueChanged(
-    double time) {
-  auto intTime = qRound(time);
-  auto frame = (intTime == 1) ? 0 : intTime - 1;
+    double seconds) {
+  // Prevent recursion
+  QSignalBlocker b(animModel);
+  QSignalBlocker b2(ui->currentFrame);
 
-  timeLine.setCurrentTime(frame);
+  animModel->setTime(qRound(seconds * 1000));
+  timeLine.setCurrentTime(animModel->getTime());
+  auto frame = animModel->getCurrentFrame();
+
+  // + 1 because spinner starts at 1 not 0
+  ui->currentFrame->setValue(frame + 1);
+  parentHeader->updateFrame(frame);
 }
 
 void SchMatrix::HorizontalHeaderControls::on_frameRate_valueChanged(int fps) {
