@@ -386,12 +386,15 @@ void AnimationModel::setFrame(int frame) {
   emit frameChanged((frame > lastFrame) ? lastFrame : frame);
 }
 
-int AnimationModel::getTime() const { return root.currentTime(); }
+int AnimationModel::getTime() const {
+  auto time = root.currentTime();
+  return (time == root.duration()) ? time - SchMatrix::frameLength : time;
+}
 
 int AnimationModel::getDuration() const { return root.duration(); }
 
 int AnimationModel::getCurrentFrame() const {
-  return root.currentTime() / SchMatrix::frameLength;
+  return getTime() / SchMatrix::frameLength;
 }
 
 int AnimationModel::getLastFrame() const {

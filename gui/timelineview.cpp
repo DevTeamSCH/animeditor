@@ -44,10 +44,7 @@ void TimelineView::paintEvent(QPaintEvent *event) {
   auto colWidth = columnWidth(0);
   auto posX = columnViewportPosition(currentColumn);
 
-  if (currentColumn <= animModel->getLastFrame())
-    posX += colWidth / 2;
-  else
-    posX -= colWidth / 2;
+  posX += colWidth / 2;
 
   QPainter painter(viewport());
 

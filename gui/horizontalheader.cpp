@@ -25,9 +25,7 @@ void HorizontalHeader::paintEvent(QPaintEvent *) {
   if (lastVisualColumn == -1) lastVisualColumn = count() - 1;
 
   auto currentColumn = animModel->getCurrentFrame();
-  auto headerX = (currentColumn > animModel->getLastFrame())
-                     ? table->columnViewportPosition(currentColumn - 1)
-                     : table->columnViewportPosition(currentColumn);
+  auto headerX = table->columnViewportPosition(currentColumn);
 
   QPainter painter(viewport());
 
