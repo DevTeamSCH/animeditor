@@ -19,9 +19,9 @@ class TimelineView : public QTableView {
  protected:
   void paintEvent(QPaintEvent *event) override;
   void mousePressEvent(QMouseEvent *event) override;
+  void contextMenuEvent(QContextMenuEvent *event) override;
 
  private slots:
-  void handleMenuRequest(const QPoint &idx);
   void handleMenu(QAction *action);
 
  private:

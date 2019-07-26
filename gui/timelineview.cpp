@@ -1,6 +1,5 @@
 #include "timelineview.h"
 
-#include <QCursor>
 #include <QDebug>
 #include <QHeaderView>
 #include <QModelIndex>
@@ -16,11 +15,8 @@ namespace SchMatrix {
 TimelineView::TimelineView(QWidget *parent)
     : QTableView(parent), header(this), timelineMenu(this) {
   setHorizontalHeader(&header);
-  setContextMenuPolicy(Qt::CustomContextMenu);
   setItemDelegate(new SchMatrix::FrameDelegate(this));
 
-  connect(this, &QWidget::customContextMenuRequested, this,
-          &TimelineView::handleMenuRequest);
   connect(&timelineMenu, &QMenu::triggered, this, &TimelineView::handleMenu);
 }
 
@@ -67,16 +63,6 @@ void TimelineView::mousePressEvent(QMouseEvent *event) {
   animModel->setFrame(index.column());
   viewport()->update();
   header.viewport()->update();
-}
-
-void TimelineView::handleMenuRequest(const QPoint &idx) {
-  if (!indexAt(idx).isValid()) return;
-
-  index = indexAt(idx);
-
-  animModel->setTime(SchMatrix::frameLength * indexAt(idx).column());
-
-  timelineMenu.exec(QCursor::pos());
 }
 
 void TimelineView::handleMenu(QAction *action) {
@@ -141,3 +127,15 @@ void TimelineView::setModel(QAbstractItemModel *model) {
 }
 
 }  // namespace SchMatrix
+
+void SchMatrix::TimelineView::contextMenuEvent(QContextMenuEvent *event) {
+  auto point = event->pos();
+
+  if (!indexAt(point).isValid()) return;
+
+  index = indexAt(point);
+
+  animModel->setFrame(indexAt(point).column());
+
+  timelineMenu.exec(event->globalPos());
+}
