@@ -14,6 +14,7 @@ HorizontalHeader::HorizontalHeader(QWidget *parent)
       table(static_cast<QTableView *>(parent)) {
   setFixedHeight(60);
   setSectionResizeMode(QHeaderView::Fixed);
+  viewport()->setMouseTracking(false);
 }
 
 void HorizontalHeader::paintEvent(QPaintEvent *) {
@@ -88,4 +89,14 @@ void SchMatrix::HorizontalHeader::updateFrame(int frame) {
   table->viewport()->update();
 }
 
+void SchMatrix::HorizontalHeader::mouseMoveEvent(QMouseEvent *event) {
+  if (!(event->buttons() & Qt::LeftButton)) return;
+
+  animModel->setFrame(logicalIndexAt(event->pos()));
+}
+
+void SchMatrix::HorizontalHeader::mousePressEvent(QMouseEvent *event) {
+  if (!(event->buttons() & Qt::LeftButton)) return;
+
+  animModel->setFrame(logicalIndexAt(event->pos()));
 }
