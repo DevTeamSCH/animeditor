@@ -289,6 +289,7 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
     }
   }
 
+  emit timelineChanged();
   return true;
 }
 
@@ -380,6 +381,9 @@ void AnimationModel::setTime(int mscec) { root.setCurrentTime(mscec); }
 
 void AnimationModel::setFrame(int frame) {
   root.setCurrentTime(SchMatrix::frameLength * frame);
+
+  auto lastFrame = getLastFrame();
+  emit frameChanged((frame > lastFrame) ? lastFrame : frame);
 }
 
 int AnimationModel::getTime() const { return root.currentTime(); }
@@ -391,7 +395,7 @@ int AnimationModel::getCurrentFrame() const {
 }
 
 int AnimationModel::getLastFrame() const {
-  return root.duration() / SchMatrix::frameLength;
+  return (root.duration() / SchMatrix::frameLength) - 1;
 }
 
 Layer *AnimationModel::getLayer(int row) const {

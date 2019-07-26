@@ -61,6 +61,10 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   int elementCount(int row);
   QGraphicsScene *getScene();
 
+ signals:
+  void frameChanged(int frame);
+  void timelineChanged();
+
  private:
   // Note: QGraphicsScene should be deleted last/constructed first
   QGraphicsScene *scene;
