@@ -391,7 +391,15 @@ int AnimationModel::getTime() const {
   return (time == root.duration()) ? time - SchMatrix::frameLength : time;
 }
 
+double AnimationModel::getTimeDouble() const {
+  return getCurrentFrame() * SchMatrix::frameLengthDouble;
+}
+
 int AnimationModel::getDuration() const { return root.duration(); }
+
+double AnimationModel::getDurationDouble() const {
+  return getLastFrame() * SchMatrix::frameLengthDouble;
+}
 
 int AnimationModel::getCurrentFrame() const {
   return getTime() / SchMatrix::frameLength;
