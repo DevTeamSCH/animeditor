@@ -171,7 +171,8 @@ void SchMatrix::HorizontalHeaderControls::toggleTimeline() {
     ui->play->setIcon(QIcon(
         ":/resources/breeze-icons/icons/actions/16/media-playback-start.svg"));
   } else {
-    if (timeLine.state() == QTimeLine::NotRunning)
+    if (timeLine.state() == QTimeLine::NotRunning &&
+        animModel->getCurrentFrame() == animModel->getLastFrame())
       timeLine.start();
     else
       timeLine.resume();
