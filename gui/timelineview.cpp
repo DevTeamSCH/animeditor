@@ -24,8 +24,6 @@ void TimelineView::paintEvent(QPaintEvent *event) {
   // use default render
   QTableView::paintEvent(event);
 
-  header.viewport()->update();
-
   // use custom render
   auto firstVisualColumn = horizontalHeader()->visualIndexAt(0);
   auto lastVisualColumn = horizontalHeader()->visualIndexAt(
@@ -126,7 +124,8 @@ void TimelineView::setModel(QAbstractItemModel *model) {
   QTableView::setModel(model);
   animModel = static_cast<SchMatrix::AnimationModel *>(model);
 
-  connect(animModel, SIGNAL(frameChanged(int)), this, SLOT(updateFrame(int)));
+  connect(animModel, SIGNAL(frameChanged(int, int)), this,
+          SLOT(updateFrame(int, int)));
 }
 
 void TimelineView::mouseMoveEvent(QMouseEvent *event) {
@@ -141,9 +140,17 @@ void TimelineView::mouseMoveEvent(QMouseEvent *event) {
   animModel->setFrame(index.column());
 }
 
-void TimelineView::updateFrame(int frame) {
+void TimelineView::updateFrame(int newFrame, int oldFrame) {
+  qDebug() << "timeline updateFrame";
+
+  QRegion r1(columnViewportPosition(newFrame), 0, columnWidth(0),
+             viewport()->height());
+  QRegion r2(columnViewportPosition(oldFrame), 0, columnWidth(0),
+             viewport()->height());
+  QRegion r3 = r2.united(r1);
+
   // Update player indicators
-  viewport()->update();
+  viewport()->update(r3);
   header.viewport()->update();
 }
 

@@ -64,7 +64,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   QGraphicsScene *getScene();
 
  signals:
-  void frameChanged(int frame);
+  void frameChanged(int newFrame, int oldFrame);
   void timelineChanged();
 
  private:

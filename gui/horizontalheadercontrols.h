@@ -26,7 +26,7 @@ class HorizontalHeaderControls : public QWidget {
   void setModel(SchMatrix::AnimationModel *model);
 
  public slots:
-  void updateFrame(int frame);
+  void updateFrame(int newFrame, int oldFrame);
 
  signals:
   void fpsChanged(int fps);

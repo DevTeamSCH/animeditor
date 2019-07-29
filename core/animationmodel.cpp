@@ -380,10 +380,12 @@ Qt::ItemFlags SchMatrix::AnimationModel::flags(const QModelIndex &index) const {
 void AnimationModel::setTime(int mscec) { root.setCurrentTime(mscec); }
 
 void AnimationModel::setFrame(int frame) {
+  auto oldFrame = getCurrentFrame();
+  auto lastFrame = getLastFrame();
+
   root.setCurrentTime(SchMatrix::frameLength * frame);
 
-  auto lastFrame = getLastFrame();
-  emit frameChanged((frame > lastFrame) ? lastFrame : frame);
+  emit frameChanged((frame > lastFrame) ? lastFrame : frame, oldFrame);
 }
 
 int AnimationModel::getTime() const {

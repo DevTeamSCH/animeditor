@@ -18,7 +18,7 @@ class HorizontalHeader : public QHeaderView {
   void setModel(QAbstractItemModel *model) override;
 
  public slots:
-  void updateFrame(int frame);
+  void updateFrame(int newFrame, int oldFrame);
 
   // QWidget interface
  protected:

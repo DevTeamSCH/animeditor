@@ -31,18 +31,19 @@ HorizontalHeaderControls::~HorizontalHeaderControls() { delete ui; }
 void HorizontalHeaderControls::setModel(AnimationModel *model) {
   animModel = model;
 
-  connect(animModel, SIGNAL(frameChanged(int)), this, SLOT(updateFrame(int)));
+  connect(animModel, SIGNAL(frameChanged(int, int)), this,
+          SLOT(updateFrame(int, int)));
   connect(animModel, SIGNAL(timelineChanged()), this, SLOT(updateTimeline()));
 }
 
-void HorizontalHeaderControls::updateFrame(int frame) {
+void HorizontalHeaderControls::updateFrame(int newFrame, int oldFrame) {
   // Prevent recursion
   QSignalBlocker b(ui->currentFrame);
   QSignalBlocker b2(ui->ellapsedTime);
   QSignalBlocker b3(timeLine);
 
   // + 1 because spinner starts at 1 not 0
-  ui->currentFrame->setValue(frame + 1);
+  ui->currentFrame->setValue(newFrame + 1);
   ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000.0);
 
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
@@ -83,6 +84,7 @@ void SchMatrix::HorizontalHeaderControls::on_zoomOut_clicked() {
 void SchMatrix::HorizontalHeaderControls::on_currentFrame_valueChanged(
     int val) {
   auto frame = val - 1;
+  auto oldFrame = animModel->getCurrentFrame();
 
   // Prevent recursion
   QSignalBlocker b(animModel);
@@ -92,7 +94,7 @@ void SchMatrix::HorizontalHeaderControls::on_currentFrame_valueChanged(
   animModel->setFrame(frame);
   timeLine.setCurrentTime(animModel->getTime());
   ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000);
-  parentHeader->updateFrame(frame);
+  parentHeader->updateFrame(frame, oldFrame);
 }
 
 void SchMatrix::HorizontalHeaderControls::on_ellapsedTime_valueChanged(
@@ -102,13 +104,15 @@ void SchMatrix::HorizontalHeaderControls::on_ellapsedTime_valueChanged(
   QSignalBlocker b2(ui->currentFrame);
   QSignalBlocker b3(timeLine);
 
+  auto oldFrame = animModel->getCurrentFrame();
+
   animModel->setTime(qRound(seconds * 1000));
   timeLine.setCurrentTime(animModel->getTime());
   auto frame = animModel->getCurrentFrame();
 
   // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setValue(frame + 1);
-  parentHeader->updateFrame(frame);
+  parentHeader->updateFrame(frame, oldFrame);
 }
 
 void SchMatrix::HorizontalHeaderControls::on_frameRate_valueChanged(int fps) {
@@ -190,6 +194,8 @@ void SchMatrix::HorizontalHeaderControls::timelineFinished() {
 void SchMatrix::HorizontalHeaderControls::timelineFrameChanged(int frame) {
   qDebug() << "timeline" << frame;
 
+  auto oldFrame = animModel->getCurrentFrame();
+
   // Prevent recursion
   QSignalBlocker b(animModel);
   QSignalBlocker b1(ui->currentFrame);
@@ -200,5 +206,5 @@ void SchMatrix::HorizontalHeaderControls::timelineFrameChanged(int frame) {
   // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setValue(frame + 1);
   ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000.0);
-  parentHeader->updateFrame(frame);
+  parentHeader->updateFrame(frame, oldFrame);
 }

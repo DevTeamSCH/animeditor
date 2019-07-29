@@ -3,6 +3,7 @@
 #include <QColor>
 #include <QDebug>
 #include <QPainter>
+#include <QRegion>
 #include <QString>
 #include "config.h"
 
@@ -81,10 +82,16 @@ void SchMatrix::HorizontalHeader::setModel(QAbstractItemModel *model) {
 }
 
 // Only for communicaton between controls and this widget
-void SchMatrix::HorizontalHeader::updateFrame(int frame) {
+void SchMatrix::HorizontalHeader::updateFrame(int newFrame, int oldFrame) {
+  QRegion r1(table->columnViewportPosition(newFrame), 0, defaultSectionSize(),
+             table->viewport()->height());
+  QRegion r2(table->columnViewportPosition(oldFrame), 0, defaultSectionSize(),
+             table->viewport()->height());
+  QRegion r3 = r2.united(r1);
+
   // Update player indicators
   viewport()->update();
-  table->viewport()->update();
+  table->viewport()->update(r3);
 }
 
 void SchMatrix::HorizontalHeader::mouseMoveEvent(QMouseEvent *event) {
