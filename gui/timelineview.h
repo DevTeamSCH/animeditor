@@ -25,17 +25,15 @@ class TimelineView : public QTableView {
  public slots:
   void updateFrame(int newFrame, int oldFrame);
 
+  // QAbstractItemView interface
+ public:
+  void setModel(QAbstractItemModel *model) override;
+
  private slots:
   void handleMenu(QAction *action);
 
  private:
   SchMatrix::AnimationModel *animModel;
-
-  // QAbstractItemView interface
- public:
-  void setModel(QAbstractItemModel *model) override;
-
- private:
   SchMatrix::HorizontalHeader header;
   SchMatrix::TimelineMenu timelineMenu;
   QModelIndex index;

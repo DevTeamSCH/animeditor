@@ -12,6 +12,7 @@ namespace SchMatrix {
 HorizontalHeader::HorizontalHeader(QWidget *parent)
     : QHeaderView(Qt::Horizontal, parent),
       header(this),
+      animModel(nullptr),
       table(static_cast<QTableView *>(parent)) {
   setFixedHeight(60);
   setSectionResizeMode(QHeaderView::Fixed);
@@ -72,13 +73,16 @@ void SchMatrix::HorizontalHeader::resizeEvent(QResizeEvent *event) {
 void SchMatrix::HorizontalHeader::setModel(QAbstractItemModel *model) {
   QHeaderView::setModel(model);
 
+  if (model == animModel) return;
+
   // skip default model
   if (!qobject_cast<SchMatrix::AnimationModel *>(model)) return;
 
-  animModel = static_cast<SchMatrix::AnimationModel *>(model);
-  header.setModel(animModel);
-
-  viewport()->update();
+  if (model) {
+    animModel = static_cast<SchMatrix::AnimationModel *>(model);
+    header.setModel(animModel);
+    viewport()->update();
+  }
 }
 
 // Only for communicaton between controls and this widget

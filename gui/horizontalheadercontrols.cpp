@@ -13,7 +13,8 @@ HorizontalHeaderControls::HorizontalHeaderControls(QHeaderView *parent)
       ui(new Ui::HorizontalHeaderControls),
       timeLine(SchMatrix::frameLength, this),
       parentHeader(static_cast<SchMatrix::HorizontalHeader *>(parent)),
-      defaultSectionSize(10) {
+      defaultSectionSize(10),
+      animModel(nullptr) {
   ui->setupUi(this);
 
   // Timeline init
@@ -29,13 +30,26 @@ HorizontalHeaderControls::HorizontalHeaderControls(QHeaderView *parent)
 HorizontalHeaderControls::~HorizontalHeaderControls() { delete ui; }
 
 void HorizontalHeaderControls::setModel(AnimationModel *model) {
-  animModel = model;
+  if (model == animModel) return;
 
-  connect(animModel, SIGNAL(frameChanged(int, int)), this,
-          SLOT(updateFrame(int, int)));
-  connect(animModel, SIGNAL(timelineChanged()), this, SLOT(updateTimeline()));
-  connect(this, SIGNAL(frameLengthChanged(int, int, int)), animModel,
-          SLOT(updateFrameLength(int, int, int)));
+  if (animModel) {
+    disconnect(animModel, SIGNAL(frameChanged(int, int)), this,
+               SLOT(updateFrame(int, int)));
+    disconnect(animModel, SIGNAL(timelineChanged()), this,
+               SLOT(updateTimeline()));
+  }
+
+  if (model) {
+    animModel = model;
+
+    connect(animModel, SIGNAL(frameChanged(int, int)), this,
+            SLOT(updateFrame(int, int)));
+    connect(animModel, SIGNAL(timelineChanged()), this, SLOT(updateTimeline()));
+
+    // Only connect this once
+    connect(this, SIGNAL(frameLengthChanged(int, int, int)), animModel,
+            SLOT(updateFrameLength(int, int, int)), Qt::UniqueConnection);
+  }
 }
 
 void HorizontalHeaderControls::updateFrame(int newFrame, int oldFrame) {

@@ -13,7 +13,7 @@
 namespace SchMatrix {
 
 TimelineView::TimelineView(QWidget *parent)
-    : QTableView(parent), header(this), timelineMenu(this) {
+    : QTableView(parent), animModel(nullptr), header(this), timelineMenu(this) {
   setHorizontalHeader(&header);
   setItemDelegate(new SchMatrix::FrameDelegate(this));
 
@@ -122,10 +122,20 @@ void TimelineView::setModel(QAbstractItemModel *model) {
   }
 
   QTableView::setModel(model);
-  animModel = static_cast<SchMatrix::AnimationModel *>(model);
 
-  connect(animModel, SIGNAL(frameChanged(int, int)), this,
-          SLOT(updateFrame(int, int)));
+  if (model == animModel) return;
+
+  if (animModel) {
+    disconnect(animModel, SIGNAL(frameChanged(int, int)), this,
+               SLOT(updateFrame(int, int)));
+  }
+
+  if (model) {
+    animModel = static_cast<SchMatrix::AnimationModel *>(model);
+
+    connect(animModel, SIGNAL(frameChanged(int, int)), this,
+            SLOT(updateFrame(int, int)));
+  }
 }
 
 void TimelineView::mouseMoveEvent(QMouseEvent *event) {
