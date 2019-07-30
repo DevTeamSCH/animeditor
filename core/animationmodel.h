@@ -63,6 +63,10 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   int elementCount(int row);
   QGraphicsScene *getScene();
 
+ public slots:
+  void updateFrameLength(int newFramelength, int oldFramelength,
+                         int currentFrame);
+
  signals:
   void frameChanged(int newFrame, int oldFrame);
   void timelineChanged();

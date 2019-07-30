@@ -29,7 +29,8 @@ class HorizontalHeaderControls : public QWidget {
   void updateFrame(int newFrame, int oldFrame);
 
  signals:
-  void fpsChanged(int fps);
+  void frameLengthChanged(int newFramelength, int oldFramelength,
+                          int currentFrame);
 
  private slots:
   void updateTimeline();

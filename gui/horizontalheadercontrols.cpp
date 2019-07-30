@@ -34,6 +34,8 @@ void HorizontalHeaderControls::setModel(AnimationModel *model) {
   connect(animModel, SIGNAL(frameChanged(int, int)), this,
           SLOT(updateFrame(int, int)));
   connect(animModel, SIGNAL(timelineChanged()), this, SLOT(updateTimeline()));
+  connect(this, SIGNAL(frameLengthChanged(int, int, int)), animModel,
+          SLOT(updateFrameLength(int, int, int)));
 }
 
 void HorizontalHeaderControls::updateFrame(int newFrame, int oldFrame) {
@@ -116,11 +118,17 @@ void SchMatrix::HorizontalHeaderControls::on_ellapsedTime_valueChanged(
 }
 
 void SchMatrix::HorizontalHeaderControls::on_frameRate_valueChanged(int fps) {
-  timeLine.setUpdateInterval(fps);
+  // Udate interval is in milliseconds
+  timeLine.setUpdateInterval(1000 / fps);
+
+  auto oldFrameLength = SchMatrix::frameLength;
+  auto currentFrame = animModel->getCurrentFrame();
+
   SchMatrix::fps = fps;
   SchMatrix::frameLength = 1000 / SchMatrix::fps;
+  SchMatrix::frameLengthDouble = 1000.0 / SchMatrix::fps;
 
-  emit fpsChanged(fps);
+  emit frameLengthChanged(SchMatrix::frameLength, oldFrameLength, currentFrame);
 }
 
 void SchMatrix::HorizontalHeaderControls::on_prevKeyframe_clicked() {

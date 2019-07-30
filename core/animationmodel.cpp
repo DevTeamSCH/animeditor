@@ -419,4 +419,45 @@ int AnimationModel::elementCount(int row) { return animTimeline[row].size(); }
 
 QGraphicsScene *AnimationModel::getScene() { return scene; }
 
+void AnimationModel::updateFrameLength(int newFramelength, int oldFramelength,
+                                       int currentFrame) {
+  for (int i = 0; i < root.animationCount(); ++i) {
+    auto layer = static_cast<QSequentialAnimationGroup *>(root.animationAt(i));
+
+    // Update layer contents
+    for (int animIdx = 0; animIdx < layer->animationCount(); ++animIdx) {
+      // Update keyframe
+      auto currentAnim = layer->animationAt(animIdx);
+      auto isKeyframe = qobject_cast<SchMatrix::Keyframe *>(currentAnim);
+
+      if (isKeyframe) {
+        auto keyframe = static_cast<SchMatrix::Keyframe *>(currentAnim);
+
+        // Update frameLength placeholder
+        static_cast<QPauseAnimation *>(keyframe->animationAt(0))
+            ->setDuration(newFramelength);
+
+        // Update normal animations
+        for (int i = 1; i < keyframe->animationCount(); ++i) {
+          auto anim =
+              static_cast<QVariantAnimation *>(keyframe->animationAt(i));
+
+          // Recalc new frameLength
+          auto frames = anim->duration() / oldFramelength;
+          anim->setDuration(newFramelength * frames);
+        }
+      } else {  // Update pause
+        auto pause = static_cast<QPauseAnimation *>(currentAnim);
+
+        // Recalc new frameLength
+        auto frames = pause->duration() / oldFramelength;
+        pause->setDuration(newFramelength * frames);
+      }
+    }
+  }
+
+  // Prevent FPS change issues
+  setFrame(currentFrame);
+}
+
 }  // namespace SchMatrix
