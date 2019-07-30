@@ -9,7 +9,6 @@ FrameDelegate::FrameDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
 
 void FrameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const {
-  auto row = index.row();
   auto col = index.column();
 
   auto &optionRect = option.rect;
@@ -30,7 +29,7 @@ void FrameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 
       painter->setBrush(Qt::NoBrush);
       painter->setPen(Qt::black);
-      painter->drawRect(optionRect.center().x() - 2,
+      painter->drawRect(optionRect.center().x() - 1,
                         optionRect.center().y() + optionRect.height() / 2 - 12,
                         5, 10);
       break;
@@ -39,14 +38,14 @@ void FrameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 
       painter->setPen(Qt::black);
       painter->setBrush(Qt::black);
-      painter->drawEllipse(optionRect.center() + QPoint(0, keyY), 3, 3);
+      painter->drawEllipse(optionRect.center() + QPoint(1, keyY), 3, 3);
       break;
     case SchMatrix::BlankKey:
       painter->drawRect(option.rect);
 
       painter->setPen(Qt::black);
       painter->setBrush(Qt::NoBrush);
-      painter->drawEllipse(optionRect.center() + QPoint(0, keyY), 3, 3);
+      painter->drawEllipse(optionRect.center() + QPoint(1, keyY), 3, 3);
       break;
     case SchMatrix::PotentialFrame:
       painter->setBrush(((col + 1) % 5 == 0) ? QColor("#e0e0e0")
