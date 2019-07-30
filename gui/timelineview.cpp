@@ -163,7 +163,5 @@ void SchMatrix::TimelineView::contextMenuEvent(QContextMenuEvent *event) {
 
   index = indexAt(point);
 
-  animModel->setFrame(indexAt(point).column());
-
   timelineMenu.exec(event->globalPos());
 }
