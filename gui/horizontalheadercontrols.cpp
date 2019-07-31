@@ -147,14 +147,43 @@ void SchMatrix::HorizontalHeaderControls::on_frameRate_valueChanged(int fps) {
 
 void SchMatrix::HorizontalHeaderControls::on_prevKeyframe_clicked() {
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+
+  auto layer = animModel->getCurrentLayer();
+  auto prevKeyframe = layer->prevKeyframe();
+
+  if (!prevKeyframe) return;
+
+  auto keyframePos = layer->animFramePosition(prevKeyframe);
+
+  animModel->setFrame(keyframePos);
 }
 
 void SchMatrix::HorizontalHeaderControls::on_insertKeyframe_clicked() {
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+
+  auto layer = animModel->getCurrentLayer();
+  auto layerIdx = animModel->getCurrentLayerIdx();
+  auto index = animModel->index(layerIdx, animModel->getCurrentFrame());
+
+  // Set data and check if current Keyframe is empty
+  animModel->setData(index, (layer->currentKeyframe()->empty())
+                                ? SchMatrix::FrameTypes::BlankKey
+                                : SchMatrix::FrameTypes::Key);
+
+  animModel->setFrame(index.column() + 1);
 }
 
 void SchMatrix::HorizontalHeaderControls::on_nextKeyframe_clicked() {
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
+
+  auto layer = animModel->getCurrentLayer();
+  auto nextKeyframe = layer->nextKeyframe();
+
+  if (!nextKeyframe) return;
+
+  auto keyframePos = layer->animFramePosition(nextKeyframe);
+
+  animModel->setFrame(keyframePos);
 }
 
 void SchMatrix::HorizontalHeaderControls::on_firstFrame_clicked() {

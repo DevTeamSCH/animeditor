@@ -81,11 +81,28 @@ Keyframe *Layer::prevKeyframe() const {
   if (animationCount() < 2) return nullptr;
 
   auto keys = keyframes();
-  auto idx = keys.indexOf(currentKeyframe());
+  auto keyframe = currentKeyframe();
+  auto currentAnim = qobject_cast<SchMatrix::Keyframe *>(currentAnimation());
+  auto idx = keys.indexOf(keyframe);
 
-  if (idx == 0) return nullptr;
+  if (!currentAnim) {  // anim is pause
+    return keyframe;
+  } else if (idx != 0) {  // anim is (blank)keyframe
+    return keys[idx - 1];
+  }
 
-  return keys[idx - 1];
+  return nullptr;
+}
+
+int Layer::animFramePosition(QAbstractAnimation *anim) {
+  auto animIdx = indexOfAnimation(anim);
+  int frames = 0;
+
+  for (int i = 0; i < animIdx; ++i) {
+    frames += animationAt(i)->duration() / SchMatrix::frameLength;
+  }
+
+  return frames;
 }
 
 QString Layer::getName() const { return name; }

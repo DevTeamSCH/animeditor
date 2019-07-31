@@ -81,7 +81,7 @@ void TimelineView::handleMenu(QAction *action) {
     case SchMatrix::MenuEntry::InsertKeyframe: {
       auto layer = animModel->getLayer(index.row());
 
-      // check if previous Keyframe is empty
+      // Set data and check if current Keyframe is empty
       animModel->setData(index, (layer->currentKeyframe()->empty())
                                     ? SchMatrix::FrameTypes::BlankKey
                                     : SchMatrix::FrameTypes::Key);
