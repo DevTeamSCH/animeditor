@@ -62,6 +62,10 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   SchMatrix::Layer *getLayer(int row = 0) const;
   int elementCount(int row);
   QGraphicsScene *getScene();
+  SchMatrix::Layer *getCurrentLayer() const;
+  void setCurrentLayer(SchMatrix::Layer *current);
+  void setCurrentLayer(int layerIdx);
+  int getCurrentLayerIdx() const;
 
  public slots:
   void updateFrameLength(int newFramelength, int oldFramelength,
@@ -70,6 +74,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
  signals:
   void frameChanged(int newFrame, int oldFrame);
   void timelineChanged();
+  void currentLayerChanged(SchMatrix::Layer *current);
 
  private:
   // Note: QGraphicsScene should be deleted last/constructed first
@@ -78,6 +83,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   QVector<QVector<int>> animTimeline;
   QVector<int> animTimelineRow;
   int lastLayerNumber = 1;
+  SchMatrix::Layer *currentLayer;
 };
 
 }  // namespace SchMatrix

@@ -61,6 +61,9 @@ void TimelineView::mousePressEvent(QMouseEvent *event) {
 
   if (!index.isValid()) return;
 
+  // Set current layer by index
+  animModel->setCurrentLayer(index.row());
+
   animModel->setFrame(index.column());
 }
 
@@ -122,6 +125,10 @@ void TimelineView::setModel(QAbstractItemModel *model) {
   }
 
   QTableView::setModel(model);
+
+  // Prevent invalid currentIndex at start
+  // set value to layer 1, first blank keyframe
+  setCurrentIndex(model->index(0, 0));
 
   if (model == animModel) return;
 

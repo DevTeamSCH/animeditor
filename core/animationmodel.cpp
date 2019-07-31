@@ -12,12 +12,16 @@
 namespace SchMatrix {
 
 AnimationModel::AnimationModel(QGraphicsScene *scene, QObject *parent)
-    : QAbstractTableModel(parent), scene(scene), root(this) {
+    : QAbstractTableModel(parent),
+      scene(scene),
+      root(this),
+      currentLayer(nullptr) {
   // build basic animation tree
   auto layer_1 = new SchMatrix::Layer(scene, &root, "layer 1");
   root.addAnimation(layer_1);
   auto keyframe = new SchMatrix::Keyframe(layer_1);
   layer_1->addAnimation(keyframe);
+  setCurrentLayer(layer_1);
 
   // init animTimeline
   animTimelineRow.reserve(180 * fps);
@@ -458,6 +462,32 @@ void AnimationModel::updateFrameLength(int newFramelength, int oldFramelength,
 
   // Prevent FPS change issues
   setFrame(currentFrame);
+}
+
+SchMatrix::Layer *AnimationModel::getCurrentLayer() const {
+  return currentLayer;
+}
+
+void AnimationModel::setCurrentLayer(SchMatrix::Layer *current) {
+  if (!current || currentLayer == current) return;
+
+  currentLayer = current;
+  emit currentLayerChanged(current);
+}
+
+void AnimationModel::setCurrentLayer(int layerIdx) {
+  if (layerIdx < 0 || layerIdx > root.animationCount()) return;
+
+  auto layer = static_cast<SchMatrix::Layer *>(root.animationAt(layerIdx));
+
+  if (currentLayer == layer) return;
+
+  currentLayer = layer;
+  emit currentLayerChanged(layer);
+}
+
+int AnimationModel::getCurrentLayerIdx() const {
+  return root.indexOfAnimation(currentLayer);
 }
 
 }  // namespace SchMatrix
