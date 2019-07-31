@@ -166,6 +166,20 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
       (currentIsPause) ? static_cast<QPauseAnimation *>(currentAnimation)
                        : nullptr;
 
+  // toggle keyframe look
+  if (role == Qt::UserRole) {
+    auto keyframe = qobject_cast<SchMatrix::Keyframe *>(
+        layer->animationAtMsec(col * SchMatrix::frameLength));
+
+    if (!keyframe || col > animTimeline.size()) return false;
+
+    animTimeline[row][col] =
+        (keyframe->empty()) ? FrameTypes::Key : FrameTypes::BlankKey;
+
+    emit dataChanged(createIndex(row, col), createIndex(row, col));
+    return true;
+  }
+
   if (col >= layerSize) {  // setting data outside, in PotentialFrame
     int pauseDuration = 0;
 
