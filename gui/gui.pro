@@ -26,6 +26,7 @@ CONFIG += c++11
 
 SOURCES += \
         framedelegate.cpp \
+        graphicsview.cpp \
         horizontalheader.cpp \
         horizontalheadercontrols.cpp \
         main.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
 
 HEADERS += \
         framedelegate.h \
+        graphicsview.h \
         horizontalheader.h \
         horizontalheadercontrols.h \
         mainwindow.h \
