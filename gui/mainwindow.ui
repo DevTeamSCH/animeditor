@@ -37,20 +37,6 @@
       </attribute>
      </widget>
     </item>
-    <item>
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>Left</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="text">
-       <string>Right</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -65,13 +51,175 @@
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+    <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
+   <addaction name="actionSelection_Tool"/>
+   <addaction name="actionFree_Transform_Tool"/>
+   <addaction name="separator"/>
+   <addaction name="actionText_Tool"/>
+   <addaction name="actionLine_Tool"/>
+   <addaction name="actionRectangle_Tool"/>
+   <addaction name="actionOval_Tool"/>
+   <addaction name="actionPencil_Tool"/>
+   <addaction name="actionPaint_Bucket_Tool"/>
+   <addaction name="separator"/>
+   <addaction name="actionHand_Tool"/>
+   <addaction name="actionZoom_Tool"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionSelection_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/16/edit-select.svg</normaloff>:/resources/breeze-icons/icons/actions/16/edit-select.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Selection Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Selection Tool</string>
+   </property>
+  </action>
+  <action name="actionFree_Transform_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/16/edit-node.svg</normaloff>:/resources/breeze-icons/icons/actions/16/edit-node.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Free Transform Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Free Transform Tool</string>
+   </property>
+  </action>
+  <action name="actionText_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/16/draw-text.svg</normaloff>:/resources/breeze-icons/icons/actions/16/draw-text.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Text Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Text Tool</string>
+   </property>
+  </action>
+  <action name="actionLine_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/16/draw-line.svg</normaloff>:/resources/breeze-icons/icons/actions/16/draw-line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Line Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Line Tool</string>
+   </property>
+  </action>
+  <action name="actionRectangle_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/16/draw-rectangle.svg</normaloff>:/resources/breeze-icons/icons/actions/16/draw-rectangle.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Rectangle Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Rectangle Tool</string>
+   </property>
+  </action>
+  <action name="actionOval_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/16/draw-ellipse.svg</normaloff>:/resources/breeze-icons/icons/actions/16/draw-ellipse.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Oval Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Oval Tool</string>
+   </property>
+  </action>
+  <action name="actionPencil_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/16/draw-freehand.svg</normaloff>:/resources/breeze-icons/icons/actions/16/draw-freehand.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Pencil Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Pencil Tool</string>
+   </property>
+  </action>
+  <action name="actionPaint_Bucket_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/16/fill-color.svg</normaloff>:/resources/breeze-icons/icons/actions/16/fill-color.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Paint Bucket Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Paint Bucket Tool</string>
+   </property>
+  </action>
+  <action name="actionHand_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/22/transform-browse.svg</normaloff>:/resources/breeze-icons/icons/actions/22/transform-browse.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Hand Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Hand Tool</string>
+   </property>
+  </action>
+  <action name="actionZoom_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/breeze-icons/icons/actions/16/edit-find.svg</normaloff>:/resources/breeze-icons/icons/actions/16/edit-find.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom Tool</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -81,6 +229,8 @@
    <header>timelineview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

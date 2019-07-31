@@ -16,11 +16,16 @@ MainWindow::MainWindow(QWidget* parent)
       ui(new Ui::MainWindow),
       currentScene(
           new QGraphicsScene(0, 0, SchMatrix::width, SchMatrix::height, this)),
-      animModel(currentScene, this) {
+      animModel(currentScene, this),
+      actionGroup(this) {
   ui->setupUi(this);
 
   ui->tableView->setModel(&animModel);
   ui->graphicsView->setScene(currentScene);
+
+  for (auto action : ui->mainToolBar->actions()) {
+    actionGroup.addAction(action);
+  }
 }
 
 MainWindow::~MainWindow() { delete ui; }
