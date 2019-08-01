@@ -32,7 +32,6 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
  private:
   QHash<QGraphicsWidget *, QHash<QByteArray, QPropertyAnimation *>>
       animationAssignments;
-  QHash<QGraphicsWidget *, QSharedPointer<QGraphicsWidget>> sharedPointers;
 };
 
 }  // namespace SchMatrix

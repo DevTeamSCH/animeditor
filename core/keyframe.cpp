@@ -21,9 +21,6 @@ Keyframe::Keyframe(const Keyframe &other) : Keyframe(other.parent()) {
   for (auto obj : animAssign.keys()) {
     for (auto &name : animAssign[obj].keys()) {
       assignProperty(obj, name, animAssign[obj][name]->startValue());
-
-      // Must copy shared pointer to increase ref count
-      sharedPointers.insert(obj, other.sharedPointers[obj]);
     }
   }
 }
@@ -66,13 +63,11 @@ QPropertyAnimation *Keyframe::getAnimation(QGraphicsWidget *object,
 }
 
 void Keyframe::addObject(QGraphicsWidget *object) {
-  if (sharedPointers.contains(object)) return;
-
-  sharedPointers.insert(object, QSharedPointer<QGraphicsWidget>(object));
+  if (animationAssignments.contains(object)) return;
 }
 
 void Keyframe::removeObject(QGraphicsWidget *object) {
-  if (!sharedPointers.contains(object)) return;
+  if (!animationAssignments.contains(object)) return;
 
   for (auto anim : animationAssignments[object]) {
     removeAnimation(anim);
@@ -80,7 +75,6 @@ void Keyframe::removeObject(QGraphicsWidget *object) {
   }
 
   animationAssignments.remove(object);
-  sharedPointers.remove(object);
 }
 
 QList<QGraphicsWidget *> Keyframe::objects() {
