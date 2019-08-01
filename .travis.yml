@@ -1,13 +1,9 @@
 language: cpp
 dist: bionic
-sudo: required
 
-addons:
-  apt:
-    packages:
-    - qt5-default
-    - qt5-qmake
-    update: true
+before_install
+  - sudo apt update
+  - sudo apt install -y qt5-default qt5-qmake
 
 script:
   - qmake -qt=qt5
