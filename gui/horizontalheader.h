@@ -3,10 +3,11 @@
 
 #include <QHeaderView>
 #include <QTableView>
-#include "animationmodel.h"
 #include "horizontalheadercontrols.h"
 
 namespace SchMatrix {
+
+class AnimationModel;
 
 class HorizontalHeader : public QHeaderView {
   Q_OBJECT

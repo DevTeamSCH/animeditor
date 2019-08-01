@@ -4,17 +4,15 @@
 #include <QHeaderView>
 #include <QTimeLine>
 #include <QWidget>
-#include "animationmodel.h"
 
 namespace Ui {
 class HorizontalHeaderControls;
 }
 
 namespace SchMatrix {
-class HorizontalHeader;
-}
 
-namespace SchMatrix {
+class HorizontalHeader;
+class AnimationModel;
 
 class HorizontalHeaderControls : public QWidget {
   Q_OBJECT

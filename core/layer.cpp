@@ -3,11 +3,16 @@
 #include <QGraphicsScene>
 #include <QList>
 #include "config.h"
+#include "keyframe.h"
+#include "layer.h"
 
 namespace SchMatrix {
 
 Layer::Layer(QGraphicsScene *scene, QObject *parent, QString name, int zOrder)
-    : QSequentialAnimationGroup(parent), name(name), zOrder(zOrder) {
+    : QSequentialAnimationGroup(parent),
+      name(name),
+      zOrder(zOrder),
+      lastKeyframe(nullptr) {
   scene->addItem(&layerItem);
   layerItem.setZValue(zOrder);
 

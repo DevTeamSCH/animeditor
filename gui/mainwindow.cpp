@@ -8,10 +8,9 @@
 #include "animationmodel.h"
 #include "config.h"
 #include "framedelegate.h"
-#include "graphicswidget.h"
 #include "layer.h"
 
-MainWindow::MainWindow(QWidget* parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
       currentScene(

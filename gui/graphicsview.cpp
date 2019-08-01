@@ -1,5 +1,7 @@
 #include "graphicsview.h"
 
+#include "animationmodel.h"
+
 namespace SchMatrix {
 
 GraphicsView::GraphicsView(QGraphicsScene *scene, QWidget *parent)

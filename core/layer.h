@@ -7,9 +7,10 @@
 #include <QSequentialAnimationGroup>
 #include <QString>
 #include "core_global.h"
-#include "keyframe.h"
 
 namespace SchMatrix {
+
+class Keyframe;
 
 class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   Q_OBJECT

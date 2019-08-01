@@ -12,6 +12,8 @@
 
 namespace SchMatrix {
 
+class Symbol;
+
 class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
   Q_OBJECT
 

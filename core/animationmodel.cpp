@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include "config.h"
 #include "keyframe.h"
+#include "layer.h"
 
 namespace SchMatrix {
 

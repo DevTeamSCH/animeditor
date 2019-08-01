@@ -7,9 +7,10 @@
 #include <QParallelAnimationGroup>
 #include <QVector>
 #include "core_global.h"
-#include "layer.h"
 
 namespace SchMatrix {
+
+class Layer;
 
 enum FrameTypes { Frame, EndOfFrame, Key, BlankKey, PotentialFrame };
 

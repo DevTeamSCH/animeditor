@@ -2,9 +2,11 @@
 
 #include <QColor>
 #include <QDebug>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QRegion>
 #include <QString>
+#include "animationmodel.h"
 #include "config.h"
 
 namespace SchMatrix {

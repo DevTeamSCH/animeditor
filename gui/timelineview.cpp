@@ -7,8 +7,11 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QScrollBar>
+#include "animationmodel.h"
 #include "config.h"
 #include "framedelegate.h"
+#include "keyframe.h"
+#include "layer.h"
 
 namespace SchMatrix {
 

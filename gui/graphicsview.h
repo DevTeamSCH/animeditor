@@ -5,6 +5,8 @@
 
 namespace SchMatrix {
 
+class AnimationModel;
+
 class GraphicsView : public QGraphicsView {
   Q_OBJECT
 

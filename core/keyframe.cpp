@@ -2,6 +2,7 @@
 
 #include <QPauseAnimation>
 #include "config.h"
+#include "symbol.h"
 
 namespace SchMatrix {
 

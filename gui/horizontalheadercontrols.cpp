@@ -3,8 +3,11 @@
 
 #include <QDebug>
 #include <QSignalBlocker>
+#include "animationmodel.h"
 #include "config.h"
 #include "horizontalheader.h"
+#include "keyframe.h"
+#include "layer.h"
 
 namespace SchMatrix {
 

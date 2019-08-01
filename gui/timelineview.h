@@ -3,11 +3,12 @@
 
 #include <QModelIndex>
 #include <QTableView>
-#include "animationmodel.h"
 #include "horizontalheader.h"
 #include "timelinemenu.h"
 
 namespace SchMatrix {
+
+class AnimationModel;
 
 class TimelineView : public QTableView {
   Q_OBJECT
