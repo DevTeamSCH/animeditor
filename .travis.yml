@@ -3,6 +3,7 @@ dist: bionic
 
 addons:
   apt:
+    update: true
     packages:
     - qt5-default
     - qt5-qmake
