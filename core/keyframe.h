@@ -25,6 +25,7 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
   void addObject(QGraphicsWidget *object);
   void removeObject(QGraphicsWidget *object);
   QList<QGraphicsWidget *> objects();
+  bool empty();
 
  private:
   QHash<QGraphicsWidget *, QHash<QByteArray, QPropertyAnimation *>>

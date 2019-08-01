@@ -92,4 +92,6 @@ QList<QGraphicsWidget *> Keyframe::objects() {
   return list;
 }
 
+bool Keyframe::empty() { return animationAssignments.empty(); }
+
 }  // namespace SchMatrix
