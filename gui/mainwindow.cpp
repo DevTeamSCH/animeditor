@@ -8,7 +8,6 @@
 #include "animationmodel.h"
 #include "config.h"
 #include "framedelegate.h"
-#include "graphicswidget.h"
 #include "layer.h"
 
 MainWindow::MainWindow(QWidget* parent)
