@@ -3,11 +3,11 @@ dist: bionic
 
 addons:
   apt:
-    update: true
     packages:
     - qt5-default
     - qt5-qmake
+    update: true
 
 script:
-  - qmake
+  - qmake -qt=qt5
   - make
