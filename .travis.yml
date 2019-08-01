@@ -1,7 +1,7 @@
 language: cpp
 dist: bionic
 
-before_install
+before_install:
   - sudo apt update
   - sudo apt install -y qt5-default qt5-qmake
 
