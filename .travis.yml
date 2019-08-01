@@ -1,5 +1,6 @@
 language: cpp
 dist: bionic
+sudo: required
 
 addons:
   apt:
