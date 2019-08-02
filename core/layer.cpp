@@ -5,6 +5,7 @@
 #include "config.h"
 #include "keyframe.h"
 #include "layer.h"
+#include "symbol.h"
 
 namespace SchMatrix {
 
@@ -21,6 +22,7 @@ Layer::Layer(QGraphicsScene *scene, QObject *parent, QString name, int zOrder)
 }
 
 Layer::~Layer() {
+  // QGraphicsItemGroup must not delete items
   for (auto i : layerItem.childItems()) {
     layerItem.removeFromGroup(i);
   }
@@ -151,6 +153,8 @@ void Layer::removeItem(QGraphicsWidget *item) {
   layerItem.removeFromGroup(item);
   currentKeyframe()->removeObject(item);
 }
+
+void Layer::setGroupParent(Symbol *symbol) { layerItem.setParentItem(symbol); }
 
 // Note: this function will be called for all the animations before/after the
 // current animation

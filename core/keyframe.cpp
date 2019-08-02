@@ -1,11 +1,13 @@
 #include "keyframe.h"
 
+#include <QGraphicsScene>
 #include <QPauseAnimation>
 #include "config.h"
 #include "symbol.h"
 
 namespace SchMatrix {
 
+// Parent is always Layer
 Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {
   // Add 1 frame long pause
   // 1 Keyframe is always 1 frame long
@@ -13,15 +15,16 @@ Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {
 }
 
 Keyframe::Keyframe(const Keyframe &other) : Keyframe(other.parent()) {
-  auto &animAssign = other.animationAssignments;
-
-  // set the root animation as parent
+  // set the Layer animation as parent
   setParent(other.parent());
 
-  for (auto obj : animAssign.keys()) {
-    for (auto &name : animAssign[obj].keys()) {
-      assignProperty(obj, name, animAssign[obj][name]->startValue());
-    }
+  // TODO clone object
+}
+
+Keyframe::~Keyframe() {
+  // Keyframe is the only class which is allowed to delete items when destroyed
+  for (auto item : animationAssignments.keys()) {
+    deleteObject(item);
   }
 }
 
@@ -66,6 +69,7 @@ void Keyframe::addObject(QGraphicsWidget *object) {
   if (animationAssignments.contains(object)) return;
 }
 
+// Only remove object from assingnments and delete it's animations
 void Keyframe::removeObject(QGraphicsWidget *object) {
   if (!animationAssignments.contains(object)) return;
 
@@ -75,6 +79,17 @@ void Keyframe::removeObject(QGraphicsWidget *object) {
   }
 
   animationAssignments.remove(object);
+}
+
+// Remove + delete
+void Keyframe::deleteObject(QGraphicsWidget *object) {
+  removeObject(object);
+
+  // https://doc.qt.io/qt-5/qgraphicsitem.html#dtor.QGraphicsItem
+  auto scene = object->scene();
+  if (scene) scene->removeItem(object);
+
+  delete object;
 }
 
 QList<QGraphicsWidget *> Keyframe::objects() {

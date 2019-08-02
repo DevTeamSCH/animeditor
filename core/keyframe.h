@@ -20,12 +20,16 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
  public:
   explicit Keyframe(QObject *parent = nullptr);
   Keyframe(const Keyframe &other);
+  ~Keyframe();
+
   void assignProperty(QGraphicsWidget *object, const QByteArray &name,
                       const QVariant &value, bool start = true);
   QPropertyAnimation *getAnimation(QGraphicsWidget *object,
                                    const QByteArray &name);
   void addObject(QGraphicsWidget *object);
   void removeObject(QGraphicsWidget *object);
+  void deleteObject(QGraphicsWidget *object);
+
   QList<QGraphicsWidget *> objects();
   bool empty();
 

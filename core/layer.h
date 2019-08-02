@@ -11,6 +11,7 @@
 namespace SchMatrix {
 
 class Keyframe;
+class Symbol;
 
 class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   Q_OBJECT
@@ -40,6 +41,7 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
 
   void addItem(QGraphicsWidget *item);
   void removeItem(QGraphicsWidget *item);
+  void setGroupParent(SchMatrix::Symbol *symbol);
 
  private slots:
   void updateLayer(QAbstractAnimation *current);

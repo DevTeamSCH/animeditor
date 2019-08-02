@@ -1,41 +1,36 @@
 #include "symbol.h"
 
+#include <QGraphicsItemGroup>
+#include "layer.h"
+
 namespace SchMatrix {
 
 Symbol::Symbol(QList<QGraphicsWidget*> items, QGraphicsScene* scene,
                QGraphicsItem* parent)
-    : QGraphicsWidget(parent), animModel(scene, this), itemGroup(this) {
+    : QGraphicsWidget(parent), animModel(scene, this) {
+  auto layer = animModel.getCurrentLayer();
+  layer->setGroupParent(this);
+
   for (auto i : items) {
-    itemGroup.addToGroup(i);
+    layer->addItem(i);
   }
 }
 
 Symbol::Symbol(QGraphicsWidget* item, QGraphicsScene* scene,
                QGraphicsItem* parent)
-    : QGraphicsWidget(parent), animModel(scene, this), itemGroup(this) {
-  itemGroup.addToGroup(item);
+    : QGraphicsWidget(parent), animModel(scene, this) {
+  auto layer = animModel.getCurrentLayer();
+  layer->setGroupParent(this);
+
+  animModel.getCurrentLayer()->addItem(item);
 }
 
-Symbol::~Symbol() {
-  for (auto i : itemGroup.childItems()) {
-    itemGroup.removeFromGroup(i);
-  }
+void Symbol::addItem(QGraphicsWidget* item) {
+  animModel.getCurrentLayer()->addItem(item);
 }
-
-void Symbol::addItem(QGraphicsWidget* item) { itemGroup.addToGroup(item); }
 
 void Symbol::removeItem(QGraphicsWidget* item) {
-  itemGroup.removeFromGroup(item);
-}
-
-QList<QGraphicsWidget*> Symbol::items() {
-  QList<QGraphicsWidget*> list;
-
-  for (auto i : itemGroup.childItems()) {
-    list.append(static_cast<QGraphicsWidget*>(i));
-  }
-
-  return list;
+  animModel.getCurrentLayer()->removeItem(item);
 }
 
 AnimationModel* Symbol::getAnimationModel() { return &animModel; }
