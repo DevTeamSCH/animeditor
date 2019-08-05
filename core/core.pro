@@ -26,6 +26,7 @@ SOURCES += \
         animationmodel.cpp \
         animeditorcore.cpp \
         config.cpp \
+        graphicswidget.cpp \
         keyframe.cpp \
         layer.cpp \
         symbol.cpp
@@ -35,6 +36,7 @@ HEADERS += \
         animeditorcore.h \
         config.h \
         core_global.h  \
+        graphicswidget.h \
         keyframe.h \
         layer.h \
         symbol.h
