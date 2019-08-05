@@ -17,6 +17,7 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
  public:
   explicit GraphicsWidget(QGraphicsItem *parent = nullptr,
                           Qt::WindowFlags wFlags = Qt::WindowFlags());
+  explicit GraphicsWidget(GraphicsWidget &other);
 
   QColor getStrokeColor() const;
   void setStrokeColor(const QColor &value);
