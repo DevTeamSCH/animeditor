@@ -32,6 +32,8 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   QColor getFillColor() const;
   void setFillColor(const QColor &value);
 
+  static GraphicsWidget *Create(ItemTypes type);
+
  signals:
   void strokeColorChanged(QColor color);
   void fillColorChanged(QColor color);

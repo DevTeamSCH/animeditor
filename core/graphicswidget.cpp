@@ -1,6 +1,11 @@
 #include "graphicswidget.h"
 
 #include <QMetaProperty>
+#include "graphicslinewidget.h"
+#include "graphicsovalwidget.h"
+#include "graphicspathwidget.h"
+#include "graphicsrectwidget.h"
+#include "graphicstextwidget.h"
 
 namespace SchMatrix {
 
@@ -50,6 +55,19 @@ void GraphicsWidget::setFillColor(const QColor &value) {
   fillColor = value;
   fillColorUpdate(value);
   emit fillColorChanged(value);
+}
+
+GraphicsWidget *GraphicsWidget::Create(ItemTypes type) {
+  if (type == ItemTypes::Line) new SchMatrix::GraphicsLineWidget(0, 0, 0, 0);
+  if (type == ItemTypes::Oval) new SchMatrix::GraphicsOvalWidget(0, 0, 0, 0);
+  if (type == ItemTypes::Text)
+    new SchMatrix::GraphicsTextWidget(tr("INSERT TEXT HERE"));
+  if (type == ItemTypes::Pencil)
+    new SchMatrix::GraphicsPathWidget(QPainterPath());
+  if (type == ItemTypes::Rectangle)
+    new SchMatrix::GraphicsRectWidget(0, 0, 0, 0);
+
+  return nullptr;
 }
 
 void GraphicsWidget::strokeColorUpdate(const QColor &) {}
