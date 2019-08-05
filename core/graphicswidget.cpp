@@ -5,7 +5,10 @@
 namespace SchMatrix {
 
 GraphicsWidget::GraphicsWidget(QGraphicsItem *parent, Qt::WindowFlags wFlags)
-    : QGraphicsWidget(parent, wFlags) {}
+    : QGraphicsWidget(parent, wFlags) {
+  // Set important flags
+  setFlags(ItemIsMovable | ItemIsSelectable | ItemHasNoContents);
+}
 
 GraphicsWidget::GraphicsWidget(GraphicsWidget &other) {
   auto metaobject = other.metaObject();
