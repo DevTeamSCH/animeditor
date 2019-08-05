@@ -7,6 +7,14 @@
 
 namespace SchMatrix {
 
+enum ItemTypes {
+  Text = QGraphicsItem::UserType,
+  Line,
+  Rectangle,
+  Oval,
+  Pencil
+};
+
 class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   Q_OBJECT
   Q_PROPERTY(QColor strokeColor READ getStrokeColor WRITE setStrokeColor NOTIFY
