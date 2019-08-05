@@ -37,6 +37,7 @@ QColor GraphicsWidget::getStrokeColor() const { return strokeColor; }
 
 void GraphicsWidget::setStrokeColor(const QColor &value) {
   strokeColor = value;
+  strokeColorUpdate(value);
   emit strokeColorChanged(value);
 }
 
@@ -44,7 +45,12 @@ QColor GraphicsWidget::getFillColor() const { return fillColor; }
 
 void GraphicsWidget::setFillColor(const QColor &value) {
   fillColor = value;
+  fillColorUpdate(value);
   emit fillColorChanged(value);
 }
+
+void GraphicsWidget::strokeColorUpdate(const QColor &) {}
+
+void GraphicsWidget::fillColorUpdate(const QColor &) {}
 
 }  // namespace SchMatrix

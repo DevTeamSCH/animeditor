@@ -29,6 +29,9 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   void fillColorChanged(QColor color);
 
  protected:
+  virtual void strokeColorUpdate(const QColor &color);
+  virtual void fillColorUpdate(const QColor &color);
+
   QColor strokeColor, fillColor;
 };
 
