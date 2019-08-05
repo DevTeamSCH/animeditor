@@ -29,6 +29,7 @@ SOURCES += \
         graphicslinewidget.cpp \
         graphicsovalwidget.cpp \
         graphicsrectwidget.cpp \
+        graphicstextwidget.cpp \
         graphicsview.cpp \
         horizontalheader.cpp \
         horizontalheadercontrols.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
         graphicslinewidget.h \
         graphicsovalwidget.h \
         graphicsrectwidget.h \
+        graphicstextwidget.h \
         graphicsview.h \
         horizontalheader.h \
         horizontalheadercontrols.h \
