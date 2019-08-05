@@ -28,6 +28,7 @@ SOURCES += \
         framedelegate.cpp \
         graphicslinewidget.cpp \
         graphicsovalwidget.cpp \
+        graphicspathwidget.cpp \
         graphicsrectwidget.cpp \
         graphicstextwidget.cpp \
         graphicsview.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
         framedelegate.h \
         graphicslinewidget.h \
         graphicsovalwidget.h \
+        graphicspathwidget.h \
         graphicsrectwidget.h \
         graphicstextwidget.h \
         graphicsview.h \
