@@ -21,10 +21,10 @@ class CORESHARED_EXPORT Symbol : public QGraphicsWidget {
   void addItem(QGraphicsWidget* item);
   void removeItem(QGraphicsWidget* item);
 
-  AnimationModel* getAnimationModel();
+  AnimationModel* animationModel();
 
  private:
-  AnimationModel animModel;
+  AnimationModel m_animationModel;
 };
 
 }  // namespace SchMatrix

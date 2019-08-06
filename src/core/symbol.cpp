@@ -7,8 +7,8 @@ namespace SchMatrix {
 
 Symbol::Symbol(QList<QGraphicsWidget*> items, QGraphicsScene* scene,
                QGraphicsItem* parent)
-    : QGraphicsWidget(parent), animModel(scene, this) {
-  auto layer = animModel.currentLayer();
+    : QGraphicsWidget(parent), m_animationModel(scene, this) {
+  auto layer = m_animationModel.currentLayer();
   layer->setGroupParent(this);
 
   for (auto i : items) {
@@ -18,21 +18,21 @@ Symbol::Symbol(QList<QGraphicsWidget*> items, QGraphicsScene* scene,
 
 Symbol::Symbol(QGraphicsWidget* item, QGraphicsScene* scene,
                QGraphicsItem* parent)
-    : QGraphicsWidget(parent), animModel(scene, this) {
-  auto layer = animModel.currentLayer();
+    : QGraphicsWidget(parent), m_animationModel(scene, this) {
+  auto layer = m_animationModel.currentLayer();
   layer->setGroupParent(this);
 
-  animModel.currentLayer()->addItem(item);
+  m_animationModel.currentLayer()->addItem(item);
 }
 
 void Symbol::addItem(QGraphicsWidget* item) {
-  animModel.currentLayer()->addItem(item);
+  m_animationModel.currentLayer()->addItem(item);
 }
 
 void Symbol::removeItem(QGraphicsWidget* item) {
-  animModel.currentLayer()->removeItem(item);
+  m_animationModel.currentLayer()->removeItem(item);
 }
 
-AnimationModel* Symbol::getAnimationModel() { return &animModel; }
+AnimationModel* Symbol::animationModel() { return &m_animationModel; }
 
 }  // namespace SchMatrix
