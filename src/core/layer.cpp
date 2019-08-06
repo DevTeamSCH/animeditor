@@ -123,12 +123,6 @@ void Layer::setZOrder(const int &order) {
   layerItem.setZValue(zOrder);
 }
 
-void Layer::deleteEmptyPauses() {
-  for (auto p : pauses()) {
-    if (p->duration() == 0) delete p;
-  }
-}
-
 QAbstractAnimation *Layer::animationAtMsec(int msec) const {
   if (msec <= 0) return animationAt(0);
   if (msec >= duration()) return animationAt(animationCount() - 1);

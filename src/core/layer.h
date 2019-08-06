@@ -34,9 +34,6 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   void setName(const QString &name);
   void setZOrder(const int &zOrder);
 
-  // pause garbage collection
-  void deleteEmptyPauses();
-
   QAbstractAnimation *animationAtMsec(int msec) const;
 
   void addItem(QGraphicsWidget *item);
