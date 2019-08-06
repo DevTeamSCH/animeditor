@@ -36,7 +36,7 @@ void TimelineView::paintEvent(QPaintEvent *event) {
   if (lastVisualColumn == -1)
     lastVisualColumn = horizontalHeader()->count() - 1;
 
-  auto currentColumn = animModel->getCurrentFrame();
+  auto currentColumn = animModel->currentFrame();
 
   // outside of visual range
   if (currentColumn < firstVisualColumn || currentColumn > lastVisualColumn)
@@ -82,7 +82,7 @@ void TimelineView::handleMenu(QAction *action) {
       animModel->removeData(index);
       break;
     case SchMatrix::MenuEntry::InsertKeyframe: {
-      auto layer = animModel->getLayer(index.row());
+      auto layer = animModel->layerAt(index.row());
 
       // Set data and check if current Keyframe is empty
       animModel->setData(index, (layer->currentKeyframe()->empty())
@@ -103,8 +103,7 @@ void TimelineView::handleMenu(QAction *action) {
       int row = index.row();
 
       QModelIndex left = animModel->index(row, 0);
-      QModelIndex right =
-          animModel->index(row, animModel->elementCount(row) - 1);
+      QModelIndex right = animModel->index(row, animModel->rowSize(row) - 1);
 
       QItemSelection selection(left, right);
       selectionModel()->clear();
@@ -112,7 +111,7 @@ void TimelineView::handleMenu(QAction *action) {
       break;
   }
 
-  auto layer = animModel->getLayer(index.row());
+  auto layer = animModel->layerAt(index.row());
 
   qDebug() << layer->animations();
   for (auto l : layer->pauses()) {

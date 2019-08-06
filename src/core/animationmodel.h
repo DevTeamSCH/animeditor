@@ -54,19 +54,18 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
 
   void setTime(int mscec);
   void setFrame(int frame);
-  int getTime() const;
-  double getTimeDouble() const;
-  int getDuration() const;
-  double getDurationDouble() const;
-  int getCurrentFrame() const;
-  int getLastFrame() const;
-  SchMatrix::Layer *getLayer(int row = 0) const;
-  int elementCount(int row);
-  QGraphicsScene *getScene();
-  SchMatrix::Layer *getCurrentLayer() const;
+  int currentTime() const;
+  double currentTimeDouble() const;
+  int duration() const;
+  double durationDouble() const;
+  int currentFrame() const;
+  int lastFrame() const;
+  SchMatrix::Layer *layerAt(int row = 0) const;
+  int rowSize(int row);
+  SchMatrix::Layer *currentLayer() const;
+  int currentLayerIdx() const;
   void setCurrentLayer(SchMatrix::Layer *current);
   void setCurrentLayer(int layerIdx);
-  int getCurrentLayerIdx() const;
 
  public slots:
   void updateFrameLength(int newFramelength, int oldFramelength,
@@ -78,12 +77,12 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   void currentLayerChanged(SchMatrix::Layer *current);
 
  private:
-  QGraphicsScene *scene;
-  QParallelAnimationGroup root;  // root animation
-  QVector<QVector<int>> animTimeline;
-  QVector<int> animTimelineRow;
-  int lastLayerNumber = 1;
-  SchMatrix::Layer *currentLayer;
+  QGraphicsScene *m_scene;
+  QParallelAnimationGroup m_rootAnimation;
+  QVector<QVector<int>> m_animTimeline;
+  QVector<int> m_animTimelineRow;
+  quint32 m_lastLayerNumber = 1;
+  SchMatrix::Layer *m_currentLayer;
 };
 
 }  // namespace SchMatrix

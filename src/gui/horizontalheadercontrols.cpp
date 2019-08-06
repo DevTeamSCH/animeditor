@@ -63,21 +63,21 @@ void HorizontalHeaderControls::updateFrame(int newFrame, int oldFrame) {
 
   // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setValue(newFrame + 1);
-  ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000.0);
+  ui->ellapsedTime->setValue(animModel->currentTimeDouble() / 1000.0);
 
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
-  timeLine.setCurrentTime(animModel->getTime());
+  timeLine.setCurrentTime(animModel->currentTime());
 }
 
 void HorizontalHeaderControls::updateTimeline() {
-  auto lastFrame = animModel->getLastFrame();
+  auto lastFrame = animModel->lastFrame();
 
   // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setMaximum(lastFrame + 1);
-  ui->ellapsedTime->setMaximum(animModel->getDurationDouble() / 1000.0);
+  ui->ellapsedTime->setMaximum(animModel->durationDouble() / 1000.0);
 
   // Update timeline
-  timeLine.setDuration(animModel->getDuration());
+  timeLine.setDuration(animModel->duration());
   timeLine.setFrameRange(0, lastFrame);
 }
 
@@ -103,7 +103,7 @@ void SchMatrix::HorizontalHeaderControls::on_zoomOut_clicked() {
 void SchMatrix::HorizontalHeaderControls::on_currentFrame_valueChanged(
     int val) {
   auto frame = val - 1;
-  auto oldFrame = animModel->getCurrentFrame();
+  auto oldFrame = animModel->currentFrame();
 
   // Prevent recursion
   QSignalBlocker b(animModel);
@@ -111,8 +111,8 @@ void SchMatrix::HorizontalHeaderControls::on_currentFrame_valueChanged(
   QSignalBlocker b3(timeLine);
 
   animModel->setFrame(frame);
-  timeLine.setCurrentTime(animModel->getTime());
-  ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000);
+  timeLine.setCurrentTime(animModel->currentTime());
+  ui->ellapsedTime->setValue(animModel->currentTimeDouble() / 1000);
   parentHeader->updateFrame(frame, oldFrame);
 }
 
@@ -123,11 +123,11 @@ void SchMatrix::HorizontalHeaderControls::on_ellapsedTime_valueChanged(
   QSignalBlocker b2(ui->currentFrame);
   QSignalBlocker b3(timeLine);
 
-  auto oldFrame = animModel->getCurrentFrame();
+  auto oldFrame = animModel->currentFrame();
 
   animModel->setTime(qRound(seconds * 1000));
-  timeLine.setCurrentTime(animModel->getTime());
-  auto frame = animModel->getCurrentFrame();
+  timeLine.setCurrentTime(animModel->currentTime());
+  auto frame = animModel->currentFrame();
 
   // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setValue(frame + 1);
@@ -139,7 +139,7 @@ void SchMatrix::HorizontalHeaderControls::on_frameRate_valueChanged(int fps) {
   timeLine.setUpdateInterval(1000 / fps);
 
   auto oldFrameLength = SchMatrix::frameLength;
-  auto currentFrame = animModel->getCurrentFrame();
+  auto currentFrame = animModel->currentFrame();
 
   SchMatrix::fps = fps;
   SchMatrix::frameLength = 1000 / SchMatrix::fps;
@@ -151,7 +151,7 @@ void SchMatrix::HorizontalHeaderControls::on_frameRate_valueChanged(int fps) {
 void SchMatrix::HorizontalHeaderControls::on_prevKeyframe_clicked() {
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
 
-  auto layer = animModel->getCurrentLayer();
+  auto layer = animModel->currentLayer();
   auto prevKeyframe = layer->prevKeyframe();
 
   if (!prevKeyframe) return;
@@ -164,9 +164,9 @@ void SchMatrix::HorizontalHeaderControls::on_prevKeyframe_clicked() {
 void SchMatrix::HorizontalHeaderControls::on_insertKeyframe_clicked() {
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
 
-  auto layer = animModel->getCurrentLayer();
-  auto layerIdx = animModel->getCurrentLayerIdx();
-  auto index = animModel->index(layerIdx, animModel->getCurrentFrame());
+  auto layer = animModel->currentLayer();
+  auto layerIdx = animModel->currentLayerIdx();
+  auto index = animModel->index(layerIdx, animModel->currentFrame());
 
   // Set data and check if current Keyframe is empty
   animModel->setData(index, (layer->currentKeyframe()->empty())
@@ -179,7 +179,7 @@ void SchMatrix::HorizontalHeaderControls::on_insertKeyframe_clicked() {
 void SchMatrix::HorizontalHeaderControls::on_nextKeyframe_clicked() {
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
 
-  auto layer = animModel->getCurrentLayer();
+  auto layer = animModel->currentLayer();
   auto nextKeyframe = layer->nextKeyframe();
 
   if (!nextKeyframe) return;
@@ -197,7 +197,7 @@ void SchMatrix::HorizontalHeaderControls::on_firstFrame_clicked() {
 void SchMatrix::HorizontalHeaderControls::on_prevFrame_clicked() {
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
 
-  auto currentFrame = animModel->getCurrentFrame();
+  auto currentFrame = animModel->currentFrame();
   auto prevFrame = (currentFrame == 0) ? 0 : currentFrame - 1;
   animModel->setFrame(prevFrame);
 }
@@ -209,8 +209,8 @@ void SchMatrix::HorizontalHeaderControls::on_play_clicked() {
 void SchMatrix::HorizontalHeaderControls::on_nextFrame_clicked() {
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
 
-  auto currentFrame = animModel->getCurrentFrame();
-  auto lastFrame = animModel->getLastFrame();
+  auto currentFrame = animModel->currentFrame();
+  auto lastFrame = animModel->lastFrame();
   auto nextFrame = (currentFrame > lastFrame) ? lastFrame : currentFrame + 1;
 
   animModel->setFrame(nextFrame);
@@ -219,7 +219,7 @@ void SchMatrix::HorizontalHeaderControls::on_nextFrame_clicked() {
 void SchMatrix::HorizontalHeaderControls::on_lastFrame_clicked() {
   if (timeLine.state() == QTimeLine::Running) toggleTimeline();
 
-  auto lastFrame = animModel->getLastFrame();
+  auto lastFrame = animModel->lastFrame();
   animModel->setFrame(lastFrame);
 }
 
@@ -230,7 +230,7 @@ void SchMatrix::HorizontalHeaderControls::toggleTimeline() {
         ":/resources/breeze-icons/icons/actions/16/media-playback-start.svg"));
   } else {
     if (timeLine.state() == QTimeLine::NotRunning &&
-        animModel->getCurrentFrame() == animModel->getLastFrame())
+        animModel->currentFrame() == animModel->lastFrame())
       timeLine.start();
     else
       timeLine.resume();
@@ -248,7 +248,7 @@ void SchMatrix::HorizontalHeaderControls::timelineFinished() {
 void SchMatrix::HorizontalHeaderControls::timelineFrameChanged(int frame) {
   qDebug() << "timeline" << frame;
 
-  auto oldFrame = animModel->getCurrentFrame();
+  auto oldFrame = animModel->currentFrame();
 
   // Prevent recursion
   QSignalBlocker b(animModel);
@@ -259,6 +259,6 @@ void SchMatrix::HorizontalHeaderControls::timelineFrameChanged(int frame) {
 
   // + 1 because spinner starts at 1 not 0
   ui->currentFrame->setValue(frame + 1);
-  ui->ellapsedTime->setValue(animModel->getTimeDouble() / 1000.0);
+  ui->ellapsedTime->setValue(animModel->currentTimeDouble() / 1000.0);
   parentHeader->updateFrame(frame, oldFrame);
 }
