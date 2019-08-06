@@ -19,7 +19,7 @@ class HorizontalHeaderControls : public QWidget {
 
  public:
   explicit HorizontalHeaderControls(QHeaderView *parent = nullptr);
-  ~HorizontalHeaderControls();
+  ~HorizontalHeaderControls() override;
 
   void setModel(SchMatrix::AnimationModel *model);
 
@@ -41,11 +41,11 @@ class HorizontalHeaderControls : public QWidget {
 
   void on_zoomOut_clicked();
 
-  void on_currentFrame_valueChanged(int arg1);
+  void on_currentFrame_valueChanged(int value);
 
-  void on_ellapsedTime_valueChanged(double arg1);
+  void on_ellapsedTime_valueChanged(double seconds);
 
-  void on_frameRate_valueChanged(int arg1);
+  void on_frameRate_valueChanged(int fps);
 
   void on_prevKeyframe_clicked();
 
@@ -69,10 +69,10 @@ class HorizontalHeaderControls : public QWidget {
 
  private:
   Ui::HorizontalHeaderControls *ui;
-  QTimeLine timeLine;
-  SchMatrix::HorizontalHeader *parentHeader;
-  int defaultSectionSize;
-  SchMatrix::AnimationModel *animModel;
+  QTimeLine m_timeLine;
+  SchMatrix::HorizontalHeader *m_horizontalHeader;
+  int m_defaultSectionSize = 10;
+  SchMatrix::AnimationModel *m_animationModel = nullptr;
 
   void toggleTimeline();
 };
