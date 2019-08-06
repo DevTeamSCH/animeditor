@@ -26,6 +26,11 @@ SOURCES += \
         animationmodel.cpp \
         animeditorcore.cpp \
         config.cpp \
+        graphicslinewidget.cpp \
+        graphicsovalwidget.cpp \
+        graphicspathwidget.cpp \
+        graphicsrectwidget.cpp \
+        graphicstextwidget.cpp \
         graphicswidget.cpp \
         keyframe.cpp \
         layer.cpp \
@@ -36,6 +41,11 @@ HEADERS += \
         animeditorcore.h \
         config.h \
         core_global.h  \
+        graphicslinewidget.h \
+        graphicsovalwidget.h \
+        graphicspathwidget.h \
+        graphicsrectwidget.h \
+        graphicstextwidget.h \
         graphicswidget.h \
         keyframe.h \
         layer.h \
@@ -45,5 +55,3 @@ unix {
     target.path = /usr/lib
     INSTALLS += target
 }
-
-INCLUDEPATH += $$PWD/../gui

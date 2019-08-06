@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    core \
-    gui
+    src/core \
+    src/gui
