@@ -93,13 +93,7 @@ void Keyframe::deleteObject(QGraphicsWidget *object) {
 }
 
 QList<QGraphicsWidget *> Keyframe::objects() {
-  QList<QGraphicsWidget *> list;
-
-  for (auto object : animationAssignments.keys()) {
-    list.append(object);
-  }
-
-  return list;
+  return animationAssignments.keys();
 }
 
 bool Keyframe::empty() { return animationAssignments.empty(); }
