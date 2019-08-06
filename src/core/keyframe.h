@@ -20,12 +20,13 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
  public:
   explicit Keyframe(QObject *parent = nullptr);
   Keyframe(const Keyframe &other);
-  ~Keyframe();
+  ~Keyframe() override;
 
   void assignProperty(QGraphicsWidget *object, const QByteArray &name,
                       const QVariant &value, bool start = true);
-  QPropertyAnimation *getAnimation(QGraphicsWidget *object,
-                                   const QByteArray &name);
+  QPropertyAnimation *propertyAnimation(QGraphicsWidget *object,
+                                        const QByteArray &name);
+
   void addObject(QGraphicsWidget *object);
   void removeObject(QGraphicsWidget *object);
   void deleteObject(QGraphicsWidget *object);
@@ -35,7 +36,7 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
 
  private:
   QHash<QGraphicsWidget *, QHash<QByteArray, QPropertyAnimation *>>
-      animationAssignments;
+      m_animationAssignments;
 };
 
 }  // namespace SchMatrix

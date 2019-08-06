@@ -23,7 +23,7 @@ Keyframe::Keyframe(const Keyframe &other) : Keyframe(other.parent()) {
 
 Keyframe::~Keyframe() {
   // Keyframe is the only class which is allowed to delete items when destroyed
-  for (auto item : animationAssignments.keys()) {
+  for (auto item : m_animationAssignments.keys()) {
     deleteObject(item);
   }
 }
@@ -37,8 +37,8 @@ void Keyframe::assignProperty(QGraphicsWidget *object, const QByteArray &name,
     return;
   }
 
-  if (animationAssignments[object].contains(name)) {
-    auto objectAnim = animationAssignments[object][name];
+  if (m_animationAssignments[object].contains(name)) {
+    auto objectAnim = m_animationAssignments[object][name];
     if (objectAnim->duration() == 0) {  // no interpolation
       objectAnim->setStartValue(value);
       objectAnim->setEndValue(value);
@@ -56,29 +56,29 @@ void Keyframe::assignProperty(QGraphicsWidget *object, const QByteArray &name,
   objectAnim->setStartValue(value);
   objectAnim->setEndValue(value);
   objectAnim->setDuration(0);
-  animationAssignments[object][name] = objectAnim;
+  m_animationAssignments[object][name] = objectAnim;
   addAnimation(objectAnim);
 }
 
-QPropertyAnimation *Keyframe::getAnimation(QGraphicsWidget *object,
-                                           const QByteArray &name) {
-  return animationAssignments[object][name];
+QPropertyAnimation *Keyframe::propertyAnimation(QGraphicsWidget *object,
+                                                const QByteArray &name) {
+  return m_animationAssignments[object][name];
 }
 
 void Keyframe::addObject(QGraphicsWidget *object) {
-  if (animationAssignments.contains(object)) return;
+  if (m_animationAssignments.contains(object)) return;
 }
 
 // Only remove object from assingnments and delete it's animations
 void Keyframe::removeObject(QGraphicsWidget *object) {
-  if (!animationAssignments.contains(object)) return;
+  if (!m_animationAssignments.contains(object)) return;
 
-  for (auto anim : animationAssignments[object]) {
+  for (auto anim : m_animationAssignments[object]) {
     removeAnimation(anim);
     delete anim;
   }
 
-  animationAssignments.remove(object);
+  m_animationAssignments.remove(object);
 }
 
 // Remove + delete
@@ -93,9 +93,9 @@ void Keyframe::deleteObject(QGraphicsWidget *object) {
 }
 
 QList<QGraphicsWidget *> Keyframe::objects() {
-  return animationAssignments.keys();
+  return m_animationAssignments.keys();
 }
 
-bool Keyframe::empty() { return animationAssignments.empty(); }
+bool Keyframe::empty() { return m_animationAssignments.empty(); }
 
 }  // namespace SchMatrix
