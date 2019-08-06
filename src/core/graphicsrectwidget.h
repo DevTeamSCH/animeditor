@@ -2,11 +2,12 @@
 #define GRAPHICSRECTWIDGET_H
 
 #include <QGraphicsRectItem>
+#include "core_global.h"
 #include "graphicswidget.h"
 
 namespace SchMatrix {
 
-class GraphicsRectWidget : public SchMatrix::GraphicsWidget {
+class CORESHARED_EXPORT GraphicsRectWidget : public SchMatrix::GraphicsWidget {
   Q_OBJECT
 
  public:

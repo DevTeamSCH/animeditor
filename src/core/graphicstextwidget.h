@@ -2,11 +2,12 @@
 #define QGRAPHICSTEXTWIDGET_H
 
 #include <QGraphicsTextItem>
+#include "core_global.h"
 #include "graphicswidget.h"
 
 namespace SchMatrix {
 
-class GraphicsTextWidget : public SchMatrix::GraphicsWidget {
+class CORESHARED_EXPORT GraphicsTextWidget : public SchMatrix::GraphicsWidget {
   Q_OBJECT
 
  public:

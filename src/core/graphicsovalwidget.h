@@ -2,11 +2,12 @@
 #define GRAPHICSOVALWIDGET_H
 
 #include <QGraphicsEllipseItem>
+#include "core_global.h"
 #include "graphicswidget.h"
 
 namespace SchMatrix {
 
-class GraphicsOvalWidget : public SchMatrix::GraphicsWidget {
+class CORESHARED_EXPORT GraphicsOvalWidget : public SchMatrix::GraphicsWidget {
   Q_OBJECT
 
  public:

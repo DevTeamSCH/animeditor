@@ -2,11 +2,12 @@
 #define QGRAPHICSPATHWIDGET_H
 
 #include <QGraphicsPathItem>
+#include "core_global.h"
 #include "graphicswidget.h"
 
 namespace SchMatrix {
 
-class GraphicsPathWidget : public SchMatrix::GraphicsWidget {
+class CORESHARED_EXPORT GraphicsPathWidget : public SchMatrix::GraphicsWidget {
   Q_OBJECT
 
  public:
