@@ -16,11 +16,11 @@
 namespace SchMatrix {
 
 TimelineView::TimelineView(QWidget *parent)
-    : QTableView(parent), animModel(nullptr), header(this), timelineMenu(this) {
-  setHorizontalHeader(&header);
+    : QTableView(parent), m_horizontalHeader(this), m_timelineMenu(this) {
+  setHorizontalHeader(&m_horizontalHeader);
   setItemDelegate(new SchMatrix::FrameDelegate(this));
 
-  connect(&timelineMenu, &QMenu::triggered, this, &TimelineView::handleMenu);
+  connect(&m_timelineMenu, &QMenu::triggered, this, &TimelineView::handleMenu);
 }
 
 void TimelineView::paintEvent(QPaintEvent *event) {
@@ -36,7 +36,7 @@ void TimelineView::paintEvent(QPaintEvent *event) {
   if (lastVisualColumn == -1)
     lastVisualColumn = horizontalHeader()->count() - 1;
 
-  auto currentColumn = animModel->currentFrame();
+  auto currentColumn = m_animationModel->currentFrame();
 
   // outside of visual range
   if (currentColumn < firstVisualColumn || currentColumn > lastVisualColumn)
@@ -65,9 +65,9 @@ void TimelineView::mousePressEvent(QMouseEvent *event) {
   if (!index.isValid()) return;
 
   // Set current layer by index
-  animModel->setCurrentLayer(index.row());
+  m_animationModel->setCurrentLayer(index.row());
 
-  animModel->setFrame(index.column());
+  m_animationModel->setFrame(index.column());
 }
 
 void TimelineView::handleMenu(QAction *action) {
@@ -75,35 +75,37 @@ void TimelineView::handleMenu(QAction *action) {
     case SchMatrix::MenuEntry::CreateClassicTween:
       break;
     case SchMatrix::MenuEntry::InsertFrame:
-      animModel->setData(index, SchMatrix::FrameTypes::Frame);
-      animModel->setFrame(index.column());
+      m_animationModel->setData(m_menuIndex, SchMatrix::FrameTypes::Frame);
+      m_animationModel->setFrame(m_menuIndex.column());
       break;
     case SchMatrix::MenuEntry::RemoveFrame:
-      animModel->removeData(index);
+      m_animationModel->removeData(m_menuIndex);
       break;
     case SchMatrix::MenuEntry::InsertKeyframe: {
-      auto layer = animModel->layerAt(index.row());
+      auto layer = m_animationModel->layerAt(m_menuIndex.row());
 
       // Set data and check if current Keyframe is empty
-      animModel->setData(index, (layer->currentKeyframe()->empty())
+      m_animationModel->setData(m_menuIndex,
+                                (layer->currentKeyframe()->empty())
                                     ? SchMatrix::FrameTypes::BlankKey
                                     : SchMatrix::FrameTypes::Key);
 
-      animModel->setFrame(index.column());
+      m_animationModel->setFrame(m_menuIndex.column());
       break;
     }
     case SchMatrix::MenuEntry::InsertBlankKeyframe:
-      animModel->setData(index, SchMatrix::FrameTypes::BlankKey);
+      m_animationModel->setData(m_menuIndex, SchMatrix::FrameTypes::BlankKey);
 
-      animModel->setFrame(index.column());
+      m_animationModel->setFrame(m_menuIndex.column());
       break;
     case SchMatrix::MenuEntry::ClearFrames:
       break;
     case SchMatrix::MenuEntry::SelectAllFrames:
-      int row = index.row();
+      int row = m_menuIndex.row();
 
-      QModelIndex left = animModel->index(row, 0);
-      QModelIndex right = animModel->index(row, animModel->rowSize(row) - 1);
+      QModelIndex left = m_animationModel->index(row, 0);
+      QModelIndex right =
+          m_animationModel->index(row, m_animationModel->rowSize(row) - 1);
 
       QItemSelection selection(left, right);
       selectionModel()->clear();
@@ -111,7 +113,7 @@ void TimelineView::handleMenu(QAction *action) {
       break;
   }
 
-  auto layer = animModel->layerAt(index.row());
+  auto layer = m_animationModel->layerAt(m_menuIndex.row());
 
   qDebug() << layer->animations();
   for (auto l : layer->pauses()) {
@@ -120,7 +122,9 @@ void TimelineView::handleMenu(QAction *action) {
 }
 
 void TimelineView::setModel(QAbstractItemModel *model) {
-  if (!qobject_cast<SchMatrix::AnimationModel *>(model)) {
+  auto animationModel = qobject_cast<SchMatrix::AnimationModel *>(model);
+
+  if (!animationModel) {
     qWarning() << tr(
         "SchMatrix::TimelineView::setModel cannot set invalid model");
     return;
@@ -132,17 +136,17 @@ void TimelineView::setModel(QAbstractItemModel *model) {
   // set value to layer 1, first blank keyframe
   setCurrentIndex(model->index(0, 0));
 
-  if (model == animModel) return;
+  if (model == m_animationModel) return;
 
-  if (animModel) {
-    disconnect(animModel, SIGNAL(frameChanged(int, int)), this,
+  if (m_animationModel) {
+    disconnect(m_animationModel, SIGNAL(frameChanged(int, int)), this,
                SLOT(updateFrame(int, int)));
   }
 
   if (model) {
-    animModel = static_cast<SchMatrix::AnimationModel *>(model);
+    m_animationModel = animationModel;
 
-    connect(animModel, SIGNAL(frameChanged(int, int)), this,
+    connect(m_animationModel, SIGNAL(frameChanged(int, int)), this,
             SLOT(updateFrame(int, int)));
   }
 }
@@ -156,7 +160,7 @@ void TimelineView::mouseMoveEvent(QMouseEvent *event) {
 
   if (!index.isValid()) return;
 
-  animModel->setFrame(index.column());
+  m_animationModel->setFrame(index.column());
 }
 
 void TimelineView::updateFrame(int newFrame, int oldFrame) {
@@ -170,7 +174,7 @@ void TimelineView::updateFrame(int newFrame, int oldFrame) {
 
   // Update player indicators
   viewport()->update(r3);
-  header.viewport()->update();
+  m_horizontalHeader.viewport()->update();
 }
 
 }  // namespace SchMatrix
@@ -180,7 +184,7 @@ void SchMatrix::TimelineView::contextMenuEvent(QContextMenuEvent *event) {
 
   if (!indexAt(point).isValid()) return;
 
-  index = indexAt(point);
+  m_menuIndex = indexAt(point);
 
-  timelineMenu.exec(event->globalPos());
+  m_timelineMenu.exec(event->globalPos());
 }

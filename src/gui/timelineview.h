@@ -34,10 +34,10 @@ class TimelineView : public QTableView {
   void handleMenu(QAction *action);
 
  private:
-  SchMatrix::AnimationModel *animModel;
-  SchMatrix::HorizontalHeader header;
-  SchMatrix::TimelineMenu timelineMenu;
-  QModelIndex index;
+  SchMatrix::AnimationModel *m_animationModel = nullptr;
+  SchMatrix::HorizontalHeader m_horizontalHeader;
+  SchMatrix::TimelineMenu m_timelineMenu;
+  QModelIndex m_menuIndex;
 };
 
 }  // namespace SchMatrix
