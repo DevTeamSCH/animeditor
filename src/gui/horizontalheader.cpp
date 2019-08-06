@@ -13,9 +13,8 @@ namespace SchMatrix {
 
 HorizontalHeader::HorizontalHeader(QWidget *parent)
     : QHeaderView(Qt::Horizontal, parent),
-      header(this),
-      animModel(nullptr),
-      table(static_cast<QTableView *>(parent)) {
+      m_headerControls(this),
+      m_timelineView(static_cast<QTableView *>(parent)) {
   setFixedHeight(60);
   setSectionResizeMode(QHeaderView::Fixed);
   viewport()->setMouseTracking(false);
@@ -28,14 +27,14 @@ void HorizontalHeader::paintEvent(QPaintEvent *) {
   if (firstVisualColumn == -1) firstVisualColumn = 0;
   if (lastVisualColumn == -1) lastVisualColumn = count() - 1;
 
-  auto currentColumn = animModel->currentFrame();
-  auto headerX = table->columnViewportPosition(currentColumn);
+  auto currentColumn = m_animationModel->currentFrame();
+  auto headerX = m_timelineView->columnViewportPosition(currentColumn);
 
   QPainter painter(viewport());
 
   for (int i = firstVisualColumn; i <= lastVisualColumn; ++i) {
-    auto posX = table->columnViewportPosition(i);
-    auto cellHeight = header.height();
+    auto posX = m_timelineView->columnViewportPosition(i);
+    auto cellHeight = m_headerControls.height();
 
     // FPS and second indicator
     if ((i + 1) % SchMatrix::fps == 0) {
@@ -64,50 +63,50 @@ void HorizontalHeader::paintEvent(QPaintEvent *) {
   painter.drawRect(headerX, 29, sectionSize(0), 30);
 }
 
-}  // namespace SchMatrix
-
-void SchMatrix::HorizontalHeader::resizeEvent(QResizeEvent *event) {
+void HorizontalHeader::resizeEvent(QResizeEvent *event) {
   QHeaderView::resizeEvent(event);
 
-  header.setFixedWidth(width());
+  m_headerControls.setFixedWidth(width());
 }
 
-void SchMatrix::HorizontalHeader::setModel(QAbstractItemModel *model) {
+void HorizontalHeader::setModel(QAbstractItemModel *model) {
   QHeaderView::setModel(model);
 
-  if (model == animModel) return;
+  if (model == m_animationModel) return;
 
   // skip default model
   if (!qobject_cast<SchMatrix::AnimationModel *>(model)) return;
 
   if (model) {
-    animModel = static_cast<SchMatrix::AnimationModel *>(model);
-    header.setModel(animModel);
+    m_animationModel = static_cast<SchMatrix::AnimationModel *>(model);
+    m_headerControls.setModel(m_animationModel);
     viewport()->update();
   }
 }
 
 // Only for communicaton between controls and this widget
-void SchMatrix::HorizontalHeader::updateFrame(int newFrame, int oldFrame) {
-  QRegion r1(table->columnViewportPosition(newFrame), 0, defaultSectionSize(),
-             table->viewport()->height());
-  QRegion r2(table->columnViewportPosition(oldFrame), 0, defaultSectionSize(),
-             table->viewport()->height());
+void HorizontalHeader::updateFrame(int newFrame, int oldFrame) {
+  QRegion r1(m_timelineView->columnViewportPosition(newFrame), 0,
+             defaultSectionSize(), m_timelineView->viewport()->height());
+  QRegion r2(m_timelineView->columnViewportPosition(oldFrame), 0,
+             defaultSectionSize(), m_timelineView->viewport()->height());
   QRegion r3 = r2.united(r1);
 
   // Update player indicators
   viewport()->update();
-  table->viewport()->update(r3);
+  m_timelineView->viewport()->update(r3);
 }
 
-void SchMatrix::HorizontalHeader::mouseMoveEvent(QMouseEvent *event) {
+void HorizontalHeader::mouseMoveEvent(QMouseEvent *event) {
   if (!(event->buttons() & Qt::LeftButton)) return;
 
-  animModel->setFrame(logicalIndexAt(event->pos()));
+  m_animationModel->setFrame(logicalIndexAt(event->pos()));
 }
 
 void SchMatrix::HorizontalHeader::mousePressEvent(QMouseEvent *event) {
   if (!(event->buttons() & Qt::LeftButton)) return;
 
-  animModel->setFrame(logicalIndexAt(event->pos()));
+  m_animationModel->setFrame(logicalIndexAt(event->pos()));
 }
+
+}  // namespace SchMatrix

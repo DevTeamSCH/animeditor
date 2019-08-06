@@ -29,9 +29,9 @@ class HorizontalHeader : public QHeaderView {
   void mousePressEvent(QMouseEvent *event) override;
 
  private:
-  SchMatrix::HorizontalHeaderControls header;
-  SchMatrix::AnimationModel *animModel;
-  QTableView *table;
+  SchMatrix::HorizontalHeaderControls m_headerControls;
+  SchMatrix::AnimationModel *m_animationModel = nullptr;
+  QTableView *m_timelineView;
 };
 
 }  // namespace SchMatrix
