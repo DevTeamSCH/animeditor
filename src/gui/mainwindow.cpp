@@ -13,17 +13,17 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      currentScene(
+      m_currentScene(
           new QGraphicsScene(0, 0, SchMatrix::width, SchMatrix::height, this)),
-      animModel(currentScene, this),
-      actionGroup(this) {
+      m_animationModel(m_currentScene, this),
+      m_actionGroup(this) {
   ui->setupUi(this);
 
-  ui->tableView->setModel(&animModel);
-  ui->graphicsView->setScene(currentScene);
+  ui->tableView->setModel(&m_animationModel);
+  ui->graphicsView->setScene(m_currentScene);
 
   for (auto action : ui->mainToolBar->actions()) {
-    actionGroup.addAction(action);
+    m_actionGroup.addAction(action);
   }
 }
 

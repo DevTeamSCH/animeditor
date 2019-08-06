@@ -20,9 +20,9 @@ class MainWindow : public QMainWindow {
 
  private:
   Ui::MainWindow *ui;
-  QGraphicsScene *currentScene;
-  SchMatrix::AnimationModel animModel;
-  QActionGroup actionGroup;
+  QGraphicsScene *m_currentScene;
+  SchMatrix::AnimationModel m_animationModel;
+  QActionGroup m_actionGroup;
 };
 
 #endif  // MAINWINDOW_H
