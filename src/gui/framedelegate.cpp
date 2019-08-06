@@ -66,7 +66,7 @@ void FrameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 }
 
 QSize SchMatrix::FrameDelegate::sizeHint(const QStyleOptionViewItem &option,
-                                         const QModelIndex &index) const {
+                                         const QModelIndex &) const {
   return option.rect.size();
 }
 
