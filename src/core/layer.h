@@ -18,7 +18,7 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
 
  public:
   explicit Layer(QGraphicsScene *scene, QObject *parent = nullptr,
-                 QString name = "layer", int zOrder = 0);
+                 const QString &name = "layer", int zValue = 0);
   ~Layer() override;
 
   QList<QAbstractAnimation *> animations() const;
@@ -29,10 +29,8 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   Keyframe *prevKeyframe() const;
   int animFramePosition(QAbstractAnimation *anim);
 
-  QString getName() const;
-  int getZOrder() const;
-  void setName(const QString &name);
-  void setZOrder(const int &zOrder);
+  int zValue() const;
+  void setZValue(const int &m_zValue);
 
   QAbstractAnimation *animationAtMsec(int msec) const;
 
@@ -44,10 +42,9 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   void updateLayer(QAbstractAnimation *current);
 
  private:
-  QString name;
-  int zOrder;
-  QGraphicsItemGroup layerItem;
-  Keyframe *lastKeyframe;
+  int m_zValue;
+  QGraphicsItemGroup m_layerItem;
+  SchMatrix::Keyframe *m_lastKeyframe;
 
   // QAbstractAnimation interface
  protected:

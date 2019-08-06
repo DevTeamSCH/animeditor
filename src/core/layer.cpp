@@ -9,13 +9,14 @@
 
 namespace SchMatrix {
 
-Layer::Layer(QGraphicsScene *scene, QObject *parent, QString name, int zOrder)
+Layer::Layer(QGraphicsScene *scene, QObject *parent, const QString &name,
+             int zValue)
     : QSequentialAnimationGroup(parent),
-      name(name),
-      zOrder(zOrder),
-      lastKeyframe(nullptr) {
-  scene->addItem(&layerItem);
-  layerItem.setZValue(zOrder);
+      m_zValue(zValue),
+      m_lastKeyframe(nullptr) {
+  setObjectName(name);
+  scene->addItem(&m_layerItem);
+  m_layerItem.setZValue(zValue);
 
   connect(this, &QSequentialAnimationGroup::currentAnimationChanged, this,
           &Layer::updateLayer);
@@ -23,8 +24,8 @@ Layer::Layer(QGraphicsScene *scene, QObject *parent, QString name, int zOrder)
 
 Layer::~Layer() {
   // QGraphicsItemGroup must not delete items
-  for (auto i : layerItem.childItems()) {
-    layerItem.removeFromGroup(i);
+  for (auto i : m_layerItem.childItems()) {
+    m_layerItem.removeFromGroup(i);
   }
 }
 
@@ -42,9 +43,9 @@ QList<QPauseAnimation *> Layer::pauses() const {
   QList<QPauseAnimation *> pauseAnims;
 
   for (int i = 0; i < animationCount(); ++i) {
-    auto anim = animationAt(i);
-    if (qobject_cast<QPauseAnimation *>(anim))
-      pauseAnims.append(static_cast<QPauseAnimation *>(anim));
+    auto pause = qobject_cast<QPauseAnimation *>(animationAt(i));
+
+    if (pause) pauseAnims.append(pause);
   }
 
   return pauseAnims;
@@ -63,12 +64,12 @@ QList<Keyframe *> Layer::keyframes() const {
 }
 
 Keyframe *Layer::currentKeyframe() const {
-  auto anim = currentAnimation();
+  auto keyframe = qobject_cast<Keyframe *>(currentAnimation());
 
-  if (qobject_cast<Keyframe *>(anim))
-    return static_cast<Keyframe *>(anim);
-  else if (animationCount() > 1)
-    return static_cast<Keyframe *>(animationAt(indexOfAnimation(anim) - 1));
+  if (keyframe) return keyframe;
+
+  if (animationCount() > 1)
+    return static_cast<Keyframe *>(animationAt(indexOfAnimation(keyframe) - 1));
 
   return nullptr;
 }
@@ -92,11 +93,11 @@ Keyframe *Layer::prevKeyframe() const {
   auto currentAnim = qobject_cast<SchMatrix::Keyframe *>(currentAnimation());
   auto idx = keys.indexOf(keyframe);
 
-  if (!currentAnim) {  // anim is pause
-    return keyframe;
-  } else if (idx != 0) {  // anim is (blank)keyframe
-    return keys[idx - 1];
-  }
+  // anim is pause
+  if (!currentAnim) return keyframe;
+
+  // anim is (blank)keyframe
+  if (idx != 0) return keys[idx - 1];
 
   return nullptr;
 }
@@ -112,15 +113,11 @@ int Layer::animFramePosition(QAbstractAnimation *anim) {
   return frames;
 }
 
-QString Layer::getName() const { return name; }
+int Layer::zValue() const { return m_zValue; };
 
-int Layer::getZOrder() const { return zOrder; };
-
-void Layer::setName(const QString &newName) { name = newName; }
-
-void Layer::setZOrder(const int &order) {
-  zOrder = order;
-  layerItem.setZValue(zOrder);
+void Layer::setZValue(const int &zValue) {
+  m_zValue = zValue;
+  m_layerItem.setZValue(zValue);
 }
 
 QAbstractAnimation *Layer::animationAtMsec(int msec) const {
@@ -139,16 +136,18 @@ QAbstractAnimation *Layer::animationAtMsec(int msec) const {
 }
 
 void Layer::addItem(QGraphicsWidget *item) {
-  layerItem.addToGroup(item);
+  m_layerItem.addToGroup(item);
   currentKeyframe()->addObject(item);
 }
 
 void Layer::removeItem(QGraphicsWidget *item) {
-  layerItem.removeFromGroup(item);
+  m_layerItem.removeFromGroup(item);
   currentKeyframe()->removeObject(item);
 }
 
-void Layer::setGroupParent(Symbol *symbol) { layerItem.setParentItem(symbol); }
+void Layer::setGroupParent(Symbol *symbol) {
+  m_layerItem.setParentItem(symbol);
+}
 
 // Note: this function will be called for all the animations before/after the
 // current animation
@@ -161,14 +160,14 @@ void Layer::updateLayer(QAbstractAnimation *current) {
                       : static_cast<Keyframe *>(current);
 
   // Skip invalid and same keyframe before pause
-  if (keyframe == lastKeyframe || !keyframe) return;
+  if (keyframe == m_lastKeyframe || !keyframe) return;
 
-  lastKeyframe = keyframe;
+  m_lastKeyframe = keyframe;
 
   // remove previous objects
-  for (auto item : layerItem.childItems()) {
-    layerItem.removeFromGroup(item);
-    layerItem.scene()->removeItem(item);
+  for (auto item : m_layerItem.childItems()) {
+    m_layerItem.removeFromGroup(item);
+    m_layerItem.scene()->removeItem(item);
   }
 
   // skip blank keyframe
@@ -176,10 +175,10 @@ void Layer::updateLayer(QAbstractAnimation *current) {
 
   // add current objects
   for (auto item : keyframe->objects()) {
-    layerItem.addToGroup(item);
+    m_layerItem.addToGroup(item);
   }
 
-  layerItem.scene()->update();
+  m_layerItem.scene()->update();
 }
 
 void Layer::updateCurrentTime(int currentTime) {
@@ -190,9 +189,9 @@ void Layer::updateCurrentTime(int currentTime) {
 
   // Hide layerItem only if the layer is finished and it isn't at the end
   if (currentTime == duration() && currentTime != rootDuration)
-    layerItem.hide();
+    m_layerItem.hide();
   else if (currentTime < duration()) {
-    layerItem.show();
+    m_layerItem.show();
   }
 }
 

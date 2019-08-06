@@ -35,7 +35,7 @@ QVariant AnimationModel::headerData(int section, Qt::Orientation orientation,
                                     int role) const {
   if (role == Qt::DisplayRole && orientation == Qt::Vertical) {
     auto layer = static_cast<Layer *>(root.animationAt(section));
-    return layer->getName();
+    return layer->objectName();
   }
 
   return QVariant();
@@ -102,7 +102,7 @@ bool AnimationModel::insertRows(int row, int count, const QModelIndex &parent) {
   }
 
   for (int i = row; i < count; ++i) {
-    static_cast<Layer *>(root.animationAt(i))->setZOrder(i);
+    static_cast<Layer *>(root.animationAt(i))->setZValue(i);
   }
 
   endInsertRows();
@@ -142,7 +142,7 @@ bool AnimationModel::removeRows(int row, int count, const QModelIndex &parent) {
   }
 
   for (int i = row; i < animCount; ++i) {
-    static_cast<Layer *>(root.animationAt(i))->setZOrder(i);
+    static_cast<Layer *>(root.animationAt(i))->setZValue(i);
   }
 
   endRemoveRows();
