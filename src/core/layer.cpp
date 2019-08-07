@@ -64,12 +64,16 @@ QList<Keyframe *> Layer::keyframes() const {
 }
 
 Keyframe *Layer::currentKeyframe() const {
+  auto currentAnim = currentAnimation();
   auto keyframe = qobject_cast<Keyframe *>(currentAnimation());
 
   if (keyframe) return keyframe;
 
+  // currentAnimation is a pause
+  // before a pause there is always a keyframe
   if (animationCount() > 1)
-    return static_cast<Keyframe *>(animationAt(indexOfAnimation(keyframe) - 1));
+    return static_cast<Keyframe *>(
+        animationAt(indexOfAnimation(currentAnim) - 1));
 
   return nullptr;
 }
