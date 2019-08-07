@@ -21,10 +21,14 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->tableView->setModel(&m_animationModel);
   ui->graphicsView->setScene(m_currentScene);
+  ui->graphicsView->setModel(&m_animationModel);
 
   for (auto action : ui->mainToolBar->actions()) {
     m_actionGroup.addAction(action);
   }
+
+  connect(&m_actionGroup, SIGNAL(triggered(QAction *)), ui->graphicsView,
+          SLOT(updateCurrentTool(QAction *)));
 }
 
 MainWindow::~MainWindow() { delete ui; }
