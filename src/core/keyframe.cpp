@@ -67,6 +67,12 @@ QPropertyAnimation *Keyframe::propertyAnimation(QGraphicsWidget *object,
 
 void Keyframe::addObject(QGraphicsWidget *object) {
   if (m_animationAssignments.contains(object)) return;
+
+  // Store important properties
+  // pos is in parent coordinates
+  assignProperty(object, "pos", object->pos());
+  assignProperty(object, "rotation", object->rotation());
+  assignProperty(object, "scale", object->scale());
 }
 
 // Only remove object from assingnments and delete it's animations
