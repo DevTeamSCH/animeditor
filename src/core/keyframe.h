@@ -33,6 +33,7 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
 
   QList<QGraphicsWidget *> objects();
   bool empty();
+  bool canInterpolate();
 
  private:
   QHash<QGraphicsWidget *, QHash<QByteArray, QPropertyAnimation *>>

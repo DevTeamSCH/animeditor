@@ -104,4 +104,14 @@ QList<QGraphicsWidget *> Keyframe::objects() {
 
 bool Keyframe::empty() { return m_animationAssignments.empty(); }
 
+// Between 2 keyframes you can only interpolate/tween only one symbol and no
+// other items
+bool Keyframe::canInterpolate() {
+  if (m_animationAssignments.size() != 1 ||
+      !qobject_cast<SchMatrix::Symbol *>(*m_animationAssignments.keyBegin()))
+    return false;
+
+  return true;
+}
+
 }  // namespace SchMatrix
