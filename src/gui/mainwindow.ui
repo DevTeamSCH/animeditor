@@ -11,12 +11,12 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>AnimEditor</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QGraphicsView" name="graphicsView"/>
+     <widget class="SchMatrix::GraphicsView" name="graphicsView"/>
     </item>
     <item>
      <widget class="SchMatrix::TimelineView" name="tableView">
@@ -54,7 +54,7 @@
     <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionSelection_Tool"/>
    <addaction name="actionFree_Transform_Tool"/>
@@ -72,6 +72,9 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionSelection_Tool">
    <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
     <bool>true</bool>
    </property>
    <property name="icon">
@@ -227,6 +230,11 @@
    <class>SchMatrix::TimelineView</class>
    <extends>QTableView</extends>
    <header>timelineview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SchMatrix::GraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>graphicsview.h</header>
   </customwidget>
  </customwidgets>
  <resources>
