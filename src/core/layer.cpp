@@ -155,6 +155,21 @@ void Layer::removeItem(QGraphicsWidget *item) {
 
 QGraphicsItemGroup *Layer::layerItem() { return &m_layerItem; }
 
+Symbol *Layer::convertToSymbol(const QList<QGraphicsWidget *> &items) {
+  // Clean items from current layer and keyframe
+  for (auto item : items) {
+    removeItem(item);
+  }
+
+  // Add items to Symbol
+  auto symbol = new Symbol(items, m_layerItem.scene());
+
+  // Add symbol to current keyframe
+  addItem(symbol);
+
+  return symbol;
+}
+
 // Note: this function will be called for all the animations before/after the
 // current animation
 void Layer::updateLayer(QAbstractAnimation *current) {
