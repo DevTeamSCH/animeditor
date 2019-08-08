@@ -387,12 +387,24 @@ Qt::ItemFlags SchMatrix::AnimationModel::flags(const QModelIndex &) const {
 }
 
 void AnimationModel::setTime(int mscec) {
+  // Workaround
+  if (m_rootAnimation.state() == m_rootAnimation.Stopped) {
+    m_rootAnimation.start();
+    m_rootAnimation.pause();
+  }
+
   m_rootAnimation.setCurrentTime(mscec);
 }
 
 void AnimationModel::setFrame(int frame) {
   auto oldFrame = currentFrame();
   auto lastFrame = this->lastFrame();
+
+  // Workaround
+  if (m_rootAnimation.state() == m_rootAnimation.Stopped) {
+    m_rootAnimation.start();
+    m_rootAnimation.pause();
+  }
 
   m_rootAnimation.setCurrentTime(SchMatrix::frameLength * frame);
 
