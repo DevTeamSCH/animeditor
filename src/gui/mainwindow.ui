@@ -21,7 +21,7 @@
     <item>
      <widget class="SchMatrix::TimelineView" name="tableView">
       <property name="showGrid">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="gridStyle">
        <enum>Qt::SolidLine</enum>

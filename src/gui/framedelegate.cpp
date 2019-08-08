@@ -48,9 +48,19 @@ void FrameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
       painter->drawEllipse(optionRect.center() + QPoint(1, keyY), 3, 3);
       break;
     case SchMatrix::PotentialFrame:
+      painter->setPen(QPen(QColor("#d9d9d9"), 2));
       painter->setBrush(((col + 1) % 5 == 0) ? QColor("#e0e0e0")
                                              : QColor("#e8e8e8"));
       painter->drawRect(option.rect);
+      break;
+    case SchMatrix::TweenedFrame:
+      painter->drawRect(option.rect);
+
+      painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
+      painter->drawLine(optionRect.x(),
+                        optionRect.y() + optionRect.height() - 5,
+                        optionRect.x() + optionRect.width(),
+                        optionRect.y() + optionRect.height() - 5);
       break;
   }
 
