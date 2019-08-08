@@ -543,6 +543,8 @@ bool AnimationModel::createClassicTween() {
 
   leftKeyframe->interpolate(duration, rigthKeyframe);
 
+  m_rootAnimation.setCurrentTime(m_rootAnimation.currentTime());
+
   return true;
 }
 
