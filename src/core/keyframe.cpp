@@ -114,4 +114,27 @@ bool Keyframe::canInterpolate() {
   return true;
 }
 
+void Keyframe::interpolate(int duration, const Keyframe *nextKeyframe) {
+  auto currentObject = *m_animationAssignments.keyBegin();
+  auto otherObject = *nextKeyframe->m_animationAssignments.keyBegin();
+
+  // Only intrepolate the most important properties for now
+  m_animationAssignments[currentObject]["pos"]->setDuration(duration);
+  m_animationAssignments[currentObject]["rotation"]->setDuration(duration);
+  m_animationAssignments[currentObject]["scale"]->setDuration(duration);
+
+  assignProperty(
+      currentObject, "pos",
+      nextKeyframe->m_animationAssignments[otherObject]["pos"]->startValue(),
+      false);
+  assignProperty(currentObject, "rotation",
+                 nextKeyframe->m_animationAssignments[otherObject]["rotation"]
+                     ->startValue(),
+                 false);
+  assignProperty(
+      currentObject, "scale",
+      nextKeyframe->m_animationAssignments[otherObject]["scale"]->startValue(),
+      false);
+}
+
 }  // namespace SchMatrix
