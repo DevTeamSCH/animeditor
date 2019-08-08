@@ -117,6 +117,10 @@ int Layer::animFramePosition(QAbstractAnimation *anim) {
   return frames;
 }
 
+QPauseAnimation *Layer::currentPause() const {
+  return qobject_cast<QPauseAnimation *>(currentAnimation());
+}
+
 int Layer::zValue() const { return m_zValue; };
 
 void Layer::setZValue(const int &zValue) {
