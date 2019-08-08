@@ -37,7 +37,7 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
 
   void addItem(QGraphicsWidget *item);
   void removeItem(QGraphicsWidget *item);
-  void setGroupParent(SchMatrix::Symbol *symbol);
+  QGraphicsItemGroup *layerItem();
 
  private slots:
   void updateLayer(QAbstractAnimation *current);

@@ -153,9 +153,7 @@ void Layer::removeItem(QGraphicsWidget *item) {
   currentKeyframe()->removeObject(item);
 }
 
-void Layer::setGroupParent(Symbol *symbol) {
-  m_layerItem.setParentItem(symbol);
-}
+QGraphicsItemGroup *Layer::layerItem() { return &m_layerItem; }
 
 // Note: this function will be called for all the animations before/after the
 // current animation

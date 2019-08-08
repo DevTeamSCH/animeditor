@@ -20,6 +20,7 @@ class CORESHARED_EXPORT Symbol : public QGraphicsWidget {
 
   void addItem(QGraphicsWidget* item);
   void removeItem(QGraphicsWidget* item);
+  void configureLayerItem(QGraphicsItemGroup* layerItem = nullptr);
 
   AnimationModel* animationModel();
 

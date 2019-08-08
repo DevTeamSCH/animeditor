@@ -9,20 +9,20 @@ Symbol::Symbol(QList<QGraphicsWidget*> items, QGraphicsScene* scene,
                QGraphicsItem* parent)
     : QGraphicsWidget(parent), m_animationModel(scene, this) {
   auto layer = m_animationModel.currentLayer();
-  layer->setGroupParent(this);
 
   for (auto i : items) {
     layer->addItem(i);
   }
+
+  configureLayerItem();
 }
 
 Symbol::Symbol(QGraphicsWidget* item, QGraphicsScene* scene,
                QGraphicsItem* parent)
     : QGraphicsWidget(parent), m_animationModel(scene, this) {
-  auto layer = m_animationModel.currentLayer();
-  layer->setGroupParent(this);
-
   m_animationModel.currentLayer()->addItem(item);
+
+  configureLayerItem();
 }
 
 void Symbol::addItem(QGraphicsWidget* item) {
@@ -31,6 +31,15 @@ void Symbol::addItem(QGraphicsWidget* item) {
 
 void Symbol::removeItem(QGraphicsWidget* item) {
   m_animationModel.currentLayer()->removeItem(item);
+}
+
+void Symbol::configureLayerItem(QGraphicsItemGroup* layerItem) {
+  if (!layerItem) layerItem = m_animationModel.currentLayer()->layerItem();
+
+  setGeometry(layerItem->boundingRect());
+
+  layerItem->setPos(mapFromItem(layerItem, 0, 0));
+  layerItem->setParentItem(this);
 }
 
 AnimationModel* Symbol::animationModel() { return &m_animationModel; }
