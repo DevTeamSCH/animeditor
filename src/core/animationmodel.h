@@ -12,7 +12,14 @@ namespace SchMatrix {
 
 class Layer;
 
-enum FrameTypes { Frame, EndOfFrame, Key, BlankKey, PotentialFrame };
+enum FrameTypes {
+  Frame,
+  EndOfFrame,
+  Key,
+  BlankKey,
+  PotentialFrame,
+  TweenedFrame
+};
 
 class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   Q_OBJECT
@@ -66,6 +73,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   int currentLayerIdx() const;
   void setCurrentLayer(SchMatrix::Layer *current);
   void setCurrentLayer(int layerIdx);
+  bool createClassicTween();
 
  public slots:
   void updateFrameLength(int newFramelength, int oldFramelength,

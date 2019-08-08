@@ -508,4 +508,42 @@ void AnimationModel::setCurrentLayer(int layerIdx) {
   emit currentLayerChanged(layer);
 }
 
+bool AnimationModel::createClassicTween() {
+  auto leftKeyframe = m_currentLayer->currentKeyframe();
+  auto rigthKeyframe = m_currentLayer->nextKeyframe();
+
+  if (!leftKeyframe || !rigthKeyframe ||
+      leftKeyframe->canInterpolate() == false ||
+      rigthKeyframe->canInterpolate() == false)
+    return false;
+
+  auto pause = m_currentLayer->currentPause();
+  int duration = SchMatrix::frameLength;
+
+  if (pause) {
+    duration += pause->duration();  // Add to duration because we start from the
+                                    // keyframe not after
+    delete pause;                   // Animation shrinks by pause's duration
+
+    auto layerIdx = currentLayerIdx();
+    auto currentIdx = m_animTimeline[layerIdx].size() - 1 - currentFrame();
+    auto pred = [](const int &val) { return val == Frame; };
+    auto pauseStartIt =
+        std::find_if_not(m_animTimeline[layerIdx].rbegin() + currentIdx,
+                         m_animTimeline[layerIdx].rend(), pred)
+            .base();
+    auto pauseEndIt =
+        std::find_if_not(m_animTimeline[layerIdx].begin() + currentFrame(),
+                         m_animTimeline[layerIdx].end(), pred);
+
+    // + 1 because of EndOfFrame
+    std::transform(pauseStartIt, pauseEndIt + 1, pauseStartIt,
+                   [](int) { return FrameTypes::TweenedFrame; });
+  }
+
+  leftKeyframe->interpolate(duration, rigthKeyframe);
+
+  return true;
+}
+
 }  // namespace SchMatrix

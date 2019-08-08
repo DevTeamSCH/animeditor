@@ -73,6 +73,7 @@ void TimelineView::mousePressEvent(QMouseEvent *event) {
 void TimelineView::handleMenu(QAction *action) {
   switch (action->data().toInt()) {
     case SchMatrix::MenuEntry::CreateClassicTween:
+      m_animationModel->createClassicTween();
       break;
     case SchMatrix::MenuEntry::InsertFrame:
       m_animationModel->setData(m_menuIndex, SchMatrix::FrameTypes::Frame);
