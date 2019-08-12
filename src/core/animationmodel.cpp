@@ -339,7 +339,9 @@ bool AnimationModel::removeData(const QModelIndex &index) {
     else
       pause->setDuration(duration);
 
-    if (prevCell == FrameTypes::Frame) prevCell = FrameTypes::EndOfFrame;
+    if (prevCell == FrameTypes::Frame &&
+        m_animTimeline[row][col] == FrameTypes::EndOfFrame)
+      prevCell = FrameTypes::EndOfFrame;
 
     // data changes from col - 1 to col
     emit dataChanged(createIndex(row, col - 1), createIndex(row, col));
@@ -377,6 +379,8 @@ bool AnimationModel::removeData(const QModelIndex &index) {
   }
 
   m_animTimeline[row].removeAt(col);
+
+  if (col == layerSize - 1) emit frameChanged(col - 1, col);
 
   return true;
 }
