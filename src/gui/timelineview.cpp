@@ -24,6 +24,8 @@ TimelineView::TimelineView(QWidget *parent)
 }
 
 void TimelineView::paintEvent(QPaintEvent *event) {
+  qDebug() << "timeline paint" << event->rect();
+
   // use default render
   QTableView::paintEvent(event);
 
@@ -56,9 +58,7 @@ void TimelineView::paintEvent(QPaintEvent *event) {
 void TimelineView::mousePressEvent(QMouseEvent *event) {
   QTableView::mousePressEvent(event);
 
-  if (!(event->buttons() & Qt::LeftButton) &&
-      !(event->buttons() & Qt::RightButton))
-    return;
+  if (!(event->buttons() & Qt::LeftButton)) return;
 
   auto index = indexAt(event->pos());
 
@@ -173,9 +173,35 @@ void TimelineView::updateFrame(int newFrame, int oldFrame) {
              viewport()->height());
   QRegion r3 = r2.united(r1);
 
+  auto firstVisualColumn = m_horizontalHeader.visualIndexAt(0);
+  auto lastVisualColumn = m_horizontalHeader.visualIndexAt(viewport()->width());
+
+  if (firstVisualColumn == -1) firstVisualColumn = 0;
+  if (lastVisualColumn == -1) lastVisualColumn = m_horizontalHeader.count() - 1;
+
+  auto itemCount = lastVisualColumn - firstVisualColumn - 1;
+
   // Update player indicators
   viewport()->update(r3);
   m_horizontalHeader.viewport()->update();
+
+  // Don't scroll if menu was requested
+  if (m_menuRequested == true) {
+    m_menuRequested = false;
+    return;
+  }
+
+  if (newFrame >= lastVisualColumn) {
+    auto col = (newFrame + itemCount > m_horizontalHeader.count() - 1)
+                   ? m_horizontalHeader.count() - 1
+                   : newFrame + itemCount;
+    scrollTo(m_animationModel->index(m_animationModel->currentLayerIdx(), col));
+  }
+
+  if (newFrame <= firstVisualColumn) {
+    auto col = (newFrame - itemCount < 0) ? 0 : newFrame - itemCount;
+    scrollTo(m_animationModel->index(m_animationModel->currentLayerIdx(), col));
+  }
 }
 
 }  // namespace SchMatrix
@@ -186,6 +212,11 @@ void SchMatrix::TimelineView::contextMenuEvent(QContextMenuEvent *event) {
   if (!indexAt(point).isValid()) return;
 
   m_menuIndex = indexAt(point);
+  m_menuRequested = true;
+
+  auto mouseEvent = QMouseEvent(QEvent::MouseButtonPress, event->pos(),
+                                Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+  mousePressEvent(&mouseEvent);
 
   m_timelineMenu.exec(event->globalPos());
 }

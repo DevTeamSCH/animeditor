@@ -92,9 +92,30 @@ void HorizontalHeader::updateFrame(int newFrame, int oldFrame) {
              defaultSectionSize(), m_timelineView->viewport()->height());
   QRegion r3 = r2.united(r1);
 
+  auto firstVisualColumn = visualIndexAt(0);
+  auto lastVisualColumn = visualIndexAt(viewport()->width());
+
+  if (firstVisualColumn == -1) firstVisualColumn = 0;
+  if (lastVisualColumn == -1) lastVisualColumn = count() - 1;
+
+  auto itemCount = lastVisualColumn - firstVisualColumn - 1;
+
   // Update player indicators
   viewport()->update();
   m_timelineView->viewport()->update(r3);
+
+  if (newFrame >= lastVisualColumn) {
+    auto col = (newFrame + itemCount > count() - 1) ? count() - 1
+                                                    : newFrame + itemCount;
+    m_timelineView->scrollTo(
+        m_animationModel->index(m_animationModel->currentLayerIdx(), col));
+  }
+
+  if (newFrame <= firstVisualColumn) {
+    auto col = (newFrame - itemCount < 0) ? 0 : newFrame - itemCount;
+    m_timelineView->scrollTo(
+        m_animationModel->index(m_animationModel->currentLayerIdx(), col));
+  }
 }
 
 void HorizontalHeader::mouseMoveEvent(QMouseEvent *event) {

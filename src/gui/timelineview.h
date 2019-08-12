@@ -38,6 +38,7 @@ class TimelineView : public QTableView {
   SchMatrix::HorizontalHeader m_horizontalHeader;
   SchMatrix::TimelineMenu m_timelineMenu;
   QModelIndex m_menuIndex;
+  bool m_menuRequested = false;
 };
 
 }  // namespace SchMatrix
