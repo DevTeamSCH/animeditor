@@ -25,6 +25,11 @@ class CORESHARED_EXPORT Symbol : public SchMatrix::GraphicsWidget {
 
   AnimationModel* animationModel();
 
+  enum { Type = SchMatrix::ItemTypes::SymbolItem };
+
+  // QGraphicsItem interface
+  int type() const override;
+
  private:
   AnimationModel m_animationModel;
 };

@@ -44,4 +44,6 @@ void Symbol::configureLayerItem(QGraphicsItemGroup* layerItem) {
 
 AnimationModel* Symbol::animationModel() { return &m_animationModel; }
 
+int Symbol::type() const { return Type; }
+
 }  // namespace SchMatrix
