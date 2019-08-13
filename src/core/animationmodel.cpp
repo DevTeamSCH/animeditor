@@ -487,6 +487,14 @@ void AnimationModel::updateFrameLength(int newFramelength, int oldFramelength,
   setFrame(currentFrame);
 }
 
+const QParallelAnimationGroup *AnimationModel::rootAnimation() const {
+  return &m_rootAnimation;
+}
+
+QParallelAnimationGroup *AnimationModel::rootAnimation() {
+  return &m_rootAnimation;
+}
+
 SchMatrix::Layer *AnimationModel::currentLayer() const {
   return m_currentLayer;
 }

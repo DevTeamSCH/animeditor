@@ -74,6 +74,8 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   void setCurrentLayer(SchMatrix::Layer *current);
   void setCurrentLayer(int layerIdx);
   bool createClassicTween();
+  const QParallelAnimationGroup *rootAnimation() const;
+  QParallelAnimationGroup *rootAnimation();
 
  public slots:
   void updateFrameLength(int newFramelength, int oldFramelength,
