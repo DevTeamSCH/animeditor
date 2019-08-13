@@ -154,6 +154,8 @@ void Layer::removeItem(GraphicsWidget *item) {
   currentKeyframe()->removeObject(item);
 }
 
+const QGraphicsItemGroup *Layer::layerItem() const { return &m_layerItem; }
+
 QGraphicsItemGroup *Layer::layerItem() { return &m_layerItem; }
 
 Symbol *Layer::convertToSymbol(const QList<GraphicsWidget *> &items) {
