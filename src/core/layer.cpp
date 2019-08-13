@@ -107,7 +107,7 @@ Keyframe *Layer::prevKeyframe() const {
   return nullptr;
 }
 
-int Layer::animFramePosition(QAbstractAnimation *anim) {
+int Layer::animFramePosition(QAbstractAnimation *anim) const {
   auto animIdx = indexOfAnimation(anim);
   int frames = 0;
 

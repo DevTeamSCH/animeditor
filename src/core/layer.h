@@ -28,7 +28,7 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   Keyframe *currentKeyframe() const;
   Keyframe *nextKeyframe() const;
   Keyframe *prevKeyframe() const;
-  int animFramePosition(QAbstractAnimation *anim);
+  int animFramePosition(QAbstractAnimation *anim) const;
   QPauseAnimation *currentPause() const;
 
   int zValue() const;

@@ -68,7 +68,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   int currentFrame() const;
   int lastFrame() const;
   SchMatrix::Layer *layerAt(int row = 0) const;
-  int rowSize(int row);
+  int rowSize(int row) const;
   SchMatrix::Layer *currentLayer() const;
   int currentLayerIdx() const;
   void setCurrentLayer(SchMatrix::Layer *current);

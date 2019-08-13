@@ -443,7 +443,9 @@ Layer *AnimationModel::layerAt(int row) const {
   return static_cast<Layer *>(m_rootAnimation.animationAt(row));
 }
 
-int AnimationModel::rowSize(int row) { return m_animTimeline[row].size(); }
+int AnimationModel::rowSize(int row) const {
+  return m_animTimeline[row].size();
+}
 
 void AnimationModel::updateFrameLength(int newFramelength, int oldFramelength,
                                        int currentFrame) {

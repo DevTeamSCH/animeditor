@@ -63,7 +63,7 @@ void Keyframe::assignProperty(SchMatrix::GraphicsWidget *object,
 }
 
 QPropertyAnimation *Keyframe::propertyAnimation(
-    SchMatrix::GraphicsWidget *object, const QByteArray &name) {
+    SchMatrix::GraphicsWidget *object, const QByteArray &name) const {
   return m_animationAssignments[object][name];
 }
 
@@ -100,15 +100,15 @@ void Keyframe::deleteObject(SchMatrix::GraphicsWidget *object) {
   delete object;
 }
 
-QList<SchMatrix::GraphicsWidget *> Keyframe::objects() {
+QList<SchMatrix::GraphicsWidget *> Keyframe::objects() const {
   return m_animationAssignments.keys();
 }
 
-bool Keyframe::empty() { return m_animationAssignments.empty(); }
+bool Keyframe::empty() const { return m_animationAssignments.empty(); }
 
 // Between 2 keyframes you can only interpolate/tween only one symbol and no
 // other items
-bool Keyframe::canInterpolate() {
+bool Keyframe::canInterpolate() const {
   if (m_animationAssignments.size() != 1 ||
       !qobject_cast<SchMatrix::Symbol *>(*m_animationAssignments.keyBegin()))
     return false;
