@@ -12,7 +12,8 @@ enum ItemTypes {
   Line,
   Rectangle,
   Oval,
-  Pencil
+  Pencil,
+  SymbolItem
 };
 
 class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
