@@ -13,6 +13,7 @@
 namespace SchMatrix {
 
 class Symbol;
+class GraphicsWidget;
 
 class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
   Q_OBJECT
@@ -22,22 +23,22 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
   Keyframe(const Keyframe &other);
   ~Keyframe() override;
 
-  void assignProperty(QGraphicsWidget *object, const QByteArray &name,
+  void assignProperty(SchMatrix::GraphicsWidget *object, const QByteArray &name,
                       const QVariant &value, bool start = true);
-  QPropertyAnimation *propertyAnimation(QGraphicsWidget *object,
+  QPropertyAnimation *propertyAnimation(SchMatrix::GraphicsWidget *object,
                                         const QByteArray &name);
 
-  void addObject(QGraphicsWidget *object);
-  void removeObject(QGraphicsWidget *object);
-  void deleteObject(QGraphicsWidget *object);
+  void addObject(SchMatrix::GraphicsWidget *object);
+  void removeObject(SchMatrix::GraphicsWidget *object);
+  void deleteObject(SchMatrix::GraphicsWidget *object);
 
-  QList<QGraphicsWidget *> objects();
+  QList<SchMatrix::GraphicsWidget *> objects();
   bool empty();
   bool canInterpolate();
   void interpolate(int duration, const Keyframe *nextKeyframe);
 
  private:
-  QHash<QGraphicsWidget *, QHash<QByteArray, QPropertyAnimation *>>
+  QHash<SchMatrix::GraphicsWidget *, QHash<QByteArray, QPropertyAnimation *>>
       m_animationAssignments;
 };
 

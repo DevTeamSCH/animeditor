@@ -3,6 +3,7 @@
 #include <QGraphicsScene>
 #include <QList>
 #include "config.h"
+#include "graphicswidget.h"
 #include "keyframe.h"
 #include "layer.h"
 #include "symbol.h"
@@ -143,19 +144,19 @@ QAbstractAnimation *Layer::animationAtMsec(int msec) const {
   return nullptr;
 }
 
-void Layer::addItem(QGraphicsWidget *item) {
+void Layer::addItem(GraphicsWidget *item) {
   m_layerItem.addToGroup(item);
   currentKeyframe()->addObject(item);
 }
 
-void Layer::removeItem(QGraphicsWidget *item) {
+void Layer::removeItem(GraphicsWidget *item) {
   m_layerItem.removeFromGroup(item);
   currentKeyframe()->removeObject(item);
 }
 
 QGraphicsItemGroup *Layer::layerItem() { return &m_layerItem; }
 
-Symbol *Layer::convertToSymbol(const QList<QGraphicsWidget *> &items) {
+Symbol *Layer::convertToSymbol(const QList<GraphicsWidget *> &items) {
   // Clean items from current layer and keyframe
   for (auto item : items) {
     removeItem(item);

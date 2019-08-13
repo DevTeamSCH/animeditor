@@ -3,6 +3,7 @@
 #include <QGraphicsScene>
 #include <QPauseAnimation>
 #include "config.h"
+#include "graphicswidget.h"
 #include "symbol.h"
 
 namespace SchMatrix {
@@ -28,8 +29,9 @@ Keyframe::~Keyframe() {
   }
 }
 
-void Keyframe::assignProperty(QGraphicsWidget *object, const QByteArray &name,
-                              const QVariant &value, bool start) {
+void Keyframe::assignProperty(SchMatrix::GraphicsWidget *object,
+                              const QByteArray &name, const QVariant &value,
+                              bool start) {
   if (!object) {
     qWarning(
         "Keyframe::assignProperty: cannot assign property '%s' of null object",
@@ -60,12 +62,12 @@ void Keyframe::assignProperty(QGraphicsWidget *object, const QByteArray &name,
   addAnimation(objectAnim);
 }
 
-QPropertyAnimation *Keyframe::propertyAnimation(QGraphicsWidget *object,
-                                                const QByteArray &name) {
+QPropertyAnimation *Keyframe::propertyAnimation(
+    SchMatrix::GraphicsWidget *object, const QByteArray &name) {
   return m_animationAssignments[object][name];
 }
 
-void Keyframe::addObject(QGraphicsWidget *object) {
+void Keyframe::addObject(SchMatrix::GraphicsWidget *object) {
   if (m_animationAssignments.contains(object)) return;
 
   // Store important properties
@@ -76,7 +78,7 @@ void Keyframe::addObject(QGraphicsWidget *object) {
 }
 
 // Only remove object from assingnments and delete it's animations
-void Keyframe::removeObject(QGraphicsWidget *object) {
+void Keyframe::removeObject(SchMatrix::GraphicsWidget *object) {
   if (!m_animationAssignments.contains(object)) return;
 
   for (auto anim : m_animationAssignments[object]) {
@@ -88,7 +90,7 @@ void Keyframe::removeObject(QGraphicsWidget *object) {
 }
 
 // Remove + delete
-void Keyframe::deleteObject(QGraphicsWidget *object) {
+void Keyframe::deleteObject(SchMatrix::GraphicsWidget *object) {
   removeObject(object);
 
   // https://doc.qt.io/qt-5/qgraphicsitem.html#dtor.QGraphicsItem
@@ -98,7 +100,7 @@ void Keyframe::deleteObject(QGraphicsWidget *object) {
   delete object;
 }
 
-QList<QGraphicsWidget *> Keyframe::objects() {
+QList<SchMatrix::GraphicsWidget *> Keyframe::objects() {
   return m_animationAssignments.keys();
 }
 

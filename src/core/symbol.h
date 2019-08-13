@@ -6,20 +6,21 @@
 #include <QList>
 #include "animationmodel.h"
 #include "core_global.h"
+#include "graphicswidget.h"
 
 namespace SchMatrix {
 
-class CORESHARED_EXPORT Symbol : public QGraphicsWidget {
+class CORESHARED_EXPORT Symbol : public SchMatrix::GraphicsWidget {
   Q_OBJECT
 
  public:
-  explicit Symbol(QList<QGraphicsWidget*> items, QGraphicsScene*,
+  explicit Symbol(QList<SchMatrix::GraphicsWidget*> items, QGraphicsScene*,
                   QGraphicsItem* parent = nullptr);
-  explicit Symbol(QGraphicsWidget* item, QGraphicsScene*,
+  explicit Symbol(SchMatrix::GraphicsWidget* item, QGraphicsScene*,
                   QGraphicsItem* parent = nullptr);
 
-  void addItem(QGraphicsWidget* item);
-  void removeItem(QGraphicsWidget* item);
+  void addItem(SchMatrix::GraphicsWidget* item);
+  void removeItem(SchMatrix::GraphicsWidget* item);
   void configureLayerItem(QGraphicsItemGroup* layerItem = nullptr);
 
   AnimationModel* animationModel();
