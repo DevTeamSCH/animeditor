@@ -20,7 +20,7 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
 
  public:
   explicit Keyframe(QObject *parent = nullptr);
-  Keyframe(const Keyframe &other);
+  explicit Keyframe(const Keyframe &other);
   ~Keyframe() override;
 
   void assignProperty(SchMatrix::GraphicsWidget *object, const QByteArray &name,

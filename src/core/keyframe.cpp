@@ -15,11 +15,21 @@ Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {
   addAnimation(new QPauseAnimation(SchMatrix::frameLength, this));
 }
 
-Keyframe::Keyframe(const Keyframe &other) : Keyframe(other.parent()) {
-  // set the Layer animation as parent
-  setParent(other.parent());
+// Set parent after construction
+Keyframe::Keyframe(const Keyframe &other) : Keyframe(nullptr) {
+  auto &animAssign = other.m_animationAssignments;
 
-  // TODO clone object
+  for (auto object : animAssign.keys()) {
+    // Clone object
+    auto newObject = object->clone();
+
+    // TODO Add Symbol's root animation
+
+    // Copy properties
+    for (auto &name : animAssign[object].keys()) {
+      assignProperty(newObject, name, animAssign[object][name]->startValue());
+    }
+  }
 }
 
 Keyframe::~Keyframe() {
