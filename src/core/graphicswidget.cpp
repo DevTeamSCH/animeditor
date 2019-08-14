@@ -31,15 +31,18 @@ void GraphicsWidget::setFillColor(const QColor &value) {
   emit fillColorChanged(value);
 }
 
-GraphicsWidget *GraphicsWidget::Create(ItemTypes type) {
-  if (type == ItemTypes::Line) new SchMatrix::GraphicsLineWidget(0, 0, 0, 0);
-  if (type == ItemTypes::Oval) new SchMatrix::GraphicsOvalWidget(0, 0, 0, 0);
+GraphicsWidget *GraphicsWidget::Create(ItemTypes type, qreal x, qreal y,
+                                       qreal width, qreal height) {
+  if (type == ItemTypes::Line)
+    return new SchMatrix::GraphicsLineWidget(x, y, width, height);
+  if (type == ItemTypes::Oval)
+    return new SchMatrix::GraphicsOvalWidget(x, y, width, height);
   if (type == ItemTypes::Text)
-    new SchMatrix::GraphicsTextWidget(tr("INSERT TEXT HERE"));
+    return new SchMatrix::GraphicsTextWidget(tr("INSERT TEXT HERE"), x, y);
   if (type == ItemTypes::Pencil)
-    new SchMatrix::GraphicsPathWidget(QPainterPath());
+    return new SchMatrix::GraphicsPathWidget(QPainterPath(), x, y);
   if (type == ItemTypes::Rectangle)
-    new SchMatrix::GraphicsRectWidget(0, 0, 0, 0);
+    return new SchMatrix::GraphicsRectWidget(x, y, width, height);
 
   return nullptr;
 }

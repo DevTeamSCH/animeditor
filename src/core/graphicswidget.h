@@ -32,7 +32,8 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   QColor getFillColor() const;
   void setFillColor(const QColor &value);
 
-  static GraphicsWidget *Create(ItemTypes type);
+  static GraphicsWidget *Create(ItemTypes type, qreal x, qreal y, qreal width,
+                                qreal height);
   virtual GraphicsWidget *clone() const = 0;
   void copyProperties(const GraphicsWidget &other);
 
