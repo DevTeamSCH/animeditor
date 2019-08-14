@@ -11,7 +11,7 @@ class CORESHARED_EXPORT GraphicsTextWidget : public SchMatrix::GraphicsWidget {
   Q_OBJECT
 
  public:
-  explicit GraphicsTextWidget(const QString &string,
+  explicit GraphicsTextWidget(const QString &string, qreal x, qreal y,
                               QGraphicsItem *parent = nullptr,
                               Qt::WindowFlags wFlags = Qt::WindowFlags());
   explicit GraphicsTextWidget(const GraphicsTextWidget &other);

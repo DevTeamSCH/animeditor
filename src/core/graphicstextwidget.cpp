@@ -2,12 +2,14 @@
 
 namespace SchMatrix {
 
-GraphicsTextWidget::GraphicsTextWidget(const QString &string,
+GraphicsTextWidget::GraphicsTextWidget(const QString &string, qreal x, qreal y,
                                        QGraphicsItem *parent,
                                        Qt::WindowFlags wFlags)
     : SchMatrix::GraphicsWidget(parent, wFlags), m_text(string, this) {
   m_text.setTextInteractionFlags(Qt::TextEditorInteraction);
-  setGeometry(m_text.boundingRect());
+
+  auto rect = m_text.boundingRect();
+  setGeometry(x, y, rect.width(), rect.height());
 }
 
 GraphicsTextWidget::GraphicsTextWidget(const GraphicsTextWidget &other) {
