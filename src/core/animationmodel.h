@@ -26,6 +26,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
 
  public:
   explicit AnimationModel(QGraphicsScene *scene, QObject *parent = nullptr);
+  explicit AnimationModel(const AnimationModel &other);
 
   // Header:
   QVariant headerData(int section, Qt::Orientation orientation,
