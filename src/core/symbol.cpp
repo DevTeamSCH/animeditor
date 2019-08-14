@@ -25,6 +25,22 @@ Symbol::Symbol(SchMatrix::GraphicsWidget* item, QGraphicsScene* scene,
   configureLayerItem();
 }
 
+Symbol::Symbol(const Symbol& other) : m_animationModel(other.m_animationModel) {
+  copyProperties(other);
+
+  auto rootAnim = m_animationModel.rootAnimation();
+
+  for (int i = 0; i < rootAnim->animationCount(); ++i) {
+    auto layer = static_cast<SchMatrix::Layer*>(rootAnim->animationAt(i));
+
+    // Set layerItem
+    auto layerItem = layer->layerItem();
+
+    layerItem->setPos(mapFromItem(layerItem, 0, 0));
+    layerItem->setParentItem(this);
+  }
+}
+
 void Symbol::addItem(SchMatrix::GraphicsWidget* item) {
   m_animationModel.currentLayer()->addItem(item);
 }
@@ -45,5 +61,7 @@ void Symbol::configureLayerItem(QGraphicsItemGroup* layerItem) {
 AnimationModel* Symbol::animationModel() { return &m_animationModel; }
 
 int Symbol::type() const { return Type; }
+
+SchMatrix::GraphicsWidget* Symbol::clone() const { return new Symbol(*this); }
 
 }  // namespace SchMatrix

@@ -18,6 +18,7 @@ class CORESHARED_EXPORT Symbol : public SchMatrix::GraphicsWidget {
                   QGraphicsItem* parent = nullptr);
   explicit Symbol(SchMatrix::GraphicsWidget* item, QGraphicsScene*,
                   QGraphicsItem* parent = nullptr);
+  explicit Symbol(const Symbol& other);
 
   void addItem(SchMatrix::GraphicsWidget* item);
   void removeItem(SchMatrix::GraphicsWidget* item);
@@ -29,6 +30,9 @@ class CORESHARED_EXPORT Symbol : public SchMatrix::GraphicsWidget {
 
   // QGraphicsItem interface
   int type() const override;
+
+  // GraphicsWidget interface
+  GraphicsWidget* clone() const override;
 
  private:
   AnimationModel m_animationModel;
