@@ -26,7 +26,6 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
  public:
   explicit GraphicsWidget(QGraphicsItem *parent = nullptr,
                           Qt::WindowFlags wFlags = Qt::WindowFlags());
-  explicit GraphicsWidget(GraphicsWidget &other);
 
   QColor getStrokeColor() const;
   void setStrokeColor(const QColor &value);
@@ -34,6 +33,8 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   void setFillColor(const QColor &value);
 
   static GraphicsWidget *Create(ItemTypes type);
+  virtual GraphicsWidget *clone() const = 0;
+  void copyProperties(const GraphicsWidget &other);
 
  signals:
   void strokeColorChanged(QColor color);
