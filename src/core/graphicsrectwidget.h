@@ -14,6 +14,7 @@ class CORESHARED_EXPORT GraphicsRectWidget : public SchMatrix::GraphicsWidget {
   explicit GraphicsRectWidget(qreal x, qreal y, qreal width, qreal height,
                               QGraphicsItem *parent = nullptr,
                               Qt::WindowFlags wFlags = Qt::WindowFlags());
+  explicit GraphicsRectWidget(const GraphicsRectWidget &other);
 
   enum { Type = SchMatrix::ItemTypes::Rectangle };
 
@@ -21,12 +22,15 @@ class CORESHARED_EXPORT GraphicsRectWidget : public SchMatrix::GraphicsWidget {
   int type() const override;
 
   // GraphicsWidget interface
+  GraphicsWidget *clone() const override;
+
+  // GraphicsWidget interface
  protected:
   void strokeColorUpdate(const QColor &color) override;
   void fillColorUpdate(const QColor &color) override;
 
  private:
-  QGraphicsRectItem rect;
+  QGraphicsRectItem m_rect;
 };
 
 }  // namespace SchMatrix

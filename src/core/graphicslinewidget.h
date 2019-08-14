@@ -14,6 +14,7 @@ class CORESHARED_EXPORT GraphicsLineWidget : public SchMatrix::GraphicsWidget {
   explicit GraphicsLineWidget(qreal x1, qreal y1, qreal x2, qreal y2,
                               QGraphicsItem *parent = nullptr,
                               Qt::WindowFlags wFlags = Qt::WindowFlags());
+  explicit GraphicsLineWidget(const GraphicsLineWidget &other);
 
   enum { Type = SchMatrix::ItemTypes::Line };
 
@@ -21,11 +22,14 @@ class CORESHARED_EXPORT GraphicsLineWidget : public SchMatrix::GraphicsWidget {
   int type() const override;
 
   // GraphicsWidget interface
+  GraphicsWidget *clone() const override;
+
+  // GraphicsWidget interface
  protected:
   void strokeColorUpdate(const QColor &color) override;
 
  private:
-  QGraphicsLineItem line;
+  QGraphicsLineItem m_line;
 };
 
 }  // namespace SchMatrix

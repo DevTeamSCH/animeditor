@@ -14,6 +14,7 @@ class CORESHARED_EXPORT GraphicsOvalWidget : public SchMatrix::GraphicsWidget {
   explicit GraphicsOvalWidget(qreal x, qreal y, qreal width, qreal height,
                               QGraphicsItem *parent = nullptr,
                               Qt::WindowFlags wFlags = Qt::WindowFlags());
+  explicit GraphicsOvalWidget(const GraphicsOvalWidget &other);
 
   enum { Type = SchMatrix::ItemTypes::Oval };
 
@@ -21,12 +22,15 @@ class CORESHARED_EXPORT GraphicsOvalWidget : public SchMatrix::GraphicsWidget {
   int type() const override;
 
   // GraphicsWidget interface
+  GraphicsWidget *clone() const override;
+
+  // GraphicsWidget interface
  protected:
   void strokeColorUpdate(const QColor &color) override;
   void fillColorUpdate(const QColor &color) override;
 
  private:
-  QGraphicsEllipseItem ellipse;
+  QGraphicsEllipseItem m_ellipse;
 };
 
 }  // namespace SchMatrix

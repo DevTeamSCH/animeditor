@@ -14,14 +14,18 @@ class CORESHARED_EXPORT GraphicsTextWidget : public SchMatrix::GraphicsWidget {
   explicit GraphicsTextWidget(const QString &string,
                               QGraphicsItem *parent = nullptr,
                               Qt::WindowFlags wFlags = Qt::WindowFlags());
+  explicit GraphicsTextWidget(const GraphicsTextWidget &other);
 
   enum { Type = SchMatrix::ItemTypes::Text };
 
   // QGraphicsItem interface
   int type() const override;
 
+  // GraphicsWidget interface
+  GraphicsWidget *clone() const override;
+
  private:
-  QGraphicsTextItem text;
+  QGraphicsTextItem m_text;
 };
 
 }  // namespace SchMatrix

@@ -14,6 +14,7 @@ class CORESHARED_EXPORT GraphicsPathWidget : public SchMatrix::GraphicsWidget {
   explicit GraphicsPathWidget(const QPainterPath &path,
                               QGraphicsItem *parent = nullptr,
                               Qt::WindowFlags wFlags = Qt::WindowFlags());
+  explicit GraphicsPathWidget(const GraphicsPathWidget &other);
 
   enum { Type = SchMatrix::ItemTypes::Pencil };
 
@@ -21,12 +22,15 @@ class CORESHARED_EXPORT GraphicsPathWidget : public SchMatrix::GraphicsWidget {
   int type() const override;
 
   // GraphicsWidget interface
+  GraphicsWidget *clone() const override;
+
+  // GraphicsWidget interface
  protected:
   void strokeColorUpdate(const QColor &color) override;
   void fillColorUpdate(const QColor &color) override;
 
  private:
-  QGraphicsPathItem pathItem;
+  QGraphicsPathItem m_pathItem;
 };
 
 }  // namespace SchMatrix

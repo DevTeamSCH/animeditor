@@ -7,16 +7,32 @@ namespace SchMatrix {
 GraphicsPathWidget::GraphicsPathWidget(const QPainterPath &path,
                                        QGraphicsItem *parent,
                                        Qt::WindowFlags wFlags)
-    : SchMatrix::GraphicsWidget(parent, wFlags), pathItem(path, this) {}
+    : SchMatrix::GraphicsWidget(parent, wFlags), m_pathItem(path, this) {
+  setGeometry(m_pathItem.boundingRect());
+}
+
+GraphicsPathWidget::GraphicsPathWidget(const GraphicsPathWidget &other) {
+  copyProperties(other);
+
+  auto &path = other.m_pathItem;
+  m_pathItem.setParentItem(this);
+
+  // Set item's properties
+  m_pathItem.setPath(path.path());
+}
 
 int GraphicsPathWidget::type() const { return Type; }
 
+GraphicsWidget *GraphicsPathWidget::clone() const {
+  return new GraphicsPathWidget(*this);
+}
+
 void GraphicsPathWidget::strokeColorUpdate(const QColor &color) {
-  pathItem.setPen(color);
+  m_pathItem.setPen(color);
 }
 
 void GraphicsPathWidget::fillColorUpdate(const QColor &color) {
-  pathItem.setBrush(color);
+  m_pathItem.setBrush(color);
 }
 
 }  // namespace SchMatrix
