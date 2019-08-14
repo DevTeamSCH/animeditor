@@ -20,16 +20,11 @@ class CORESHARED_EXPORT GraphicsLineWidget : public SchMatrix::GraphicsWidget {
 
   // QGraphicsItem interface
   int type() const override;
+  void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+             QWidget *widget) override;
 
   // GraphicsWidget interface
   GraphicsWidget *clone() const override;
-
-  // GraphicsWidget interface
- protected:
-  void strokeColorUpdate(const QColor &color) override;
-
- private:
-  QGraphicsLineItem m_line;
 };
 
 }  // namespace SchMatrix
