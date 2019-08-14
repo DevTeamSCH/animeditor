@@ -4,11 +4,12 @@
 
 namespace SchMatrix {
 
-GraphicsPathWidget::GraphicsPathWidget(const QPainterPath &path,
-                                       QGraphicsItem *parent,
+GraphicsPathWidget::GraphicsPathWidget(const QPainterPath &path, qreal x,
+                                       qreal y, QGraphicsItem *parent,
                                        Qt::WindowFlags wFlags)
     : SchMatrix::GraphicsWidget(parent, wFlags), m_pathItem(path, this) {
-  setGeometry(m_pathItem.boundingRect());
+  auto rect = m_pathItem.boundingRect();
+  setGeometry(x, y, rect.width(), rect.height());
 }
 
 GraphicsPathWidget::GraphicsPathWidget(const GraphicsPathWidget &other) {

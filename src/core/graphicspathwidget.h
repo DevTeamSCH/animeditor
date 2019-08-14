@@ -11,7 +11,7 @@ class CORESHARED_EXPORT GraphicsPathWidget : public SchMatrix::GraphicsWidget {
   Q_OBJECT
 
  public:
-  explicit GraphicsPathWidget(const QPainterPath &path,
+  explicit GraphicsPathWidget(const QPainterPath &path, qreal x, qreal y,
                               QGraphicsItem *parent = nullptr,
                               Qt::WindowFlags wFlags = Qt::WindowFlags());
   explicit GraphicsPathWidget(const GraphicsPathWidget &other);
