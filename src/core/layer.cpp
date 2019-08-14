@@ -10,6 +10,7 @@
 
 namespace SchMatrix {
 
+// parent is always rootAnimation(QParallelAnimationGroup)
 Layer::Layer(QGraphicsScene *scene, QObject *parent, const QString &name,
              int zValue)
     : QSequentialAnimationGroup(parent),
@@ -21,6 +22,26 @@ Layer::Layer(QGraphicsScene *scene, QObject *parent, const QString &name,
 
   connect(this, &QSequentialAnimationGroup::currentAnimationChanged, this,
           &Layer::updateLayer);
+}
+
+// Set parent after construction
+Layer::Layer(const Layer &other)
+    : Layer(other.m_layerItem.scene(), nullptr, other.objectName(),
+            other.m_zValue) {
+  // Clone everything
+  for (int i = 0; i < other.animationCount(); ++i) {
+    auto anim = other.animationAt(i);
+
+    auto keyframe = qobject_cast<SchMatrix::Keyframe *>(anim);
+
+    if (keyframe) {
+      auto newKeyframe = new SchMatrix::Keyframe(*keyframe);
+
+      addAnimation(newKeyframe);
+    } else {  // pause
+      addPause(anim->duration());
+    }
+  }
 }
 
 Layer::~Layer() {
