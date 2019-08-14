@@ -15,18 +15,18 @@ GraphicsWidget::GraphicsWidget(QGraphicsItem *parent, Qt::WindowFlags wFlags)
   setFlags(ItemIsMovable | ItemIsSelectable | ItemHasNoContents);
 }
 
-QColor GraphicsWidget::getStrokeColor() const { return strokeColor; }
+QColor GraphicsWidget::getStrokeColor() const { return m_strokeColor; }
 
 void GraphicsWidget::setStrokeColor(const QColor &value) {
-  strokeColor = value;
+  m_strokeColor = value;
   strokeColorUpdate(value);
   emit strokeColorChanged(value);
 }
 
-QColor GraphicsWidget::getFillColor() const { return fillColor; }
+QColor GraphicsWidget::getFillColor() const { return m_fillColor; }
 
 void GraphicsWidget::setFillColor(const QColor &value) {
-  fillColor = value;
+  m_fillColor = value;
   fillColorUpdate(value);
   emit fillColorChanged(value);
 }

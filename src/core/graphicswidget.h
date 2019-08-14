@@ -44,7 +44,7 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   virtual void strokeColorUpdate(const QColor &color);
   virtual void fillColorUpdate(const QColor &color);
 
-  QColor strokeColor, fillColor;
+  QColor m_strokeColor, m_fillColor;
 };
 
 }  // namespace SchMatrix
