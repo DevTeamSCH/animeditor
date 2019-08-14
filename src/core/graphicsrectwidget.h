@@ -20,6 +20,8 @@ class CORESHARED_EXPORT GraphicsRectWidget : public SchMatrix::GraphicsWidget {
 
   // QGraphicsItem interface
   int type() const override;
+  void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+             QWidget *widget) override;
 
   // GraphicsWidget interface
   GraphicsWidget *clone() const override;
@@ -28,9 +30,6 @@ class CORESHARED_EXPORT GraphicsRectWidget : public SchMatrix::GraphicsWidget {
  protected:
   void strokeColorUpdate(const QColor &color) override;
   void fillColorUpdate(const QColor &color) override;
-
- private:
-  QGraphicsRectItem m_rect;
 };
 
 }  // namespace SchMatrix
