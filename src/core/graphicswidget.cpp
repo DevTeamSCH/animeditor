@@ -12,7 +12,7 @@ namespace SchMatrix {
 GraphicsWidget::GraphicsWidget(QGraphicsItem *parent, Qt::WindowFlags wFlags)
     : QGraphicsWidget(parent, wFlags) {
   // Set important flags
-  setFlags(ItemIsMovable | ItemIsSelectable | ItemHasNoContents);
+  setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
 
 QColor GraphicsWidget::getStrokeColor() const { return m_strokeColor; }
