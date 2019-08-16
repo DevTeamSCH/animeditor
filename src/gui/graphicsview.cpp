@@ -10,26 +10,26 @@ GraphicsView::GraphicsView(QGraphicsScene *scene, QWidget *parent)
 GraphicsView::GraphicsView(QWidget *parent) : QGraphicsView(parent) {}
 
 void GraphicsView::setModel(AnimationModel *model) {
-  if (animModel == model) return;
+  if (m_animationModel == model) return;
 
   if (model) {
-    animModel = model;
+    m_animationModel = model;
   }
 }
 
 void GraphicsView::updateCurrentTool(QAction *action) {
   auto name = action->objectName();
 
-  if (name == "actionSelection_Tool") currentTool = Tools::SelectionTool;
-  if (name == "actionFree_Transform_Tool") currentTool = Tools::TransformTool;
-  if (name == "actionText_Tool") currentTool = Tools::TextTool;
-  if (name == "actionLine_Tool") currentTool = Tools::LineTool;
-  if (name == "actionRectangle_Tool") currentTool = Tools::RectangleTool;
-  if (name == "actionOval_Tool") currentTool = Tools::OvalTool;
-  if (name == "actionPencil_Tool") currentTool = Tools::PencilTool;
-  if (name == "actionPaint_Bucket_Tool") currentTool = Tools::PaintBucketTool;
-  if (name == "actionHand_Tool") currentTool = Tools::HandTool;
-  if (name == "actionZoom_Tool") currentTool = Tools::ZoomTool;
+  if (name == "actionSelection_Tool") m_currentTool = Tools::SelectionTool;
+  if (name == "actionFree_Transform_Tool") m_currentTool = Tools::TransformTool;
+  if (name == "actionText_Tool") m_currentTool = Tools::TextTool;
+  if (name == "actionLine_Tool") m_currentTool = Tools::LineTool;
+  if (name == "actionRectangle_Tool") m_currentTool = Tools::RectangleTool;
+  if (name == "actionOval_Tool") m_currentTool = Tools::OvalTool;
+  if (name == "actionPencil_Tool") m_currentTool = Tools::PencilTool;
+  if (name == "actionPaint_Bucket_Tool") m_currentTool = Tools::PaintBucketTool;
+  if (name == "actionHand_Tool") m_currentTool = Tools::HandTool;
+  if (name == "actionZoom_Tool") m_currentTool = Tools::ZoomTool;
 }
 
 }  // namespace SchMatrix

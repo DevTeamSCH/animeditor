@@ -34,9 +34,9 @@ class GraphicsView : public QGraphicsView {
   void updateCurrentTool(QAction *action);
 
  private:
-  Tools currentTool = Tools::SelectionTool;
-  AnimationModel *animModel = nullptr;
-  SchMatrix::GraphicsWidget *currentItem = nullptr;
+  Tools m_currentTool = Tools::SelectionTool;
+  AnimationModel *m_animationModel = nullptr;
+  SchMatrix::GraphicsWidget *m_currentItem = nullptr;
 };
 
 }  // namespace SchMatrix
