@@ -22,8 +22,6 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
                  const QString &name = "layer", int zValue = 0);
   explicit Layer(const Layer &other);
 
-  ~Layer() override;
-
   QList<QAbstractAnimation *> animations() const;
   QList<QPauseAnimation *> pauses() const;
   QList<Keyframe *> keyframes() const;
@@ -40,8 +38,6 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
 
   void addItem(SchMatrix::GraphicsWidget *item);
   void removeItem(SchMatrix::GraphicsWidget *item);
-  const QGraphicsItemGroup *layerItem() const;
-  QGraphicsItemGroup *layerItem();
   SchMatrix::Symbol *convertToSymbol(
       const QList<SchMatrix::GraphicsWidget *> &items);
 
@@ -50,8 +46,9 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
 
  private:
   int m_zValue;
-  QGraphicsItemGroup m_layerItem;
-  SchMatrix::Keyframe *m_lastKeyframe;
+  QList<QGraphicsWidget *> m_currentItems;
+  QGraphicsScene *m_scene = nullptr;
+  SchMatrix::Keyframe *m_lastKeyframe = nullptr;
 
   // QAbstractAnimation interface
  protected:

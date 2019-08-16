@@ -14,15 +14,11 @@ class CORESHARED_EXPORT Symbol : public SchMatrix::GraphicsWidget {
   Q_OBJECT
 
  public:
-  explicit Symbol(QList<SchMatrix::GraphicsWidget*> items, QGraphicsScene*,
-                  QGraphicsItem* parent = nullptr);
-  explicit Symbol(SchMatrix::GraphicsWidget* item, QGraphicsScene*,
-                  QGraphicsItem* parent = nullptr);
+  explicit Symbol(QGraphicsScene*, QGraphicsItem* parent = nullptr);
   explicit Symbol(const Symbol& other);
 
   void addItem(SchMatrix::GraphicsWidget* item);
   void removeItem(SchMatrix::GraphicsWidget* item);
-  void configureLayerItem(QGraphicsItemGroup* layerItem = nullptr);
 
   AnimationModel* animationModel();
 

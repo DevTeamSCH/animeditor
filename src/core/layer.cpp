@@ -13,12 +13,8 @@ namespace SchMatrix {
 // parent is always rootAnimation(QParallelAnimationGroup)
 Layer::Layer(QGraphicsScene *scene, QObject *parent, const QString &name,
              int zValue)
-    : QSequentialAnimationGroup(parent),
-      m_zValue(zValue),
-      m_lastKeyframe(nullptr) {
+    : QSequentialAnimationGroup(parent), m_zValue(zValue), m_scene(scene) {
   setObjectName(name);
-  scene->addItem(&m_layerItem);
-  m_layerItem.setZValue(zValue);
 
   connect(this, &QSequentialAnimationGroup::currentAnimationChanged, this,
           &Layer::updateLayer);
@@ -26,8 +22,7 @@ Layer::Layer(QGraphicsScene *scene, QObject *parent, const QString &name,
 
 // Set parent after construction
 Layer::Layer(const Layer &other)
-    : Layer(other.m_layerItem.scene(), nullptr, other.objectName(),
-            other.m_zValue) {
+    : Layer(other.m_scene, nullptr, other.objectName(), other.m_zValue) {
   // Clone everything
   for (int i = 0; i < other.animationCount(); ++i) {
     auto anim = other.animationAt(i);
@@ -41,13 +36,6 @@ Layer::Layer(const Layer &other)
     } else {  // pause
       addPause(anim->duration());
     }
-  }
-}
-
-Layer::~Layer() {
-  // QGraphicsItemGroup must not delete items
-  for (auto i : m_layerItem.childItems()) {
-    m_layerItem.removeFromGroup(i);
   }
 }
 
@@ -147,7 +135,11 @@ int Layer::zValue() const { return m_zValue; };
 
 void Layer::setZValue(const int &zValue) {
   m_zValue = zValue;
-  m_layerItem.setZValue(zValue);
+
+  // Update current items
+  for (auto item : m_currentItems) {
+    item->setZValue(zValue);
+  }
 }
 
 QAbstractAnimation *Layer::animationAtMsec(int msec) const {
@@ -166,18 +158,16 @@ QAbstractAnimation *Layer::animationAtMsec(int msec) const {
 }
 
 void Layer::addItem(GraphicsWidget *item) {
-  m_layerItem.addToGroup(item);
+  m_currentItems << item;
+  m_scene->addItem(item);
   currentKeyframe()->addObject(item);
 }
 
 void Layer::removeItem(GraphicsWidget *item) {
-  m_layerItem.removeFromGroup(item);
+  m_currentItems.removeAll(item);
+  m_scene->removeItem(item);
   currentKeyframe()->removeObject(item);
 }
-
-const QGraphicsItemGroup *Layer::layerItem() const { return &m_layerItem; }
-
-QGraphicsItemGroup *Layer::layerItem() { return &m_layerItem; }
 
 Symbol *Layer::convertToSymbol(const QList<GraphicsWidget *> &items) {
   // Clean items from current layer and keyframe
@@ -186,7 +176,7 @@ Symbol *Layer::convertToSymbol(const QList<GraphicsWidget *> &items) {
   }
 
   // Add items to Symbol
-  auto symbol = new Symbol(items, m_layerItem.scene());
+  auto symbol = new Symbol(m_scene);
 
   // Add symbol to current keyframe
   addItem(symbol);
@@ -210,20 +200,22 @@ void Layer::updateLayer(QAbstractAnimation *current) {
   m_lastKeyframe = keyframe;
 
   // remove previous objects
-  for (auto item : m_layerItem.childItems()) {
-    m_layerItem.removeFromGroup(item);
-    m_layerItem.scene()->removeItem(item);
+  for (auto item : m_currentItems) {
+    m_scene->removeItem(item);
   }
+  m_currentItems.clear();
 
   // skip blank keyframe
   if (keyframe->animationCount() == 1) return;
 
   // add current objects
   for (auto item : keyframe->objects()) {
-    m_layerItem.addToGroup(item);
-  }
+    m_currentItems << item;
 
-  m_layerItem.scene()->update();
+    // Ensure correct zValue
+    item->setZValue(m_zValue);
+    m_scene->addItem(item);
+  }
 }
 
 void Layer::updateCurrentTime(int currentTime) {
@@ -233,10 +225,14 @@ void Layer::updateCurrentTime(int currentTime) {
       static_cast<QParallelAnimationGroup *>(parent())->duration();
 
   // Hide layerItem only if the layer is finished and it isn't at the end
-  if (currentTime == duration() && currentTime != rootDuration)
-    m_layerItem.hide();
-  else if (currentTime < duration()) {
-    m_layerItem.show();
+  if (currentTime == duration() && currentTime != rootDuration) {
+    for (auto item : m_currentItems) {
+      item->hide();
+    }
+  } else if (currentTime < duration()) {
+    for (auto item : m_currentItems) {
+      item->show();
+    }
   }
 }
 
