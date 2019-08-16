@@ -33,8 +33,14 @@ class GraphicsView : public QGraphicsView {
  public slots:
   void updateCurrentTool(QAction *action);
 
+  // QWidget interface
+ protected:
+  void mouseMoveEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
+
  private:
   Tools m_currentTool = Tools::SelectionTool;
+  SchMatrix::ItemTypes m_currentItemType = ItemTypes::Rectangle;
   AnimationModel *m_animationModel = nullptr;
   SchMatrix::GraphicsWidget *m_currentItem = nullptr;
 };
