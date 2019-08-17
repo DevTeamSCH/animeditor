@@ -64,6 +64,14 @@ void GraphicsWidget::copyProperties(const GraphicsWidget &other) {
   }
 }
 
+void GraphicsWidget::setUpdateTransformOriginPoint(bool enabled) {
+  if (enabled)
+    connect(this, &GraphicsWidget::geometryChanged, this,
+            [=]() { setTransformOriginPoint(boundingRect().center()); });
+  else
+    disconnect(this, &GraphicsWidget::geometryChanged, nullptr, nullptr);
+}
+
 void GraphicsWidget::strokeColorUpdate(const QColor &) {}
 
 void GraphicsWidget::fillColorUpdate(const QColor &) {}

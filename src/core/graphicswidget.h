@@ -37,6 +37,9 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   virtual GraphicsWidget *clone() const = 0;
   void copyProperties(const GraphicsWidget &other);
 
+  // Set automatically the transform point to the center
+  void setUpdateTransformOriginPoint(bool enabled);
+
  signals:
   void strokeColorChanged(QColor color);
   void fillColorChanged(QColor color);
