@@ -81,8 +81,8 @@ void Keyframe::addObject(SchMatrix::GraphicsWidget *object) {
   if (m_animationAssignments.contains(object)) return;
 
   // Store important properties
-  // pos is in parent coordinates
-  assignProperty(object, "pos", object->pos());
+  // geometry includes pos+size
+  assignProperty(object, "geometry", object->geometry());
   assignProperty(object, "rotation", object->rotation());
   assignProperty(object, "scale", object->scale());
 }
@@ -132,13 +132,14 @@ void Keyframe::interpolate(int duration, const Keyframe *nextKeyframe) {
 
   // Only intrepolate the most important properties for now
   m_animationAssignments[currentObject]["pos"]->setDuration(duration);
+  m_animationAssignments[currentObject]["geometry"]->setDuration(duration);
   m_animationAssignments[currentObject]["rotation"]->setDuration(duration);
   m_animationAssignments[currentObject]["scale"]->setDuration(duration);
 
-  assignProperty(
-      currentObject, "pos",
-      nextKeyframe->m_animationAssignments[otherObject]["pos"]->startValue(),
-      false);
+  assignProperty(currentObject, "geometry",
+                 nextKeyframe->m_animationAssignments[otherObject]["geometry"]
+                     ->startValue(),
+                 false);
   assignProperty(currentObject, "rotation",
                  nextKeyframe->m_animationAssignments[otherObject]["rotation"]
                      ->startValue(),
