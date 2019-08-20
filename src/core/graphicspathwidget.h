@@ -24,11 +24,6 @@ class CORESHARED_EXPORT GraphicsPathWidget : public SchMatrix::GraphicsWidget {
   // GraphicsWidget interface
   GraphicsWidget *clone() const override;
 
-  // GraphicsWidget interface
- protected:
-  void strokeColorUpdate(const QColor &color) override;
-  void fillColorUpdate(const QColor &color) override;
-
  private:
   QGraphicsPathItem m_pathItem;
 };

@@ -28,12 +28,4 @@ GraphicsWidget *GraphicsPathWidget::clone() const {
   return new GraphicsPathWidget(*this);
 }
 
-void GraphicsPathWidget::strokeColorUpdate(const QColor &color) {
-  m_pathItem.setPen(color);
-}
-
-void GraphicsPathWidget::fillColorUpdate(const QColor &color) {
-  m_pathItem.setBrush(color);
-}
-
 }  // namespace SchMatrix
