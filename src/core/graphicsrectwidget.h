@@ -11,8 +11,13 @@ class CORESHARED_EXPORT GraphicsRectWidget : public SchMatrix::GraphicsWidget {
   Q_OBJECT
 
  public:
+  explicit GraphicsRectWidget(const QRectF &rect,
+                              QGraphicsItem *parent = nullptr,
+                              Qt::WindowFlags wFlags = Qt::WindowFlags());
   explicit GraphicsRectWidget(qreal x, qreal y, qreal width, qreal height,
                               QGraphicsItem *parent = nullptr,
+                              Qt::WindowFlags wFlags = Qt::WindowFlags());
+  explicit GraphicsRectWidget(QGraphicsItem *parent = nullptr,
                               Qt::WindowFlags wFlags = Qt::WindowFlags());
   explicit GraphicsRectWidget(const GraphicsRectWidget &other);
 
@@ -22,14 +27,10 @@ class CORESHARED_EXPORT GraphicsRectWidget : public SchMatrix::GraphicsWidget {
   int type() const override;
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
              QWidget *widget) override;
+  QPainterPath shape() const override;
 
   // GraphicsWidget interface
   GraphicsWidget *clone() const override;
-
-  // GraphicsWidget interface
- protected:
-  void strokeColorUpdate(const QColor &color) override;
-  void fillColorUpdate(const QColor &color) override;
 };
 
 }  // namespace SchMatrix
