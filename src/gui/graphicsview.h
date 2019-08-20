@@ -43,6 +43,9 @@ class GraphicsView : public QGraphicsView {
   SchMatrix::ItemTypes m_currentItemType = ItemTypes::Rectangle;
   AnimationModel *m_animationModel = nullptr;
   SchMatrix::GraphicsWidget *m_currentItem = nullptr;
+  enum Plane { TopLeft, TopRight, BottomLeft, BottomRight };
+  Plane m_currentPlane = Plane::BottomRight;
+  bool m_creationEnabled = false;
 };
 
 }  // namespace SchMatrix
