@@ -131,7 +131,6 @@ void Keyframe::interpolate(int duration, const Keyframe *nextKeyframe) {
   auto otherObject = *nextKeyframe->m_animationAssignments.keyBegin();
 
   // Only intrepolate the most important properties for now
-  m_animationAssignments[currentObject]["pos"]->setDuration(duration);
   m_animationAssignments[currentObject]["geometry"]->setDuration(duration);
   m_animationAssignments[currentObject]["rotation"]->setDuration(duration);
   m_animationAssignments[currentObject]["scale"]->setDuration(duration);
