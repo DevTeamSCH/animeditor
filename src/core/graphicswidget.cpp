@@ -15,20 +15,21 @@ GraphicsWidget::GraphicsWidget(QGraphicsItem *parent, Qt::WindowFlags wFlags)
   setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
 
-QColor GraphicsWidget::getStrokeColor() const { return m_strokeColor; }
+QPen GraphicsWidget::pen() const { return m_pen; }
 
-void GraphicsWidget::setStrokeColor(const QColor &value) {
-  m_strokeColor = value;
-  strokeColorUpdate(value);
-  emit strokeColorChanged(value);
+void GraphicsWidget::setPen(const QPen &pen) {
+  if (m_pen == pen) return;
+  prepareGeometryChange();
+  m_pen = pen;
+  update();
 }
 
-QColor GraphicsWidget::getFillColor() const { return m_fillColor; }
+QBrush GraphicsWidget::brush() const { return m_brush; }
 
-void GraphicsWidget::setFillColor(const QColor &value) {
-  m_fillColor = value;
-  fillColorUpdate(value);
-  emit fillColorChanged(value);
+void GraphicsWidget::setBrush(const QBrush &brush) {
+  if (m_brush == brush) return;
+  m_brush = brush;
+  update();
 }
 
 GraphicsWidget *GraphicsWidget::Create(ItemTypes type, qreal x, qreal y,
@@ -72,8 +73,22 @@ void GraphicsWidget::setUpdateTransformOriginPoint(bool enabled) {
     disconnect(this, &GraphicsWidget::geometryChanged, nullptr, nullptr);
 }
 
-void GraphicsWidget::strokeColorUpdate(const QColor &) {}
+QPainterPath GraphicsWidget::qt_graphicsItem_shapeFromPath(
+    const QPainterPath &path, const QPen &pen) {
+  const qreal penWidthZero = qreal(0.00000001);
 
-void GraphicsWidget::fillColorUpdate(const QColor &) {}
+  if (path == QPainterPath() || pen == Qt::NoPen) return path;
+  QPainterPathStroker ps;
+  ps.setCapStyle(pen.capStyle());
+  if (pen.widthF() <= 0.0)
+    ps.setWidth(penWidthZero);
+  else
+    ps.setWidth(pen.widthF());
+  ps.setJoinStyle(pen.joinStyle());
+  ps.setMiterLimit(pen.miterLimit());
+  QPainterPath p = ps.createStroke(path);
+  p.addPath(path);
+  return p;
+}
 
 }  // namespace SchMatrix

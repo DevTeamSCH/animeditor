@@ -1,8 +1,9 @@
 #ifndef GRAPHICSWIDGET_H
 #define GRAPHICSWIDGET_H
 
-#include <QColor>
+#include <QBrush>
 #include <QGraphicsWidget>
+#include <QPen>
 #include "core_global.h"
 
 namespace SchMatrix {
@@ -18,19 +19,15 @@ enum ItemTypes {
 
 class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   Q_OBJECT
-  Q_PROPERTY(QColor strokeColor READ getStrokeColor WRITE setStrokeColor NOTIFY
-                 strokeColorChanged)
-  Q_PROPERTY(QColor fillColor READ getFillColor WRITE setFillColor NOTIFY
-                 fillColorChanged)
 
  public:
   explicit GraphicsWidget(QGraphicsItem *parent = nullptr,
                           Qt::WindowFlags wFlags = Qt::WindowFlags());
 
-  QColor getStrokeColor() const;
-  void setStrokeColor(const QColor &value);
-  QColor getFillColor() const;
-  void setFillColor(const QColor &value);
+  QPen pen() const;
+  void setPen(const QPen &pen);
+  QBrush brush() const;
+  void setBrush(const QBrush &brush);
 
   static GraphicsWidget *Create(ItemTypes type, qreal x, qreal y, qreal width,
                                 qreal height);
@@ -40,15 +37,13 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   // Set automatically the transform point to the center
   void setUpdateTransformOriginPoint(bool enabled);
 
- signals:
-  void strokeColorChanged(QColor color);
-  void fillColorChanged(QColor color);
+  // QGraphicsItem interface
+  static QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path,
+                                                    const QPen &pen);
 
  protected:
-  virtual void strokeColorUpdate(const QColor &color);
-  virtual void fillColorUpdate(const QColor &color);
-
-  QColor m_strokeColor, m_fillColor;
+  QBrush m_brush;
+  QPen m_pen;
 };
 
 }  // namespace SchMatrix
