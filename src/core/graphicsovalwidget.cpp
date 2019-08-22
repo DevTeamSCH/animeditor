@@ -32,7 +32,7 @@ void GraphicsOvalWidget::paint(QPainter *painter,
                                const QStyleOptionGraphicsItem *, QWidget *) {
   painter->setPen(m_pen);
   painter->setBrush(m_brush);
-  auto rect = boundingRect();
+  auto rect = QGraphicsWidget::boundingRect();
 
   if ((m_spanAngle != 0) && (qAbs(m_spanAngle) % (360 * 16) == 0))
     painter->drawEllipse(rect);
@@ -60,9 +60,22 @@ void GraphicsOvalWidget::setSpanAngle(int angle) {
   }
 }
 
+QRectF GraphicsOvalWidget::boundingRect() const {
+  return shape().controlPointRect();
+
+  QRectF rect;
+  qreal pw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF();
+  if (pw == 0.0 && m_spanAngle == 360 * 16)
+    rect = QGraphicsWidget::boundingRect();
+  else
+    rect = shape().controlPointRect();
+
+  return rect;
+}
+
 QPainterPath GraphicsOvalWidget::shape() const {
   QPainterPath path;
-  auto rect = boundingRect();
+  auto rect = QGraphicsWidget::boundingRect();
   if (rect.isNull()) return path;
   if (m_spanAngle != 360 * 16) {
     path.moveTo(rect.center());

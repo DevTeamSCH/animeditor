@@ -31,6 +31,7 @@ class CORESHARED_EXPORT GraphicsOvalWidget : public SchMatrix::GraphicsWidget {
   void setStartAngle(int angle);
   int spanAngle() const;
   void setSpanAngle(int angle);
+  QRectF boundingRect() const override;
   QPainterPath shape() const override;
 
   // GraphicsWidget interface
