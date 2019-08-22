@@ -27,6 +27,7 @@ class CORESHARED_EXPORT GraphicsRectWidget : public SchMatrix::GraphicsWidget {
   int type() const override;
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
              QWidget *widget) override;
+  QRectF boundingRect() const override;
   QPainterPath shape() const override;
 
   // GraphicsWidget interface
