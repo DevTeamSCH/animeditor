@@ -1,5 +1,7 @@
 #include "graphicswidget.h"
 
+#include <keyframe.h>
+#include <QGraphicsSceneResizeEvent>
 #include <QMetaProperty>
 #include "graphicslinewidget.h"
 #include "graphicsovalwidget.h"
@@ -89,6 +91,38 @@ QPainterPath GraphicsWidget::qt_graphicsItem_shapeFromPath(
   QPainterPath p = ps.createStroke(path);
   p.addPath(path);
   return p;
+}
+
+SchMatrix::Keyframe *GraphicsWidget::currentKeyframe() const {
+  return m_currentKeyframe;
+}
+
+void GraphicsWidget::setCurrentKeyframe(SchMatrix::Keyframe *currentKeyframe) {
+  m_currentKeyframe = currentKeyframe;
+}
+
+bool GraphicsWidget::editing() const { return m_editing; }
+
+void GraphicsWidget::setEditing(bool editing) { m_editing = editing; }
+
+QVariant GraphicsWidget::itemChange(QGraphicsItem::GraphicsItemChange change,
+                                    const QVariant &value) {
+  if (change == ItemSelectedChange) m_editing = value.toBool();
+
+  if (m_editing == true && m_currentKeyframe) {
+    if (change == ItemPositionHasChanged)
+      m_currentKeyframe->assignProperty(this, "pos", value);
+    if (change == ItemRotationHasChanged)
+      m_currentKeyframe->assignProperty(this, "rotation", value);
+  }
+
+  return QGraphicsWidget::itemChange(change, value);
+}
+
+void GraphicsWidget::resizeEvent(QGraphicsSceneResizeEvent *event) {
+  if (m_editing == true && m_currentKeyframe) {
+    m_currentKeyframe->assignProperty(this, "size", event->newSize());
+  }
 }
 
 }  // namespace SchMatrix

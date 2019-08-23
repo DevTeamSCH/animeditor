@@ -17,6 +17,8 @@ enum ItemTypes {
   SymbolItem
 };
 
+class Keyframe;
+
 class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   Q_OBJECT
 
@@ -41,9 +43,24 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   static QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path,
                                                     const QPen &pen);
 
+  SchMatrix::Keyframe *currentKeyframe() const;
+  void setCurrentKeyframe(SchMatrix::Keyframe *currentKeyframe);
+
+  bool editing() const;
+  void setEditing(bool editing);
+
  protected:
   QBrush m_brush;
   QPen m_pen;
+  SchMatrix::Keyframe *m_currentKeyframe = nullptr;
+  bool m_editing = false;
+
+  // QGraphicsItem interface
+  QVariant itemChange(GraphicsItemChange change,
+                      const QVariant &value) override;
+
+  // QGraphicsWidget interface
+  void resizeEvent(QGraphicsSceneResizeEvent *event) override;
 };
 
 }  // namespace SchMatrix

@@ -411,6 +411,9 @@ Qt::ItemFlags SchMatrix::AnimationModel::flags(const QModelIndex &) const {
 }
 
 void AnimationModel::setTime(int mscec) {
+  // Disable item editing to prevent unwanted recursion
+  m_scene->clearSelection();
+
   // Workaround
   if (m_rootAnimation.state() == m_rootAnimation.Stopped) {
     m_rootAnimation.start();
@@ -423,6 +426,8 @@ void AnimationModel::setTime(int mscec) {
 void AnimationModel::setFrame(int frame) {
   auto oldFrame = currentFrame();
   auto lastFrame = this->lastFrame();
+
+  m_scene->clearSelection();
 
   // Workaround
   if (m_rootAnimation.state() == m_rootAnimation.Stopped) {
@@ -576,6 +581,7 @@ bool AnimationModel::createClassicTween() {
   }
 
   leftKeyframe->interpolate(duration, rigthKeyframe);
+  rigthKeyframe->setPrevKeyframe(leftKeyframe);
 
   m_rootAnimation.setCurrentTime(m_rootAnimation.currentTime());
 

@@ -22,6 +22,7 @@ Keyframe::Keyframe(const Keyframe &other) : Keyframe(nullptr) {
   for (auto object : animAssign.keys()) {
     // Clone object
     auto newObject = object->clone();
+    newObject->setCurrentKeyframe(this);
 
     // TODO Add Symbol's root animation
 
@@ -51,6 +52,14 @@ void Keyframe::assignProperty(SchMatrix::GraphicsWidget *object,
 
   if (m_animationAssignments[object].contains(name)) {
     auto objectAnim = m_animationAssignments[object][name];
+
+    // Update previous interpolated keyframe's end value
+    if (m_prevKeyframe && start == true) {
+      auto prevObject = *m_prevKeyframe->m_animationAssignments.keyBegin();
+      m_prevKeyframe->m_animationAssignments[prevObject][name]->setEndValue(
+          value);
+    }
+
     if (objectAnim->duration() == 0) {  // no interpolation
       objectAnim->setStartValue(value);
       objectAnim->setEndValue(value);
@@ -80,6 +89,8 @@ QPropertyAnimation *Keyframe::propertyAnimation(
 void Keyframe::addObject(SchMatrix::GraphicsWidget *object) {
   if (m_animationAssignments.contains(object)) return;
 
+  object->setCurrentKeyframe(this);
+
   // Store important properties
   assignProperty(object, "pos", object->pos());
   assignProperty(object, "rotation", object->rotation());
@@ -89,6 +100,8 @@ void Keyframe::addObject(SchMatrix::GraphicsWidget *object) {
 // Only remove object from assingnments and delete it's animations
 void Keyframe::removeObject(SchMatrix::GraphicsWidget *object) {
   if (!m_animationAssignments.contains(object)) return;
+
+  object->setCurrentKeyframe(nullptr);
 
   for (auto anim : m_animationAssignments[object]) {
     removeAnimation(anim);
@@ -146,6 +159,10 @@ void Keyframe::interpolate(int duration, const Keyframe *nextKeyframe) {
       currentObject, "size",
       nextKeyframe->m_animationAssignments[otherObject]["size"]->startValue(),
       false);
+}
+
+void Keyframe::setPrevKeyframe(Keyframe *prevKeyframe) {
+  m_prevKeyframe = prevKeyframe;
 }
 
 }  // namespace SchMatrix
