@@ -81,10 +81,9 @@ void Keyframe::addObject(SchMatrix::GraphicsWidget *object) {
   if (m_animationAssignments.contains(object)) return;
 
   // Store important properties
-  // geometry includes pos+size
-  assignProperty(object, "geometry", object->geometry());
+  assignProperty(object, "pos", object->pos());
   assignProperty(object, "rotation", object->rotation());
-  assignProperty(object, "scale", object->scale());
+  assignProperty(object, "size", object->size());
 }
 
 // Only remove object from assingnments and delete it's animations
@@ -131,21 +130,21 @@ void Keyframe::interpolate(int duration, const Keyframe *nextKeyframe) {
   auto otherObject = *nextKeyframe->m_animationAssignments.keyBegin();
 
   // Only intrepolate the most important properties for now
-  m_animationAssignments[currentObject]["geometry"]->setDuration(duration);
+  m_animationAssignments[currentObject]["pos"]->setDuration(duration);
   m_animationAssignments[currentObject]["rotation"]->setDuration(duration);
-  m_animationAssignments[currentObject]["scale"]->setDuration(duration);
+  m_animationAssignments[currentObject]["size"]->setDuration(duration);
 
-  assignProperty(currentObject, "geometry",
-                 nextKeyframe->m_animationAssignments[otherObject]["geometry"]
-                     ->startValue(),
-                 false);
+  assignProperty(
+      currentObject, "pos",
+      nextKeyframe->m_animationAssignments[otherObject]["pos"]->startValue(),
+      false);
   assignProperty(currentObject, "rotation",
                  nextKeyframe->m_animationAssignments[otherObject]["rotation"]
                      ->startValue(),
                  false);
   assignProperty(
-      currentObject, "scale",
-      nextKeyframe->m_animationAssignments[otherObject]["scale"]->startValue(),
+      currentObject, "size",
+      nextKeyframe->m_animationAssignments[otherObject]["size"]->startValue(),
       false);
 }
 

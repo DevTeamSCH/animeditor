@@ -186,11 +186,11 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
   m_currentItem->setTransformOriginPoint(center);
   m_currentItem->setUpdateTransformOriginPoint(true);
 
-  // Update rotation, geometry after editing
-  layer->currentKeyframe()->assignProperty(m_currentItem, "rotation",
-                                           m_currentItem->rotation());
-  layer->currentKeyframe()->assignProperty(m_currentItem, "geometry",
-                                           m_currentItem->geometry());
+  // Update pos, size after editing
+  layer->currentKeyframe()->assignProperty(m_currentItem, "pos",
+                                           m_currentItem->pos());
+  layer->currentKeyframe()->assignProperty(m_currentItem, "size",
+                                           m_currentItem->size());
 
   // Editing finished
   m_currentItem = nullptr;
