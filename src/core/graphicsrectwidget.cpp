@@ -30,7 +30,7 @@ int GraphicsRectWidget::type() const { return Type; }
 void GraphicsRectWidget::paint(QPainter *painter,
                                const QStyleOptionGraphicsItem *, QWidget *) {
   painter->setPen(m_pen);
-  painter->setBrush(Qt::cyan);
+  painter->setBrush(m_brush);
   painter->drawRect(QGraphicsWidget::boundingRect());
 }
 
