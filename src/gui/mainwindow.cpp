@@ -16,7 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
       m_currentScene(
           new QGraphicsScene(0, 0, SchMatrix::width, SchMatrix::height, this)),
       m_animationModel(m_currentScene, this),
-      m_actionGroup(this) {
+      m_actionGroup(this),
+      m_penColorPicker(Qt::black),
+      m_brushColorPicker(Qt::white) {
   ui->setupUi(this);
 
   ui->tableView->setModel(&m_animationModel);
@@ -26,6 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
   for (auto action : ui->mainToolBar->actions()) {
     m_actionGroup.addAction(action);
   }
+
+  // Add color pickers for pen and brush color
+  m_penColorPicker.setToolTip(tr("Stroke Color"));
+  m_brushColorPicker.setToolTip(tr("Fill Color"));
+  ui->mainToolBar->addWidget(&m_penColorPicker);
+  ui->mainToolBar->addWidget(&m_brushColorPicker);
 
   connect(&m_actionGroup, SIGNAL(triggered(QAction *)), ui->graphicsView,
           SLOT(updateCurrentTool(QAction *)));

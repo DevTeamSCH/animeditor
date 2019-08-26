@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QMainWindow>
 #include "animationmodel.h"
+#include "colorpicker.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,8 @@ class MainWindow : public QMainWindow {
   QGraphicsScene *m_currentScene;
   SchMatrix::AnimationModel m_animationModel;
   QActionGroup m_actionGroup;
+  SchMatrix::ColorPicker m_penColorPicker;
+  SchMatrix::ColorPicker m_brushColorPicker;
 };
 
 #endif  // MAINWINDOW_H
