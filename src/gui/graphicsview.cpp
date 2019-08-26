@@ -45,11 +45,13 @@ void GraphicsView::updateCurrentTool(QAction *action) {
     setDragMode(ScrollHandDrag);
     m_currentTool = Tools::HandTool;
     m_creationEnabled = false;
+    setInteractive(false);
   }
   if (name == "actionZoom_Tool") {
     m_currentTool = Tools::ZoomTool;
     m_creationEnabled = false;
-  };
+    setInteractive(false);
+  }
 
   // Creation enabled
   if (name == "actionText_Tool") {
@@ -81,6 +83,10 @@ void GraphicsView::updateCurrentTool(QAction *action) {
   // Reset Drag
   if (m_currentTool != Tools::SelectionTool && m_currentTool != Tools::HandTool)
     setDragMode(NoDrag);
+
+  // Reset interactive
+  if (m_currentTool != Tools::HandTool && m_currentTool != Tools::ZoomTool)
+    setInteractive(true);
 }
 
 void GraphicsView::mousePressEvent(QMouseEvent *event) {
@@ -99,10 +105,12 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
 }
 
 void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
-  QGraphicsView::mouseMoveEvent(event);
   QSettings settings;
 
-  if (m_creationEnabled == false) return;
+  if (m_creationEnabled == false) {
+    QGraphicsView::mouseMoveEvent(event);
+    return;
+  }
 
   auto pos = mapToScene(event->pos());
   auto layer = m_animationModel->currentLayer();
