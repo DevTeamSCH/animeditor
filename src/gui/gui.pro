@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        colorpicker.cpp \
         framedelegate.cpp \
         graphicsview.cpp \
         horizontalheader.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
         timelineview.cpp
 
 HEADERS += \
+        colorpicker.h \
         framedelegate.h \
         graphicsview.h \
         horizontalheader.h \
