@@ -5,6 +5,7 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsWidget>
 #include <QModelIndex>
+#include <QSettings>
 #include "animationmodel.h"
 #include "config.h"
 #include "framedelegate.h"
@@ -35,8 +36,30 @@ MainWindow::MainWindow(QWidget *parent)
   ui->mainToolBar->addWidget(&m_penColorPicker);
   ui->mainToolBar->addWidget(&m_brushColorPicker);
 
+  // Settings creation
+  QSettings settings;
+
+  settings.beginGroup("MainWindow");
+  settings.setValue("penColor", m_penColorPicker.currentColor());
+  settings.setValue("brushColor", m_brushColorPicker.currentColor());
+  settings.endGroup();
+
   connect(&m_actionGroup, SIGNAL(triggered(QAction *)), ui->graphicsView,
           SLOT(updateCurrentTool(QAction *)));
+  connect(&m_penColorPicker, SIGNAL(currentColorChanged(QColor)), this,
+          SLOT(updatePenColor(QColor)));
+  connect(&m_brushColorPicker, SIGNAL(currentColorChanged(QColor)), this,
+          SLOT(updateBrushColor(QColor)));
 }
 
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::updatePenColor(const QColor &color) {
+  QSettings settings;
+  settings.setValue("MainWindow/penColor", m_penColorPicker.currentColor());
+}
+
+void MainWindow::updateBrushColor(const QColor &color) {
+  QSettings settings;
+  settings.setValue("MainWindow/brushColor", m_brushColorPicker.currentColor());
+}

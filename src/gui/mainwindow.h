@@ -19,6 +19,10 @@ class MainWindow : public QMainWindow {
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
+ private slots:
+  void updatePenColor(const QColor &color);
+  void updateBrushColor(const QColor &color);
+
  private:
   Ui::MainWindow *ui;
   QGraphicsScene *m_currentScene;

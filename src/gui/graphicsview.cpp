@@ -1,5 +1,6 @@
 #include "graphicsview.h"
 
+#include <QSettings>
 #include "animationmodel.h"
 #include "graphicslinewidget.h"
 #include "keyframe.h"
@@ -84,6 +85,7 @@ void GraphicsView::updateCurrentTool(QAction *action) {
 
 void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
   QGraphicsView::mouseMoveEvent(event);
+  QSettings settings;
 
   if (m_creationEnabled == false) return;
 
@@ -94,6 +96,10 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
   if (!m_currentItem) {
     m_currentItem =
         GraphicsWidget::Create(m_currentItemType, pos.x(), pos.y(), 0, 0);
+    m_currentItem->setPen(
+        QPen(settings.value("MainWindow/penColor").value<QColor>()));
+    m_currentItem->setBrush(
+        QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
 
     layer->addItem(m_currentItem);
 
