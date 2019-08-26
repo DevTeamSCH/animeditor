@@ -35,6 +35,7 @@ class GraphicsView : public QGraphicsView {
 
   // QWidget interface
  protected:
+  void mousePressEvent(QMouseEvent *event) override;
   void mouseMoveEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent *event) override;
 

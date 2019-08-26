@@ -83,6 +83,21 @@ void GraphicsView::updateCurrentTool(QAction *action) {
     setDragMode(NoDrag);
 }
 
+void GraphicsView::mousePressEvent(QMouseEvent *event) {
+  QSettings settings;
+
+  if (m_currentTool == Tools::PaintBucketTool) {
+    auto item = scene()->itemAt(mapToScene(event->pos()), transform());
+
+    if (!item) return;
+
+    static_cast<SchMatrix::GraphicsWidget *>(item)->setBrush(
+        QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
+  } else {
+    QGraphicsView::mousePressEvent(event);
+  }
+}
+
 void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
   QGraphicsView::mouseMoveEvent(event);
   QSettings settings;
