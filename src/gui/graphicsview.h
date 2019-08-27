@@ -39,6 +39,9 @@ class GraphicsView : public QGraphicsView {
   void mouseMoveEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent *event) override;
 
+  // QGraphicsView interface
+  void drawBackground(QPainter *painter, const QRectF &rect) override;
+
  private:
   Tools m_currentTool = Tools::SelectionTool;
   SchMatrix::ItemTypes m_currentItemType = ItemTypes::Rectangle;

@@ -14,6 +14,7 @@ GraphicsView::GraphicsView(QGraphicsScene *scene, QWidget *parent)
 
 GraphicsView::GraphicsView(QWidget *parent) : QGraphicsView(parent) {
   setDragMode(RubberBandDrag);
+  setBackgroundBrush(Qt::gray);
 }
 
 void GraphicsView::setModel(AnimationModel *model) {
@@ -223,6 +224,15 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
 
   // Editing finished
   m_currentItem = nullptr;
+}
+
+void GraphicsView::drawBackground(QPainter *painter, const QRectF &rect) {
+  QGraphicsView::drawBackground(painter, rect);
+
+  painter->setPen(QPen(Qt::black, 0));
+  painter->setBrush(Qt::white);
+
+  painter->drawRect(sceneRect());
 }
 
 }  // namespace SchMatrix
