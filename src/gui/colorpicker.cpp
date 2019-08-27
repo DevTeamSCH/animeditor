@@ -22,7 +22,8 @@ void ColorPicker::setCurrentColor(const QColor &currentColor) {
 void ColorPicker::mousePressEvent(QMouseEvent *event) {
   if (!(event->buttons() & Qt::LeftButton)) return;
 
-  QColor color = QColorDialog::getColor(m_currentColor, this);
+  QColor color = QColorDialog::getColor(m_currentColor, this, QString(),
+                                        QColorDialog::ShowAlphaChannel);
 
   if (color.isValid()) {
     m_currentColor = color;
@@ -36,9 +37,20 @@ void ColorPicker::paintEvent(QPaintEvent *event) {
 
   QPainter painter(this);
 
+  auto rect = contentsRect();
   painter.setPen(Qt::NoPen);
-  painter.setBrush(m_currentColor);
-  painter.drawRect(contentsRect());
+
+  // Visualize no brush/pen
+  if (m_currentColor.alpha() == 0) {
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setBrush(Qt::white);
+    painter.drawRect(rect);
+    painter.setPen(Qt::red);
+    painter.drawLine(rect.bottomLeft(), rect.topRight());
+  } else {  // Normal paint
+    painter.setBrush(m_currentColor);
+    painter.drawRect(rect);
+  }
 }
 
 }  // namespace SchMatrix
