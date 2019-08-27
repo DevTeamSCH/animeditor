@@ -1,6 +1,7 @@
 #include "graphicsview.h"
 
 #include <QSettings>
+#include <QStyleOptionGraphicsItem>
 #include "animationmodel.h"
 #include "graphicslinewidget.h"
 #include "keyframe.h"
@@ -224,6 +225,27 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
 
   // Editing finished
   m_currentItem = nullptr;
+}
+
+void SchMatrix::GraphicsView::wheelEvent(QWheelEvent *event) {
+  if (event->modifiers() & Qt::CTRL) {
+    const qreal detail =
+        QStyleOptionGraphicsItem::levelOfDetailFromTransform(transform());
+    const qreal factor = 1.1;
+
+    setTransformationAnchor(AnchorUnderMouse);
+
+    // Zoom in
+    if ((detail < 50) && (event->angleDelta().y() > 0)) scale(factor, factor);
+
+    // Zoom out
+    if ((detail > 1) && (event->angleDelta().y() < 0))
+      scale((1 / factor), (1 / factor));
+
+    event->accept();
+  } else {
+    QGraphicsView::wheelEvent(event);
+  }
 }
 
 void GraphicsView::drawBackground(QPainter *painter, const QRectF &rect) {

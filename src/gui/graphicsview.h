@@ -38,6 +38,7 @@ class GraphicsView : public QGraphicsView {
   void mousePressEvent(QMouseEvent *event) override;
   void mouseMoveEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent *event) override;
+  void wheelEvent(QWheelEvent *event) override;
 
   // QGraphicsView interface
   void drawBackground(QPainter *painter, const QRectF &rect) override;
