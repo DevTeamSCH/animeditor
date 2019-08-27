@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
   ui->graphicsView->setScene(m_currentScene);
   ui->graphicsView->setModel(&m_animationModel);
 
+  // Zoom graphicsView to make the scene not too small
+  ui->graphicsView->fitInView(0, 0, 3, 3, Qt::KeepAspectRatio);
+
   for (auto action : ui->mainToolBar->actions()) {
     m_actionGroup.addAction(action);
   }
