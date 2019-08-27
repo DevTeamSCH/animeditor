@@ -101,6 +101,8 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
 
     static_cast<SchMatrix::GraphicsWidget *>(item)->setBrush(
         QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
+
+    event->accept();
   } else {
     QGraphicsView::mousePressEvent(event);
   }
@@ -109,7 +111,7 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
 void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
   QSettings settings;
 
-  if (m_creationEnabled == false) {
+  if (m_creationEnabled == false || !(event->buttons() & Qt::LeftButton)) {
     QGraphicsView::mouseMoveEvent(event);
     return;
   }
@@ -178,6 +180,8 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
 
     line->setLine(0, 0, width, height);
   }
+
+  event->accept();
 }
 
 void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
