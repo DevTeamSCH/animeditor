@@ -21,6 +21,8 @@ class Keyframe;
 
 class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   Q_OBJECT
+  Q_PROPERTY(QPen pen READ pen WRITE setPen)
+  Q_PROPERTY(QBrush brush READ brush WRITE setBrush)
 
  public:
   explicit GraphicsWidget(QGraphicsItem *parent = nullptr,
