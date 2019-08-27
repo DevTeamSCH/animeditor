@@ -53,7 +53,7 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
 
  protected:
   QBrush m_brush;
-  QPen m_pen;
+  QPen m_pen = QPen(Qt::black, 0);  // https://doc.qt.io/qt-5/qpen.html#setWidth
   SchMatrix::Keyframe *m_currentKeyframe = nullptr;
   bool m_editing = false;
 

@@ -1,5 +1,6 @@
 #include "graphicsview.h"
 
+#include <QDebug>
 #include <QSettings>
 #include <QStyleOptionGraphicsItem>
 #include "animationmodel.h"
@@ -124,7 +125,7 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
     m_currentItem =
         GraphicsWidget::Create(m_currentItemType, pos.x(), pos.y(), 0, 0);
     m_currentItem->setPen(
-        QPen(settings.value("MainWindow/penColor").value<QColor>()));
+        QPen(settings.value("MainWindow/penColor").value<QColor>(), 0));
     m_currentItem->setBrush(
         QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
 
