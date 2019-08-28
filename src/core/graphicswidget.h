@@ -57,6 +57,9 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   SchMatrix::Keyframe *m_currentKeyframe = nullptr;
   bool m_editing = false;
 
+  virtual void updatePen();
+  virtual void updateBrush();
+
   // QGraphicsItem interface
   QVariant itemChange(GraphicsItemChange change,
                       const QVariant &value) override;

@@ -105,6 +105,10 @@ bool GraphicsWidget::editing() const { return m_editing; }
 
 void GraphicsWidget::setEditing(bool editing) { m_editing = editing; }
 
+void GraphicsWidget::updatePen() {}
+
+void GraphicsWidget::updateBrush() {}
+
 QVariant GraphicsWidget::itemChange(QGraphicsItem::GraphicsItemChange change,
                                     const QVariant &value) {
   if (change == ItemSelectedChange) m_editing = value.toBool();
