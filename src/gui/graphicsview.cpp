@@ -129,6 +129,14 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
         auto pos = mapToScene(event->pos());
         auto item = SchMatrix::GraphicsWidget::Create(m_currentItemType,
                                                       pos.x(), pos.y(), 0, 0);
+        auto textWidget =
+            qgraphicsitem_cast<SchMatrix::GraphicsTextWidget *>(item);
+
+        item->setPen(
+            QPen(settings.value("MainWindow/penColor").value<QColor>(), 0));
+        item->setBrush(
+            QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
+        textWidget->textItem().setDefaultTextColor(textWidget->pen().color());
         layer->addItem(item);
       }
     }

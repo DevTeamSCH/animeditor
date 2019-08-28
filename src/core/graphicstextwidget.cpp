@@ -54,4 +54,8 @@ QVariant GraphicsTextWidget::itemChange(
   return SchMatrix::GraphicsWidget::itemChange(change, value);
 }
 
+void GraphicsTextWidget::updatePen() {
+  m_text.setDefaultTextColor(m_pen.color());
+}
+
 }  // namespace SchMatrix
