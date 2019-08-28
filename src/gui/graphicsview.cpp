@@ -5,6 +5,7 @@
 #include <QStyleOptionGraphicsItem>
 #include "animationmodel.h"
 #include "graphicslinewidget.h"
+#include "graphicstextwidget.h"
 #include "keyframe.h"
 #include "layer.h"
 #include "symbol.h"
@@ -29,6 +30,12 @@ void GraphicsView::setModel(AnimationModel *model) {
 
 void GraphicsView::updateCurrentTool(QAction *action) {
   auto name = action->objectName();
+
+  // Disable text editing
+  if (m_currentTool == Tools::TextTool && name != "actionText_Tool") {
+    scene()->clearSelection();
+    m_currentItem = nullptr;
+  }
 
   // Creation disabled
   if (name == "actionSelection_Tool") {
@@ -94,16 +101,37 @@ void GraphicsView::updateCurrentTool(QAction *action) {
 
 void GraphicsView::mousePressEvent(QMouseEvent *event) {
   QSettings settings;
+  auto item = scene()->itemAt(mapToScene(event->pos()), transform());
 
   if (m_currentTool == Tools::PaintBucketTool) {
-    auto item = scene()->itemAt(mapToScene(event->pos()), transform());
-
     if (!item) return;
 
     static_cast<SchMatrix::GraphicsWidget *>(item)->setBrush(
         QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
 
     event->accept();
+  } else if (m_currentTool == Tools::TextTool) {
+    if (item) {  // Click inside the item
+      auto textWidget =
+          qgraphicsitem_cast<SchMatrix::GraphicsTextWidget *>(item);
+
+      if (!textWidget) return;
+
+      textWidget->textItem().setTextInteractionFlags(Qt::TextEditorInteraction);
+      m_currentItem = textWidget;
+      QGraphicsView::mousePressEvent(event);
+    } else {  // Click outside
+      if (m_currentItem) {
+        m_currentItem = nullptr;
+        QGraphicsView::mousePressEvent(event);
+      } else {
+        auto layer = m_animationModel->currentLayer();
+        auto pos = mapToScene(event->pos());
+        auto item = SchMatrix::GraphicsWidget::Create(m_currentItemType,
+                                                      pos.x(), pos.y(), 0, 0);
+        layer->addItem(item);
+      }
+    }
   } else {
     QGraphicsView::mousePressEvent(event);
   }
@@ -112,7 +140,8 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
 void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
   QSettings settings;
 
-  if (m_creationEnabled == false || !(event->buttons() & Qt::LeftButton)) {
+  if (m_creationEnabled == false || !(event->buttons() & Qt::LeftButton) ||
+      m_currentTool == Tools::TextTool) {
     QGraphicsView::mouseMoveEvent(event);
     return;
   }
@@ -189,6 +218,7 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
   QGraphicsView::mouseReleaseEvent(event);
 
   if (!m_currentItem) return;
+  if (m_currentTool == Tools::TextTool && m_currentItem) return;
 
   auto layer = m_animationModel->currentLayer();
   auto width = m_currentItem->size().width();
