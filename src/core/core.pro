@@ -30,7 +30,7 @@ SOURCES += \
         config.cpp \
         graphicslinewidget.cpp \
         graphicsovalwidget.cpp \
-        graphicspathwidget.cpp \
+        graphicspencilwidget.cpp \
         graphicsrectwidget.cpp \
         graphicstextwidget.cpp \
         graphicswidget.cpp \
@@ -45,7 +45,7 @@ HEADERS += \
         core_global.h  \
         graphicslinewidget.h \
         graphicsovalwidget.h \
-        graphicspathwidget.h \
+        graphicspencilwidget.h \
         graphicsrectwidget.h \
         graphicstextwidget.h \
         graphicswidget.h \

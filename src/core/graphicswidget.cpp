@@ -5,7 +5,7 @@
 #include <QMetaProperty>
 #include "graphicslinewidget.h"
 #include "graphicsovalwidget.h"
-#include "graphicspathwidget.h"
+#include "graphicspencilwidget.h"
 #include "graphicsrectwidget.h"
 #include "graphicstextwidget.h"
 
@@ -45,7 +45,7 @@ GraphicsWidget *GraphicsWidget::Create(ItemTypes type, qreal x, qreal y,
   if (type == ItemTypes::Text)
     return new SchMatrix::GraphicsTextWidget(tr("INSERT TEXT HERE"), x, y);
   if (type == ItemTypes::Pencil)
-    return new SchMatrix::GraphicsPathWidget(QPainterPath(), x, y);
+    return new SchMatrix::GraphicsPencilWidget(QPainterPath(), x, y);
   if (type == ItemTypes::Rectangle)
     return new SchMatrix::GraphicsRectWidget(x, y, width, height);
 
