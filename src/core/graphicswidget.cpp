@@ -23,6 +23,7 @@ void GraphicsWidget::setPen(const QPen &pen) {
   if (m_pen == pen) return;
   prepareGeometryChange();
   m_pen = pen;
+  updatePen();
   update();
 }
 
@@ -31,6 +32,7 @@ QBrush GraphicsWidget::brush() const { return m_brush; }
 void GraphicsWidget::setBrush(const QBrush &brush) {
   if (m_brush == brush) return;
   m_brush = brush;
+  updateBrush();
   update();
 }
 
