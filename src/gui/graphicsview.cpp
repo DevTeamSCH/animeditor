@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <QStyleOptionGraphicsItem>
+#include <QTextDocument>
 #include "animationmodel.h"
 #include "graphicslinewidget.h"
 #include "graphicstextwidget.h"
@@ -33,7 +34,12 @@ void GraphicsView::updateCurrentTool(QAction *action) {
 
   // Disable text editing
   if (m_currentTool == Tools::TextTool && name != "actionText_Tool") {
-    scene()->clearSelection();
+    auto textWidget =
+        qgraphicsitem_cast<SchMatrix::GraphicsTextWidget *>(m_currentItem);
+
+    if (textWidget)
+      textWidget->textItem().setTextInteractionFlags(Qt::NoTextInteraction);
+
     m_currentItem = nullptr;
   }
 
@@ -112,16 +118,42 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
     event->accept();
   } else if (m_currentTool == Tools::TextTool) {
     if (item) {  // Click inside the item
+      auto textItem = qgraphicsitem_cast<QGraphicsTextItem *>(item);
       auto textWidget =
-          qgraphicsitem_cast<SchMatrix::GraphicsTextWidget *>(item);
+          qgraphicsitem_cast<SchMatrix::GraphicsTextWidget *>(m_currentItem);
 
-      if (!textWidget) return;
+      // auto deletion
+      if (textWidget && textWidget->textItem().document()->isEmpty()) {
+        m_animationModel->currentLayer()->currentKeyframe()->deleteObject(
+            textWidget);
+        m_currentItem = nullptr;
+        return;
+      }
 
-      textWidget->textItem().setTextInteractionFlags(Qt::TextEditorInteraction);
-      m_currentItem = textWidget;
+      if (!textItem) return;
+
+      textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
+      m_currentItem =
+          static_cast<SchMatrix::GraphicsTextWidget *>(textItem->parentItem());
       QGraphicsView::mousePressEvent(event);
     } else {  // Click outside
       if (m_currentItem) {
+        auto textWidget =
+            qgraphicsitem_cast<SchMatrix::GraphicsTextWidget *>(m_currentItem);
+
+        if (!textWidget) return;
+
+        // auto deletion
+        if (textWidget->textItem().document()->isEmpty()) {
+          m_animationModel->currentLayer()->currentKeyframe()->deleteObject(
+              textWidget);
+          m_currentItem = nullptr;
+          return;
+        }
+
+        textWidget->resize(textWidget->textItem().boundingRect().size());
+        textWidget->textItem().setTextInteractionFlags(Qt::NoTextInteraction);
+
         m_currentItem = nullptr;
         QGraphicsView::mousePressEvent(event);
       } else {
@@ -226,6 +258,8 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
   QGraphicsView::mouseReleaseEvent(event);
 
   if (!m_currentItem) return;
+
+  // Skip currently edited text
   if (m_currentTool == Tools::TextTool && m_currentItem) return;
 
   auto layer = m_animationModel->currentLayer();

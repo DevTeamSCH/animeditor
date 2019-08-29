@@ -28,9 +28,6 @@ class CORESHARED_EXPORT GraphicsTextWidget : public SchMatrix::GraphicsWidget {
 
   // QGraphicsItem interface
  protected:
-  void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-  QVariant itemChange(GraphicsItemChange change,
-                      const QVariant &value) override;
   void updatePen() override;
 
  private:
