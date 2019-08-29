@@ -6,6 +6,7 @@
 #include <QTextDocument>
 #include "animationmodel.h"
 #include "graphicslinewidget.h"
+#include "graphicspencilwidget.h"
 #include "graphicstextwidget.h"
 #include "keyframe.h"
 #include "layer.h"
@@ -39,6 +40,16 @@ void GraphicsView::updateCurrentTool(QAction *action) {
 
     if (textWidget)
       textWidget->textItem().setTextInteractionFlags(Qt::NoTextInteraction);
+
+    m_currentItem = nullptr;
+  }
+
+  // Disable pencil editing
+  if (m_currentTool == Tools::PencilTool && name != "actionPencil_Tool") {
+    auto pencilWidget =
+        qgraphicsitem_cast<SchMatrix::GraphicsPencilWidget *>(m_currentItem);
+
+    if (pencilWidget) pencilWidget->setDrawingEnabled(false);
 
     m_currentItem = nullptr;
   }
@@ -172,6 +183,41 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
         layer->addItem(item);
       }
     }
+  } else if (m_currentTool == Tools::PencilTool) {
+    if (item) {  // Click inside the item
+      auto pencilWidget =
+          qgraphicsitem_cast<SchMatrix::GraphicsPencilWidget *>(item);
+
+      if (!pencilWidget) return;
+
+      m_currentItem = pencilWidget;
+      pencilWidget->setDrawingEnabled(true);
+      QGraphicsView::mousePressEvent(event);
+    } else {  // Click outside
+      if (m_currentItem) {
+        auto pencilWidget =
+            qgraphicsitem_cast<SchMatrix::GraphicsPencilWidget *>(
+                m_currentItem);
+
+        if (!pencilWidget) return;
+
+        pencilWidget->setDrawingEnabled(false);
+
+        m_currentItem = nullptr;
+        QGraphicsView::mousePressEvent(event);
+      } else {
+        auto layer = m_animationModel->currentLayer();
+        auto pos = mapToScene(event->pos());
+        auto pencilWidget = SchMatrix::GraphicsWidget::Create(
+            m_currentItemType, pos.x(), pos.y(), 32, 26);
+
+        pencilWidget->setPen(
+            QPen(settings.value("MainWindow/penColor").value<QColor>(), 0));
+        pencilWidget->setBrush(
+            QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
+        layer->addItem(pencilWidget);
+      }
+    }
   } else {
     QGraphicsView::mousePressEvent(event);
   }
@@ -181,7 +227,7 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
   QSettings settings;
 
   if (m_creationEnabled == false || !(event->buttons() & Qt::LeftButton) ||
-      m_currentTool == Tools::TextTool) {
+      m_currentTool == Tools::TextTool || m_currentTool == Tools::PencilTool) {
     QGraphicsView::mouseMoveEvent(event);
     return;
   }
@@ -261,6 +307,7 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
 
   // Skip currently edited text
   if (m_currentTool == Tools::TextTool && m_currentItem) return;
+  if (m_currentTool == Tools::PencilTool && m_currentItem) return;
 
   auto layer = m_animationModel->currentLayer();
   auto width = m_currentItem->size().width();

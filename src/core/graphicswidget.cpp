@@ -45,7 +45,7 @@ GraphicsWidget *GraphicsWidget::Create(ItemTypes type, qreal x, qreal y,
   if (type == ItemTypes::Text)
     return new SchMatrix::GraphicsTextWidget(tr("INSERT TEXT HERE"), x, y);
   if (type == ItemTypes::Pencil)
-    return new SchMatrix::GraphicsPencilWidget(QPainterPath(), x, y);
+    return new SchMatrix::GraphicsPencilWidget(x, y, width, height);
   if (type == ItemTypes::Rectangle)
     return new SchMatrix::GraphicsRectWidget(x, y, width, height);
 
