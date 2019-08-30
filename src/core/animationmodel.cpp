@@ -395,7 +395,9 @@ bool AnimationModel::removeData(const QModelIndex &index) {
       emit dataChanged(createIndex(row, col), createIndex(row, col));
     }
 
-    delete currentAnimation;
+    // Delete keyframe
+    m_currentLayer->deleteKeyframe(
+        static_cast<SchMatrix::Keyframe *>(currentAnimation));
   }
 
   m_animTimeline[row].removeAt(col);
