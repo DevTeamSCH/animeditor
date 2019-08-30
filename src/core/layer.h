@@ -40,6 +40,8 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   void removeItem(SchMatrix::GraphicsWidget *item);
   SchMatrix::Symbol *convertToSymbol(
       const QList<SchMatrix::GraphicsWidget *> &items);
+  void deleteItem(SchMatrix::GraphicsWidget *item);
+  void deleteKeyframe(SchMatrix::Keyframe *keyframe);
 
  private slots:
   void updateLayer(QAbstractAnimation *current);

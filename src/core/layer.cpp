@@ -184,6 +184,21 @@ Symbol *Layer::convertToSymbol(const QList<GraphicsWidget *> &items) {
   return symbol;
 }
 
+void Layer::deleteItem(GraphicsWidget *item) {
+  currentKeyframe()->deleteObject(item);
+
+  m_currentItems.removeAll(item);
+}
+
+void Layer::deleteKeyframe(Keyframe *keyframe) {
+  // Remove item from currentItems if exists
+  for (auto item : keyframe->objects()) {
+    m_currentItems.removeAll(item);
+  }
+
+  delete keyframe;
+}
+
 // Note: this function will be called for all the animations before/after the
 // current animation
 void Layer::updateLayer(QAbstractAnimation *current) {
