@@ -143,6 +143,10 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
 
       if (!textItem) return;
 
+      // Disable current text
+      if (textWidget)
+        textWidget->textItem().setTextInteractionFlags(Qt::NoTextInteraction);
+
       textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
       m_currentItem =
           static_cast<SchMatrix::GraphicsTextWidget *>(textItem->parentItem());
@@ -189,6 +193,12 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
           qgraphicsitem_cast<SchMatrix::GraphicsPencilWidget *>(item);
 
       if (!pencilWidget) return;
+
+      auto currenPencilWidget =
+          qgraphicsitem_cast<SchMatrix::GraphicsPencilWidget *>(m_currentItem);
+
+      // Disable current item drawing
+      if (currenPencilWidget) currenPencilWidget->setDrawingEnabled(false);
 
       m_currentItem = pencilWidget;
       pencilWidget->setDrawingEnabled(true);
