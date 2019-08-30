@@ -207,9 +207,18 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
         QGraphicsView::mousePressEvent(event);
       } else {
         auto layer = m_animationModel->currentLayer();
+        auto size = scene()->sceneRect().size();
         auto pos = mapToScene(event->pos());
-        auto pencilWidget = SchMatrix::GraphicsWidget::Create(
-            m_currentItemType, pos.x(), pos.y(), 32, 26);
+        SchMatrix::GraphicsWidget *pencilWidget = nullptr;
+
+        // Create at fix position
+        if (sceneRect().contains(pos)) {
+          pencilWidget = SchMatrix::GraphicsWidget::Create(
+              m_currentItemType, 0, 0, size.width(), size.height());
+        } else {  // Create at pos
+          pencilWidget = SchMatrix::GraphicsWidget::Create(
+              m_currentItemType, pos.x(), pos.y(), size.width(), size.height());
+        }
 
         pencilWidget->setPen(
             QPen(settings.value("MainWindow/penColor").value<QColor>(), 0));

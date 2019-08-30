@@ -12,6 +12,7 @@ namespace SchMatrix {
 class CORESHARED_EXPORT GraphicsPencilWidget
     : public SchMatrix::GraphicsWidget {
   Q_OBJECT
+  Q_PROPERTY(bool gridEnabled READ gridEnabled WRITE setGridEnabled)
 
  public:
   explicit GraphicsPencilWidget(qreal x, qreal y, int width = SchMatrix::width,
@@ -33,6 +34,9 @@ class CORESHARED_EXPORT GraphicsPencilWidget
 
   void setDrawingEnabled(bool drawingEnabled);
 
+  bool gridEnabled() const;
+  void setGridEnabled(bool gridEnabled);
+
   // QGraphicsItem interface
  protected:
   void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -43,6 +47,7 @@ class CORESHARED_EXPORT GraphicsPencilWidget
   QImage m_image;
   QVector<QLine> m_gridLines;
   bool m_drawingEnabled = false;
+  bool m_gridEnabled = true;
 };
 
 }  // namespace SchMatrix
