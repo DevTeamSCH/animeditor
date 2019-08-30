@@ -135,8 +135,7 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
 
       // auto deletion
       if (textWidget && textWidget->textItem().document()->isEmpty()) {
-        m_animationModel->currentLayer()->currentKeyframe()->deleteObject(
-            textWidget);
+        m_animationModel->currentLayer()->deleteItem(textWidget);
         m_currentItem = nullptr;
         return;
       }
@@ -160,8 +159,7 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
 
         // auto deletion
         if (textWidget->textItem().document()->isEmpty()) {
-          m_animationModel->currentLayer()->currentKeyframe()->deleteObject(
-              textWidget);
+          m_animationModel->currentLayer()->deleteItem(textWidget);
           m_currentItem = nullptr;
           return;
         }
