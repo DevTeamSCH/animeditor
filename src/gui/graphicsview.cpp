@@ -393,23 +393,35 @@ void GraphicsView::keyPressEvent(QKeyEvent *event) {
   if (m_currentTool == Tools::SelectionTool ||
       m_currentTool == Tools::TransformTool) {
     auto items = scene()->selectedItems();
+    auto key = event->key();
 
     if (items.empty() == false) {
+      // Item deletion by key
+      if (key == Qt::Key_Delete || key == Qt::Key_Backspace) {
+        for (auto item : items) {
+          m_animationModel->currentLayer()->deleteItem(
+              static_cast<SchMatrix::GraphicsWidget *>(item));
+          updateKeyframeLook();
+        }
+
+        return;
+      }
+
       // Set step unit
       qreal x = (event->modifiers() & Qt::SHIFT) ? 5 : 1;
       qreal y = x;
 
       for (auto item : items) {
-        if (event->key() == Qt::Key_Left) {
+        if (key == Qt::Key_Left) {
           item->moveBy(-x, 0);
         }
-        if (event->key() == Qt::Key_Right) {
+        if (key == Qt::Key_Right) {
           item->moveBy(x, 0);
         }
-        if (event->key() == Qt::Key_Up) {
+        if (key == Qt::Key_Up) {
           item->moveBy(0, -y);
         }
-        if (event->key() == Qt::Key_Down) {
+        if (key == Qt::Key_Down) {
           item->moveBy(0, y);
         }
       }
