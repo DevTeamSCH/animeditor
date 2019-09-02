@@ -4,7 +4,6 @@
 #include <QSettings>
 #include <QStyleOptionGraphicsItem>
 #include <QTextDocument>
-#include "animationmodel.h"
 #include "graphicslinewidget.h"
 #include "graphicspencilwidget.h"
 #include "graphicstextwidget.h"
@@ -137,6 +136,7 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
       if (textWidget && textWidget->textItem().document()->isEmpty()) {
         m_animationModel->currentLayer()->deleteItem(textWidget);
         m_currentItem = nullptr;
+        updateKeyframeLook();
         return;
       }
 
@@ -161,6 +161,7 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
         if (textWidget->textItem().document()->isEmpty()) {
           m_animationModel->currentLayer()->deleteItem(textWidget);
           m_currentItem = nullptr;
+          updateKeyframeLook();
           return;
         }
 
@@ -183,6 +184,7 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
             QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
         textWidget->textItem().setDefaultTextColor(textWidget->pen().color());
         layer->addItem(item);
+        updateKeyframeLook();
       }
     }
   } else if (m_currentTool == Tools::PencilTool) {
@@ -233,6 +235,7 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
         pencilWidget->setBrush(
             QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
         layer->addItem(pencilWidget);
+        updateKeyframeLook();
       }
     }
   } else {
@@ -262,12 +265,7 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
         QBrush(settings.value("MainWindow/brushColor").value<QColor>()));
 
     layer->addItem(m_currentItem);
-
-    m_animationModel->setData(
-        m_animationModel->index(
-            m_animationModel->currentLayerIdx(),
-            layer->animFramePosition(layer->currentKeyframe())),
-        SchMatrix::Key, Qt::UserRole);
+    updateKeyframeLook();
   }
 
   // Editing until released
@@ -426,6 +424,24 @@ void GraphicsView::drawBackground(QPainter *painter, const QRectF &rect) {
   painter->setBrush(Qt::white);
 
   painter->drawRect(sceneRect());
+}
+
+void GraphicsView::updateKeyframeLook() {
+  auto layer = m_animationModel->currentLayer();
+
+  if (layer->currentKeyframe()->empty()) {
+    m_animationModel->setData(
+        m_animationModel->index(
+            m_animationModel->currentLayerIdx(),
+            layer->animFramePosition(layer->currentKeyframe())),
+        SchMatrix::FrameTypes::BlankKey, Qt::UserRole);
+  } else {
+    m_animationModel->setData(
+        m_animationModel->index(
+            m_animationModel->currentLayerIdx(),
+            layer->animFramePosition(layer->currentKeyframe())),
+        SchMatrix::FrameTypes::Key, Qt::UserRole);
+  }
 }
 
 }  // namespace SchMatrix

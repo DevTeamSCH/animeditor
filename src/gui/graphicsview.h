@@ -3,11 +3,10 @@
 
 #include <QAction>
 #include <QGraphicsView>
+#include "animationmodel.h"
 #include "graphicswidget.h"
 
 namespace SchMatrix {
-
-class AnimationModel;
 
 enum Tools {
   SelectionTool,
@@ -52,6 +51,8 @@ class GraphicsView : public QGraphicsView {
   enum Plane { TopLeft, TopRight, BottomLeft, BottomRight };
   Plane m_currentPlane = Plane::BottomRight;
   bool m_creationEnabled = false;
+
+  void updateKeyframeLook();
 };
 
 }  // namespace SchMatrix
