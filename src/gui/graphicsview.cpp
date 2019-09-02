@@ -389,6 +389,36 @@ void SchMatrix::GraphicsView::wheelEvent(QWheelEvent *event) {
   }
 }
 
+void GraphicsView::keyPressEvent(QKeyEvent *event) {
+  QGraphicsView::keyPressEvent(event);
+
+  if (m_currentTool == Tools::SelectionTool ||
+      m_currentTool == Tools::TransformTool) {
+    auto items = scene()->selectedItems();
+
+    if (items.empty() == false) {
+      // Set step unit
+      qreal x = (event->modifiers() & Qt::SHIFT) ? 5 : 1;
+      qreal y = x;
+
+      for (auto item : items) {
+        if (event->key() == Qt::Key_Left) {
+          item->moveBy(-x, 0);
+        }
+        if (event->key() == Qt::Key_Right) {
+          item->moveBy(x, 0);
+        }
+        if (event->key() == Qt::Key_Up) {
+          item->moveBy(0, -y);
+        }
+        if (event->key() == Qt::Key_Down) {
+          item->moveBy(0, y);
+        }
+      }
+    }
+  }
+}
+
 void GraphicsView::drawBackground(QPainter *painter, const QRectF &rect) {
   QGraphicsView::drawBackground(painter, rect);
 
