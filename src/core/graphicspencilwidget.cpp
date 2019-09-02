@@ -54,8 +54,8 @@ GraphicsPencilWidget::GraphicsPencilWidget(const GraphicsPencilWidget &other) {
 
   m_image = other.m_image;
   m_gridLines = other.m_gridLines;
-  m_drawingEnabled = false;
-  m_gridEnabled = false;
+  m_drawingEnabled = other.m_drawingEnabled;
+  setFlags(other.flags());
 
   // Set item's properties
   m_pixmapItem.setPixmap(pixmapItem.pixmap());
