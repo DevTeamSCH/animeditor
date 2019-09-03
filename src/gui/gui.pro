@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
         colorpicker.cpp \
         framedelegate.cpp \
+        graphicsscene.cpp \
         graphicsview.cpp \
         horizontalheader.cpp \
         horizontalheadercontrols.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
 HEADERS += \
         colorpicker.h \
         framedelegate.h \
+        graphicsscene.h \
         graphicsview.h \
         horizontalheader.h \
         horizontalheadercontrols.h \
