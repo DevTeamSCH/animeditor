@@ -8,6 +8,9 @@
 
 namespace SchMatrix {
 
+QHash<SchMatrix::GraphicsWidget *, Keyframe *> Keyframe::m_widgetAssignment =
+    QHash<SchMatrix::GraphicsWidget *, Keyframe *>();
+
 // Parent is always Layer
 Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {
   // Add 1 frame long pause
@@ -84,6 +87,9 @@ void Keyframe::addObject(SchMatrix::GraphicsWidget *object) {
   assignProperty(object, "pos", object->pos());
   assignProperty(object, "rotation", object->rotation());
   assignProperty(object, "size", object->size());
+
+  // GraphicsWidget-Keyframe assignment
+  m_widgetAssignment[object] = this;
 }
 
 // Only remove object from assingnments and delete it's animations
@@ -96,6 +102,9 @@ void Keyframe::removeObject(SchMatrix::GraphicsWidget *object) {
   }
 
   m_animationAssignments.remove(object);
+
+  // GraphicsWidget-Keyframe assignment
+  m_widgetAssignment.remove(object);
 }
 
 // Remove + delete
@@ -146,6 +155,10 @@ void Keyframe::interpolate(int duration, const Keyframe *nextKeyframe) {
       currentObject, "size",
       nextKeyframe->m_animationAssignments[otherObject]["size"]->startValue(),
       false);
+}
+
+Keyframe *Keyframe::getKeyframe(GraphicsWidget *widget) {
+  return m_widgetAssignment[widget];
 }
 
 }  // namespace SchMatrix

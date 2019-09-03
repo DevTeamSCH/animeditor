@@ -36,10 +36,12 @@ class CORESHARED_EXPORT Keyframe : public QParallelAnimationGroup {
   bool empty() const;
   bool canInterpolate() const;
   void interpolate(int duration, const Keyframe *nextKeyframe);
+  static Keyframe *getKeyframe(SchMatrix::GraphicsWidget *widget);
 
  private:
   QHash<SchMatrix::GraphicsWidget *, QHash<QByteArray, QPropertyAnimation *>>
       m_animationAssignments;
+  static QHash<SchMatrix::GraphicsWidget *, Keyframe *> m_widgetAssignment;
 };
 
 }  // namespace SchMatrix
