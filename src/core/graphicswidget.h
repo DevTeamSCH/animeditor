@@ -17,8 +17,6 @@ enum ItemTypes {
   SymbolItem
 };
 
-class Keyframe;
-
 class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   Q_OBJECT
   Q_PROPERTY(QPen pen READ pen WRITE setPen)
@@ -45,27 +43,13 @@ class CORESHARED_EXPORT GraphicsWidget : public QGraphicsWidget {
   static QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path,
                                                     const QPen &pen);
 
-  SchMatrix::Keyframe *currentKeyframe() const;
-  void setCurrentKeyframe(SchMatrix::Keyframe *currentKeyframe);
-
-  bool editing() const;
-  void setEditing(bool editing);
-
  protected:
   QBrush m_brush;
   QPen m_pen = QPen(Qt::black, 0);  // https://doc.qt.io/qt-5/qpen.html#setWidth
-  SchMatrix::Keyframe *m_currentKeyframe = nullptr;
-  bool m_editing = false;
 
   virtual void updatePen();
   virtual void updateBrush();
 
-  // QGraphicsItem interface
-  QVariant itemChange(GraphicsItemChange change,
-                      const QVariant &value) override;
-
-  // QGraphicsWidget interface
-  void resizeEvent(QGraphicsSceneResizeEvent *event) override;
 };
 
 }  // namespace SchMatrix
