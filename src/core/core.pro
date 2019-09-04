@@ -36,6 +36,7 @@ SOURCES += \
         graphicswidget.cpp \
         keyframe.cpp \
         layer.cpp \
+        rootanimation.cpp \
         symbol.cpp
 
 HEADERS += \
@@ -51,6 +52,7 @@ HEADERS += \
         graphicswidget.h \
         keyframe.h \
         layer.h \
+        rootanimation.h \
         symbol.h
 
 unix {
