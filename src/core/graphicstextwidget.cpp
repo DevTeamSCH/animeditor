@@ -13,6 +13,10 @@ GraphicsTextWidget::GraphicsTextWidget(const QString &string, qreal x, qreal y,
   setGeometry(x, y, rect.width(), rect.height());
 }
 
+GraphicsTextWidget::GraphicsTextWidget(QGraphicsItem *parent,
+                                       Qt::WindowFlags wFlags)
+    : SchMatrix::GraphicsWidget(parent, wFlags) {}
+
 GraphicsTextWidget::GraphicsTextWidget(const GraphicsTextWidget &other) {
   copyProperties(other);
 

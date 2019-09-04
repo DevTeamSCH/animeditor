@@ -20,6 +20,8 @@ class CORESHARED_EXPORT GraphicsPencilWidget
                                 const QPixmap &pixmap = QPixmap(),
                                 QGraphicsItem *parent = nullptr,
                                 Qt::WindowFlags wFlags = Qt::WindowFlags());
+  explicit GraphicsPencilWidget(QGraphicsItem *parent = nullptr,
+                                Qt::WindowFlags wFlags = Qt::WindowFlags());
   explicit GraphicsPencilWidget(const GraphicsPencilWidget &other);
 
   enum { Type = SchMatrix::ItemTypes::Pencil };

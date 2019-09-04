@@ -46,6 +46,10 @@ GraphicsPencilWidget::GraphicsPencilWidget(qreal x, qreal y, int width,
   }
 }
 
+GraphicsPencilWidget::GraphicsPencilWidget(QGraphicsItem *parent,
+                                           Qt::WindowFlags wFlags)
+    : SchMatrix::GraphicsWidget(parent, wFlags) {}
+
 GraphicsPencilWidget::GraphicsPencilWidget(const GraphicsPencilWidget &other) {
   copyProperties(other);
 
