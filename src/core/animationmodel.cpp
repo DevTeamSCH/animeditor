@@ -44,13 +44,7 @@ AnimationModel::AnimationModel(const AnimationModel &other) {
   m_currentLayer = other.m_currentLayer;
 
   // Clone rootAnimation
-  for (int i = 0; i < rootAnim.animationCount(); ++i) {
-    // Clone layer
-    auto newLayer = new SchMatrix::Layer(
-        *static_cast<SchMatrix::Layer *>(rootAnim.animationAt(i)));
-
-    m_rootAnimation.addAnimation(newLayer);
-  }
+  m_rootAnimation = rootAnim;
 }
 
 QVariant AnimationModel::headerData(int section, Qt::Orientation orientation,
