@@ -31,6 +31,8 @@ AnimationModel::AnimationModel(QGraphicsScene *scene, QObject *parent)
   m_animTimeline.insert(0, m_animTimelineRow);
 }
 
+AnimationModel::AnimationModel(QObject *parent) : QAbstractTableModel(parent) {}
+
 AnimationModel::AnimationModel(const AnimationModel &other) {
   auto &rootAnim = other.m_rootAnimation;
 
