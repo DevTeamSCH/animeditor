@@ -4,9 +4,9 @@
 #include <QAbstractAnimation>
 #include <QAbstractTableModel>
 #include <QGraphicsScene>
-#include <QParallelAnimationGroup>
 #include <QVector>
 #include "core_global.h"
+#include "rootanimation.h"
 
 namespace SchMatrix {
 
@@ -90,7 +90,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
 
  private:
   QGraphicsScene *m_scene;
-  QParallelAnimationGroup m_rootAnimation;
+  SchMatrix::RootAnimation m_rootAnimation;
   QVector<QVector<int>> m_animTimeline;
   QVector<int> m_animTimelineRow;
   quint32 m_lastLayerNumber = 1;
