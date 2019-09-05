@@ -20,6 +20,7 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
  public:
   explicit Layer(QGraphicsScene *scene, QObject *parent = nullptr,
                  const QString &name = "layer", int zValue = 0);
+  explicit Layer(QObject *parent = nullptr);
   explicit Layer(const Layer &other);
 
   QList<QAbstractAnimation *> animations() const;

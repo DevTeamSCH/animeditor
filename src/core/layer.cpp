@@ -20,6 +20,8 @@ Layer::Layer(QGraphicsScene *scene, QObject *parent, const QString &name,
           &Layer::updateLayer);
 }
 
+Layer::Layer(QObject *parent) : QSequentialAnimationGroup(parent) {}
+
 // Set parent after construction
 Layer::Layer(const Layer &other)
     : Layer(other.m_scene, nullptr, other.objectName(), other.m_zValue) {
