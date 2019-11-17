@@ -2,8 +2,7 @@
 #define LAYER_H
 
 #include <QGraphicsItemGroup>
-#include <QHash>
-#include <QPauseAnimation>
+#include <QMap>
 #include <QSequentialAnimationGroup>
 #include <QString>
 #include "core_global.h"
@@ -24,13 +23,11 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   explicit Layer(const Layer &other);
 
   QList<QAbstractAnimation *> animations() const;
-  QList<QPauseAnimation *> pauses() const;
   QList<Keyframe *> keyframes() const;
   Keyframe *currentKeyframe() const;
   Keyframe *nextKeyframe() const;
   Keyframe *prevKeyframe() const;
   int animFramePosition(QAbstractAnimation *anim) const;
-  QPauseAnimation *currentPause() const;
 
   int zValue() const;
   void setZValue(const int &m_zValue);
@@ -44,6 +41,11 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   void deleteItem(SchMatrix::GraphicsWidget *item);
   void deleteKeyframe(SchMatrix::Keyframe *keyframe);
 
+  void addKeyframe(SchMatrix::Keyframe *keyframe, int startFrame = 0);
+  void insertKeyframe(int idx, SchMatrix::Keyframe *keyframe, int startFrame);
+  void updateFrameToKeyframe(SchMatrix::Keyframe *fromKeyframe = nullptr);
+  SchMatrix::Keyframe *keyframeAtFrame(int frame);
+
  private slots:
   void updateLayer(QAbstractAnimation *current);
 
@@ -52,6 +54,7 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   QList<QGraphicsWidget *> m_currentItems;
   QGraphicsScene *m_scene = nullptr;
   SchMatrix::Keyframe *m_lastKeyframe = nullptr;
+  QMap<int, SchMatrix::Keyframe *> m_frameToKeyframe;
 
   // QAbstractAnimation interface
  protected:

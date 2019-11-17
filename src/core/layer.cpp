@@ -5,7 +5,6 @@
 #include "config.h"
 #include "graphicswidget.h"
 #include "keyframe.h"
-#include "layer.h"
 #include "symbol.h"
 
 namespace SchMatrix {
@@ -35,8 +34,6 @@ Layer::Layer(const Layer &other)
       auto newKeyframe = new SchMatrix::Keyframe(*keyframe);
 
       addAnimation(newKeyframe);
-    } else {  // pause
-      addPause(anim->duration());
     }
   }
 }
@@ -49,18 +46,6 @@ QList<QAbstractAnimation *> Layer::animations() const {
   }
 
   return anims;
-}
-
-QList<QPauseAnimation *> Layer::pauses() const {
-  QList<QPauseAnimation *> pauseAnims;
-
-  for (int i = 0; i < animationCount(); ++i) {
-    auto pause = qobject_cast<QPauseAnimation *>(animationAt(i));
-
-    if (pause) pauseAnims.append(pause);
-  }
-
-  return pauseAnims;
 }
 
 QList<Keyframe *> Layer::keyframes() const {
@@ -76,44 +61,27 @@ QList<Keyframe *> Layer::keyframes() const {
 }
 
 Keyframe *Layer::currentKeyframe() const {
-  auto currentAnim = currentAnimation();
   auto keyframe = qobject_cast<Keyframe *>(currentAnimation());
 
   if (keyframe) return keyframe;
-
-  // currentAnimation is a pause
-  // before a pause there is always a keyframe
-  if (animationCount() > 1)
-    return static_cast<Keyframe *>(
-        animationAt(indexOfAnimation(currentAnim) - 1));
 
   return nullptr;
 }
 
 Keyframe *Layer::nextKeyframe() const {
-  if (animationCount() < 2) return nullptr;
+  auto idx = indexOfAnimation(currentAnimation());
 
-  auto keys = keyframes();
-  auto idx = keys.indexOf(currentKeyframe());
+  if (idx != animationCount() - 1)
+    return qobject_cast<SchMatrix::Keyframe *>(animationAt(idx + 1));
 
-  if (idx == keys.size() - 1) return nullptr;
-
-  return keys[idx + 1];
+  return nullptr;
 }
 
 Keyframe *Layer::prevKeyframe() const {
-  if (animationCount() < 2) return nullptr;
+  auto idx = indexOfAnimation(currentAnimation());
 
-  auto keys = keyframes();
-  auto keyframe = currentKeyframe();
-  auto currentAnim = qobject_cast<SchMatrix::Keyframe *>(currentAnimation());
-  auto idx = keys.indexOf(keyframe);
-
-  // anim is pause
-  if (!currentAnim) return keyframe;
-
-  // anim is (blank)keyframe
-  if (idx != 0) return keys[idx - 1];
+  if (idx != 0)
+    return qobject_cast<SchMatrix::Keyframe *>(animationAt(idx - 1));
 
   return nullptr;
 }
@@ -127,10 +95,6 @@ int Layer::animFramePosition(QAbstractAnimation *anim) const {
   }
 
   return frames;
-}
-
-QPauseAnimation *Layer::currentPause() const {
-  return qobject_cast<QPauseAnimation *>(currentAnimation());
 }
 
 int Layer::zValue() const { return m_zValue; };
@@ -201,17 +165,56 @@ void Layer::deleteKeyframe(Keyframe *keyframe) {
   delete keyframe;
 }
 
+void Layer::addKeyframe(Keyframe *keyframe, int startFrame) {
+  m_frameToKeyframe[startFrame] = keyframe;
+  addAnimation(keyframe);
+}
+
+void Layer::insertKeyframe(int idx, Keyframe *keyframe, int startFrame) {
+  auto currentKey = currentKeyframe();
+
+  if (idx <= indexOfAnimation(currentKey)) {
+    currentKey->setStartFrame(startFrame + 1);
+    m_frameToKeyframe[startFrame + 1] = currentKey;
+  }
+
+  m_frameToKeyframe[startFrame] = keyframe;
+  insertAnimation(idx, keyframe);
+}
+
+void Layer::updateFrameToKeyframe(SchMatrix::Keyframe *fromKeyframe) {
+  auto keys = keyframes();
+  auto keyEnd = fromKeyframe->endFrame();
+
+  for (int i = keys.indexOf(fromKeyframe) + 1; i < keys.size(); ++i) {
+    auto key = keys[i];
+
+    m_frameToKeyframe.remove(key->startFrame());
+    key->setStartFrame(keyEnd);
+    m_frameToKeyframe[key->startFrame()] = key;
+    keyEnd = key->endFrame();
+  }
+}
+
+Keyframe *Layer::keyframeAtFrame(int frame) {
+  auto it = m_frameToKeyframe.lowerBound(frame);
+
+  if (it == m_frameToKeyframe.end()) return m_frameToKeyframe.last();
+
+  if (it.key() > frame) return *--it;
+
+  return *it;
+}
+
 // Note: this function will be called for all the animations before/after the
 // current animation
 void Layer::updateLayer(QAbstractAnimation *current) {
-  // Skip unwanted animations and pauses
+  // Skip unwanted animations
   if (current != animationAtMsec(currentTime())) return;
 
-  auto keyframe = (!qobject_cast<Keyframe *>(current))
-                      ? currentKeyframe()
-                      : static_cast<Keyframe *>(current);
+  auto keyframe = currentKeyframe();
 
-  // Skip invalid and same keyframe before pause
+  // Skip invalid and same keyframe
   if (keyframe == m_lastKeyframe || !keyframe) return;
 
   m_lastKeyframe = keyframe;
@@ -223,7 +226,7 @@ void Layer::updateLayer(QAbstractAnimation *current) {
   m_currentItems.clear();
 
   // skip blank keyframe
-  if (keyframe->animationCount() == 1) return;
+  if (keyframe->empty()) return;
 
   // add current objects
   for (auto item : keyframe->objects()) {

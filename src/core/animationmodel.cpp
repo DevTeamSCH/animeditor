@@ -1,11 +1,8 @@
 #include "animationmodel.h"
 
 #include <QDebug>
-#include <QList>
 #include <QModelIndex>
 #include <QSequentialAnimationGroup>
-#include <algorithm>
-#include <cstdlib>
 #include "config.h"
 #include "keyframe.h"
 #include "layer.h"
@@ -21,14 +18,8 @@ AnimationModel::AnimationModel(QGraphicsScene *scene, QObject *parent)
   auto layer_1 = new SchMatrix::Layer(scene, &m_rootAnimation, "layer 1");
   m_rootAnimation.addAnimation(layer_1);
   auto keyframe = new SchMatrix::Keyframe(layer_1);
-  layer_1->addAnimation(keyframe);
+  layer_1->addKeyframe(keyframe);
   setCurrentLayer(layer_1);
-
-  // init animTimeline
-  m_animTimelineRow.reserve(180 * fps);
-  m_animTimelineRow.insert(0, FrameTypes::BlankKey);
-
-  m_animTimeline.insert(0, m_animTimelineRow);
 }
 
 AnimationModel::AnimationModel(QObject *parent) : QAbstractTableModel(parent) {}
@@ -38,8 +29,6 @@ AnimationModel::AnimationModel(const AnimationModel &other) {
 
   // Copy important member variables
   m_scene = other.m_scene;
-  m_animTimeline = other.m_animTimeline;
-  m_animTimelineRow = other.m_animTimelineRow;
   m_lastLayerNumber = other.m_lastLayerNumber;
   m_currentLayer = other.m_currentLayer;
 
@@ -81,10 +70,12 @@ QVariant AnimationModel::data(const QModelIndex &index, int role) const {
 
   switch (role) {
     case Qt::DisplayRole:
-      auto colSize = m_animTimeline[row].size() - 1;
-      if (col > colSize) return FrameTypes::PotentialFrame;
+      auto layer =
+          qobject_cast<SchMatrix::Layer *>(m_rootAnimation.animationAt(row));
+      if (col * SchMatrix::frameLength >= layer->duration())
+        return FrameTypes::PotentialFrame;
 
-      return m_animTimeline[row][col];
+      return layer->keyframeAtFrame(col)->paint(col);
   }
 
   return QVariant();
@@ -93,33 +84,23 @@ QVariant AnimationModel::data(const QModelIndex &index, int role) const {
 bool AnimationModel::insertRows(int row, int count, const QModelIndex &parent) {
   beginInsertRows(parent, row, row + count - 1);
 
-  auto longestAnim = m_rootAnimation.duration();
-
-  if (row > m_animTimeline.size()) m_animTimeline.resize(row);
+  auto longestAnimDuration = m_rootAnimation.duration();
 
   for (int i = 0; i < count; ++i) {
     auto layer = new Layer(m_scene, &m_rootAnimation,
                            QString("layer %1").arg(++m_lastLayerNumber), row);
 
     m_rootAnimation.insertAnimation(row, layer);
-    layer->addAnimation(new Keyframe(layer));
-
-    m_animTimeline.insert(row, m_animTimelineRow);
+    layer->addKeyframe(new Keyframe(layer));
 
     if (m_rootAnimation.animationCount() > 1 &&
-        longestAnim > SchMatrix::frameLength) {
-      layer->addPause(longestAnim);
-
-      for (int i = 0; i < (longestAnim / SchMatrix::frameLength) - 1; ++i) {
-        m_animTimeline[row].push_back(FrameTypes::Frame);
-      }
-
-      m_animTimeline[row].push_back(FrameTypes::EndOfFrame);
+        longestAnimDuration > SchMatrix::frameLength) {
+      layer->currentKeyframe()->setDuration(longestAnimDuration);
     }
   }
 
   for (int i = row; i < count; ++i) {
-    static_cast<Layer *>(m_rootAnimation.animationAt(i))->setZValue(i);
+    qobject_cast<Layer *>(m_rootAnimation.animationAt(i))->setZValue(i);
   }
 
   endInsertRows();
@@ -130,13 +111,7 @@ bool AnimationModel::insertColumns(int column, int count,
                                    const QModelIndex &parent) {
   beginInsertColumns(parent, column, column + count - 1);
 
-  for (auto &row : m_animTimeline) {
-    for (int i = 0; i < count; ++i) {
-      if (row.size() > column) row.resize(column);
-
-      row.insert(column, FrameTypes::PotentialFrame);
-    }
-  }
+  // TODO extend editable range
 
   endInsertColumns();
   return true;
@@ -155,12 +130,10 @@ bool AnimationModel::removeRows(int row, int count, const QModelIndex &parent) {
   for (int i = row; i < count; ++i) {
     auto anim = m_rootAnimation.takeAnimation(i);
     delete anim;
-
-    m_animTimeline.removeAt(i);
   }
 
   for (int i = row; i < animCount; ++i) {
-    static_cast<Layer *>(m_rootAnimation.animationAt(i))->setZValue(i);
+    qobject_cast<Layer *>(m_rootAnimation.animationAt(i))->setZValue(i);
   }
 
   endRemoveRows();
@@ -172,156 +145,110 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
   auto row = index.row();
   auto col = index.column();
 
-  if (row > m_rootAnimation.animationCount()) return false;
-
   auto val = value.toInt();
-  auto layerSize = m_animTimeline[row].size();
-  auto layer = static_cast<Layer *>(m_rootAnimation.animationAt(row));
-  auto currentAnimation = layer->currentAnimation();
-  auto currentAnimationIdx = layer->indexOfAnimation(currentAnimation);
+  auto layer = qobject_cast<Layer *>(m_rootAnimation.animationAt(row));
+  auto layerFrameDuration = layer->duration() / SchMatrix::frameLength;
 
-  QPauseAnimation *pause = qobject_cast<QPauseAnimation *>(currentAnimation);
+  if (row > m_rootAnimation.animationCount() || col < 0) return false;
 
-  // set keyframe look
-  if (role == Qt::UserRole) {
-    auto keyframe = qobject_cast<SchMatrix::Keyframe *>(
-        layer->animationAtMsec(col * SchMatrix::frameLength));
+  auto currentKeyframe = layer->currentKeyframe();
+  auto currentKeyframeIdx = layer->indexOfAnimation(currentKeyframe);
 
-    if (!keyframe || col > m_animTimeline[row].size()) return false;
+  if (col >= layerFrameDuration) {  // setting data outside, in PotentialFrame
+    if (val == FrameTypes::Key || val == FrameTypes::BlankKey) {
+      if (currentKeyframe->empty() || val == FrameTypes::BlankKey) {
+        layer->addKeyframe(new Keyframe(nullptr, col), col);
+      } else {
+        auto newKey = new Keyframe(*currentKeyframe);
+        newKey->setStartFrame(col);
+        layer->addKeyframe(newKey, col);
+      }
 
-    m_animTimeline[row][col] = val;
-
-    emit dataChanged(createIndex(row, col), createIndex(row, col));
-    return true;
-  }
-
-  if (col >= layerSize) {  // setting data outside, in PotentialFrame
-    int pauseDuration = 0;
-
-    m_animTimeline[row].resize(col);
-
-    auto &prevCell = m_animTimeline[row][col - 1];
-
-    if (val == FrameTypes::Frame) {
-      m_animTimeline[row].insert(col, FrameTypes::EndOfFrame);
-      pauseDuration = m_animTimeline[row].size() - layerSize;
-    } else {  // val is (Blank)Keyframe
-      if (prevCell == FrameTypes::Frame) prevCell = FrameTypes::EndOfFrame;
-      m_animTimeline[row].insert(col, val);
-      pauseDuration = m_animTimeline[row].size() - layerSize - 1;
-    }
-
-    if (pause) {
-      // replace EndOfFrame with Frame
-      if (val == FrameTypes::Frame || col != layerSize)
-        m_animTimeline[row][layerSize - 1] = FrameTypes::Frame;
-      pause->setDuration(pause->duration() +
-                         SchMatrix::frameLength * pauseDuration);
-    } else if (pauseDuration > 0) {  // current is (Blank)Keyframe
-      layer->addPause(SchMatrix::frameLength *
-                      pauseDuration);  // Add missing pause
-    }
-
-    if (val == FrameTypes::Key) {
-      auto newKey = new Keyframe(*layer->currentKeyframe());
-      layer->insertAnimation(
-          currentAnimationIdx + ((pause || pauseDuration == 0) ? 1 : 2),
-          newKey);
-    } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
-      layer->insertAnimation(
-          currentAnimationIdx + ((pause || pauseDuration == 0) ? 1 : 2),
-          new Keyframe(&m_rootAnimation));
+      currentKeyframe->setDuration(currentKeyframe->duration() +
+                                   (col - currentKeyframe->endFrame()) *
+                                       SchMatrix::frameLength);
+    } else if (val == FrameTypes::Frame) {
+      currentKeyframe->setDuration(currentKeyframe->duration() +
+                                   (col - currentKeyframe->endFrame() + 1) *
+                                       SchMatrix::frameLength);
     }
 
     // data changes from layerSize(original size) to animTimeline[row].size()
-    emit dataChanged(createIndex(row, layerSize),
-                     createIndex(row, m_animTimeline[row].size()));
+    emit dataChanged(createIndex(row, currentKeyframe->endFrame()),
+                     createIndex(row, col));
   } else {  // setting data inside, before potentialFrames
-    if (pause) {
-      if (val == FrameTypes::Frame) {
-        m_animTimeline[row].insert(col, val);
-        pause->setDuration(pause->duration() + SchMatrix::frameLength);
-      }
+    if (val == FrameTypes::Frame) {
+      currentKeyframe->setDuration(currentKeyframe->duration() +
+                                   SchMatrix::frameLength);
 
-      if (val == FrameTypes::BlankKey || val == FrameTypes::Key) {
-        m_animTimeline[row][col] = val;
+      layer->updateFrameToKeyframe(currentKeyframe);
 
-        // Frame/Pause split starts here
-        // TODO find builtin algorithm
-        int pauseStartIdx = col - 1;
-        for (; pauseStartIdx != 0 &&
-               m_animTimeline[row][pauseStartIdx] == FrameTypes::Frame;
-             --pauseStartIdx) {
+      emit dataChanged(createIndex(row, currentKeyframe->endFrame()),
+                       createIndex(row, layerFrameDuration));
+    } else if (val == FrameTypes::Key || val == FrameTypes::BlankKey) {
+      if (col == currentKeyframe->startFrame()) {
+        if (currentKeyframe->endFrame() * SchMatrix::frameLength ==
+            layer->duration()) {
+          if (currentKeyframe->empty() || val == FrameTypes::BlankKey) {
+            layer->insertKeyframe(currentKeyframeIdx + 1,
+                                  new Keyframe(nullptr, col + 1), col + 1);
+          } else {
+            auto newKey = new Keyframe(*layer->currentKeyframe());
+            newKey->setDuration(SchMatrix::frameLength);
+            layer->insertKeyframe(currentKeyframeIdx + 1, newKey, col + 1);
+          }
+
+          emit dataChanged(createIndex(row, col), createIndex(row, col + 1));
+        } else if (currentKeyframe->duration() > SchMatrix::frameLength) {
+          currentKeyframe->setDuration(currentKeyframe->duration() -
+                                       SchMatrix::frameLength);
+
+          if (currentKeyframe->empty() || val == FrameTypes::BlankKey) {
+            layer->insertKeyframe(currentKeyframeIdx,
+                                  new Keyframe(nullptr, col), col);
+          } else {
+            auto newKey = new Keyframe(*layer->currentKeyframe());
+            newKey->setDuration(SchMatrix::frameLength);
+            layer->insertKeyframe(currentKeyframeIdx, newKey, col);
+          }
+
+          emit dataChanged(createIndex(row, col - 1),
+                           createIndex(row, col + 1));
         }
+      } else if (col == currentKeyframe->endFrame() - 1) {
+        if (currentKeyframe->duration() > SchMatrix::frameLength)
+          currentKeyframe->setDuration(currentKeyframe->duration() -
+                                       SchMatrix::frameLength);
 
-        pauseStartIdx++;
-
-        if (m_animTimeline[row][col - 1] == FrameTypes::Frame)
-          m_animTimeline[row][col - 1] = FrameTypes::EndOfFrame;
-
-        auto pauseLeftDuration = SchMatrix::frameLength * (col - pauseStartIdx);
-        auto pauseRightDuration =
-            pause->duration() - pauseLeftDuration - SchMatrix::frameLength;
-
-        // shrink or delete current pause
-        if (pauseLeftDuration == 0)
-          delete pause;
-        else
-          pause->setDuration(pauseLeftDuration);
-
-        // insert Keyframe inside Frame
-        if (val == FrameTypes::Key) {
+        if (currentKeyframe->empty() || val == FrameTypes::BlankKey) {
+          layer->insertKeyframe(currentKeyframeIdx + 1,
+                                new Keyframe(nullptr, col), col);
+        } else {
           auto newKey = new Keyframe(*layer->currentKeyframe());
-          layer->insertAnimation(currentAnimationIdx + 1, newKey);
-        } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
-          layer->insertAnimation(currentAnimationIdx + 1,
-                                 new Keyframe(&m_rootAnimation));
+          newKey->setStartFrame(col);
+          newKey->setDuration(SchMatrix::frameLength);
+          layer->insertKeyframe(currentKeyframeIdx + 1, newKey, col);
         }
 
-        // add new pause after (Blank)Keyframe
-        // only if pauseRightDuration is at least 1 frame long
-        if (pauseRightDuration >= SchMatrix::frameLength) {
-          layer->insertPause(currentAnimationIdx + 2, pauseRightDuration);
+        emit dataChanged(createIndex(row, col), createIndex(row, col - 1));
+      } else {
+        auto duration = currentKeyframe->duration();
+        currentKeyframe->setDuration((col - currentKeyframe->startFrame()) *
+                                     SchMatrix::frameLength);
+
+        if (currentKeyframe->empty() || val == FrameTypes::BlankKey) {
+          auto newKey = new Keyframe(nullptr, col);
+          newKey->setDuration(duration - currentKeyframe->duration());
+          layer->insertKeyframe(currentKeyframeIdx + 1, newKey, col);
+        } else {
+          auto newKey = new Keyframe(*layer->currentKeyframe());
+          newKey->setStartFrame(col);
+          newKey->setDuration(duration - currentKeyframe->duration());
+          layer->insertKeyframe(currentKeyframeIdx + 1, newKey, col);
         }
+
+        emit dataChanged(createIndex(row, col - 1), createIndex(row, col));
       }
-
-      // data changes from col - 1 to col + 1
-      emit dataChanged(createIndex(row, col - 1), createIndex(row, col + 1));
-    } else {  // current is (Blank)Keyframe
-      QPauseAnimation *nextIsPause =
-          (col + 1 >= layerSize)
-              ? nullptr
-              : qobject_cast<QPauseAnimation *>(
-                    layer->animationAt(currentAnimationIdx + 1));
-
-      if (val == FrameTypes::Frame) {
-        if (col + 1 >= layerSize || !nextIsPause) {
-          m_animTimeline[row].insert(col + 1, FrameTypes::EndOfFrame);
-          layer->insertPause(currentAnimationIdx + 1, SchMatrix::frameLength);
-        } else {  // next is Frame and inside before PotentialFrame
-          m_animTimeline[row].insert(col + 1, val);
-
-          auto nextPause = static_cast<QPauseAnimation *>(
-              layer->animationAt(currentAnimationIdx + 1));
-          nextPause->setDuration(nextPause->duration() +
-                                 SchMatrix::frameLength);
-        }
-      }
-
-      if (val == FrameTypes::Key || val == FrameTypes::BlankKey)
-        m_animTimeline[row].insert(col + 1, val);
-
-      // insert Keyframe after (Blank)Keyframe
-      if (val == FrameTypes::Key) {
-        auto newKey = new Keyframe(*layer->currentKeyframe());
-        layer->insertAnimation(currentAnimationIdx + 1, newKey);
-      } else if (val == FrameTypes::BlankKey) {  // insert BlankKeyframe
-        layer->insertAnimation(currentAnimationIdx + 1,
-                               new Keyframe(&m_rootAnimation));
-      }
-
-      // data changes from col to col + 1
-      emit dataChanged(createIndex(row, col), createIndex(row, col + 1));
     }
   }
 
@@ -332,74 +259,28 @@ bool SchMatrix::AnimationModel::setData(const QModelIndex &index,
 bool AnimationModel::removeData(const QModelIndex &index) {
   auto row = index.row();
   auto col = index.column();
-  auto layerSize = m_animTimeline[row].size();
+  auto layer = qobject_cast<Layer *>(m_rootAnimation.animationAt(row));
+  auto layerFrameDuration = layer->duration() / SchMatrix::frameLength;
+  auto currentKeyframe = layer->currentKeyframe();
 
-  if (row < 0 || row >= m_rootAnimation.animationCount() || col <= 0 ||
-      col >= layerSize)
+  if (row > m_rootAnimation.animationCount() ||
+      (m_rootAnimation.animationCount() == 1 &&
+       currentKeyframe->duration() == SchMatrix::frameLength) ||
+      col > layerFrameDuration || col < 0)
     return false;
 
-  auto layer = static_cast<Layer *>(m_rootAnimation.animationAt(row));
-  auto currentAnimation = layer->currentAnimation();
-  auto currentAnimationIdx = layer->indexOfAnimation(currentAnimation);
-  auto pause = qobject_cast<QPauseAnimation *>(currentAnimation);
-
-  auto &prevCell = m_animTimeline[row][col - 1];
-
-  if (pause) {
-    // decrase current pause by one frame
-    auto duration = pause->duration() - SchMatrix::frameLength;
-
-    // shrink or delete current pause
-    if (duration == 0)
-      delete pause;
-    else
-      pause->setDuration(duration);
-
-    if (prevCell == FrameTypes::Frame &&
-        m_animTimeline[row][col] == FrameTypes::EndOfFrame)
-      prevCell = FrameTypes::EndOfFrame;
-
-    // data changes from col - 1 to col
-    emit dataChanged(createIndex(row, col - 1), createIndex(row, col));
-  } else {  // current is (Blank)Keyframe
-    // check for pause merge
-    if (col - 1 != 0 && col + 1 != layerSize) {
-      auto leftPause = qobject_cast<QPauseAnimation *>(
-          layer->animationAt(currentAnimationIdx - 1));
-      auto rightPause = qobject_cast<QPauseAnimation *>(
-          layer->animationAt(currentAnimationIdx + 1));
-
-      if (leftPause && rightPause) {
-        // remove right pause
-        layer->removeAnimation(rightPause);
-
-        // pause merge
-        leftPause->setDuration(leftPause->duration() + rightPause->duration());
-
-        // delete right pause
-        delete rightPause;
-
-        prevCell = FrameTypes::Frame;
-      }
-
-      if (prevCell == FrameTypes::EndOfFrame) prevCell = FrameTypes::Frame;
-
-      // data changes from col - 1 to col + 1
-      emit dataChanged(createIndex(row, col - 1), createIndex(row, col + 1));
-    } else {
-      // data changes at col
-      emit dataChanged(createIndex(row, col), createIndex(row, col));
-    }
-
-    // Delete keyframe
-    m_currentLayer->deleteKeyframe(
-        static_cast<SchMatrix::Keyframe *>(currentAnimation));
+  if (currentKeyframe->duration() > SchMatrix::frameLength) {
+    currentKeyframe->setDuration(currentKeyframe->duration() -
+                                 SchMatrix::frameLength);
+  } else if (currentKeyframe->duration() == SchMatrix::frameLength) {
+    layer->deleteKeyframe(currentKeyframe);
   }
 
-  m_animTimeline[row].removeAt(col);
+  layer->updateFrameToKeyframe(currentKeyframe);
 
-  if (col == layerSize - 1) emit frameChanged(col - 1, col);
-
+  emit dataChanged(createIndex(row, currentKeyframe->startFrame()),
+                   createIndex(row, layerFrameDuration));
+  emit timelineChanged();
   return true;
 }
 
@@ -462,7 +343,7 @@ Layer *AnimationModel::layerAt(int row) const {
 }
 
 int AnimationModel::rowSize(int row) const {
-  return m_animTimeline[row].size();
+  return m_rootAnimation.animationAt(row)->duration() / SchMatrix::frameLength;
 }
 
 void AnimationModel::updateFrameLength(int newFramelength, int oldFramelength,
@@ -546,34 +427,10 @@ bool AnimationModel::createClassicTween() {
       rigthKeyframe->canInterpolate() == false)
     return false;
 
-  auto pause = m_currentLayer->currentPause();
-  int duration = SchMatrix::frameLength;
 
-  if (pause) {
-    duration += pause->duration();  // Add to duration because we start from the
-                                    // keyframe not after
-    delete pause;                   // Animation shrinks by pause's duration
-
-    auto layerIdx = currentLayerIdx();
-    auto currentIdx = m_animTimeline[layerIdx].size() - 1 - currentFrame();
-    auto pred = [](const int &val) { return val == Frame; };
-    auto pauseStartIt =
-        std::find_if_not(m_animTimeline[layerIdx].rbegin() + currentIdx,
-                         m_animTimeline[layerIdx].rend(), pred)
-            .base();
-    auto pauseEndIt =
-        std::find_if_not(m_animTimeline[layerIdx].begin() + currentFrame(),
-                         m_animTimeline[layerIdx].end(), pred);
-
-    // + 1 because of EndOfFrame
-    std::transform(pauseStartIt, pauseEndIt + 1, pauseStartIt,
-                   [](int) { return FrameTypes::TweenedFrame; });
-  }
-
-  leftKeyframe->interpolate(duration, rigthKeyframe);
+  leftKeyframe->interpolate(rigthKeyframe);
 
   m_rootAnimation.setCurrentTime(m_rootAnimation.currentTime());
-
   return true;
 }
 

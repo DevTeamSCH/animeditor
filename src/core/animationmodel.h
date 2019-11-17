@@ -4,22 +4,12 @@
 #include <QAbstractAnimation>
 #include <QAbstractTableModel>
 #include <QGraphicsScene>
-#include <QVector>
 #include "core_global.h"
 #include "rootanimation.h"
 
 namespace SchMatrix {
 
 class Layer;
-
-enum FrameTypes {
-  Frame,
-  EndOfFrame,
-  Key,
-  BlankKey,
-  PotentialFrame,
-  TweenedFrame
-};
 
 class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
   Q_OBJECT
@@ -91,8 +81,6 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
  private:
   QGraphicsScene *m_scene;
   SchMatrix::RootAnimation m_rootAnimation;
-  QVector<QVector<int>> m_animTimeline;
-  QVector<int> m_animTimelineRow;
   quint32 m_lastLayerNumber = 1;
   SchMatrix::Layer *m_currentLayer;
 };

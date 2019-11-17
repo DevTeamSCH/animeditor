@@ -1,7 +1,6 @@
 #include "keyframe.h"
 
 #include <QGraphicsScene>
-#include <QPauseAnimation>
 #include "config.h"
 #include "graphicswidget.h"
 #include "symbol.h"
@@ -12,15 +11,19 @@ QHash<SchMatrix::GraphicsWidget *, Keyframe *> Keyframe::m_widgetAssignment =
     QHash<SchMatrix::GraphicsWidget *, Keyframe *>();
 
 // Parent is always Layer
-Keyframe::Keyframe(QObject *parent) : QParallelAnimationGroup(parent) {
-  // Add 1 frame long pause
-  // 1 Keyframe is always 1 frame long
-  addAnimation(new QPauseAnimation(SchMatrix::frameLength, this));
-}
+// 1 Keyframe is at least 1 frame long
+Keyframe::Keyframe(QObject *parent, int startFrame)
+    : QParallelAnimationGroup(parent),
+      m_duration(SchMatrix::frameLength),
+      m_startFrame(startFrame),
+      m_endFrame(m_startFrame + 1) {}
 
 // Set parent after construction
-Keyframe::Keyframe(const Keyframe &other) : Keyframe(nullptr) {
+Keyframe::Keyframe(const Keyframe &other)
+    : Keyframe(nullptr, other.m_startFrame) {
   auto &animAssign = other.m_animationAssignments;
+  m_endFrame = other.m_endFrame;
+  m_duration = other.m_duration;
 
   for (auto object : animAssign.keys()) {
     // Clone object
@@ -122,7 +125,7 @@ QList<SchMatrix::GraphicsWidget *> Keyframe::objects() const {
   return m_animationAssignments.keys();
 }
 
-bool Keyframe::empty() const { return m_animationAssignments.empty(); }
+bool Keyframe::empty() const { return animationCount() == 0; }
 
 // Between 2 keyframes you can only interpolate/tween only one symbol and no
 // other items
@@ -134,14 +137,16 @@ bool Keyframe::canInterpolate() const {
   return true;
 }
 
-void Keyframe::interpolate(int duration, const Keyframe *nextKeyframe) {
+void Keyframe::interpolate(const Keyframe *nextKeyframe) {
   auto currentObject = *m_animationAssignments.keyBegin();
   auto otherObject = *nextKeyframe->m_animationAssignments.keyBegin();
 
+  m_interpolated = true;
+
   // Only intrepolate the most important properties for now
-  m_animationAssignments[currentObject]["pos"]->setDuration(duration);
-  m_animationAssignments[currentObject]["rotation"]->setDuration(duration);
-  m_animationAssignments[currentObject]["size"]->setDuration(duration);
+  m_animationAssignments[currentObject]["pos"]->setDuration(m_duration);
+  m_animationAssignments[currentObject]["rotation"]->setDuration(m_duration);
+  m_animationAssignments[currentObject]["size"]->setDuration(m_duration);
 
   assignProperty(
       currentObject, "pos",
@@ -159,6 +164,32 @@ void Keyframe::interpolate(int duration, const Keyframe *nextKeyframe) {
 
 Keyframe *Keyframe::getKeyframe(GraphicsWidget *widget) {
   return m_widgetAssignment[widget];
+}
+
+int Keyframe::startFrame() const { return m_startFrame; }
+
+void Keyframe::setStartFrame(int startFrame) {
+  m_startFrame = startFrame;
+  m_endFrame = m_startFrame + m_duration / SchMatrix::frameLength;
+}
+
+int Keyframe::paint(int pos) {
+  pos -= m_startFrame;
+
+  if (pos == 0) return (empty()) ? BlankKey : Key;
+  if (m_interpolated) return TweenedFrame;
+  if (pos + 1 == duration() / SchMatrix::frameLength) return EndOfFrame;
+
+  return Frame;
+}
+
+int Keyframe::endFrame() const { return m_endFrame; }
+
+int Keyframe::duration() const { return m_duration; }
+
+void Keyframe::setDuration(int msecs) {
+  m_duration = msecs;
+  m_endFrame = m_startFrame + m_duration / SchMatrix::frameLength;
 }
 
 }  // namespace SchMatrix

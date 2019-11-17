@@ -1,7 +1,7 @@
 #include "framedelegate.h"
 
 #include <QPainter>
-#include "animationmodel.h"
+#include "keyframe.h"
 
 namespace SchMatrix {
 

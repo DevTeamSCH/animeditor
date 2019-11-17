@@ -51,8 +51,6 @@ class GraphicsView : public QGraphicsView {
   enum Plane { TopLeft, TopRight, BottomLeft, BottomRight };
   Plane m_currentPlane = Plane::BottomRight;
   bool m_creationEnabled = false;
-
-  void updateKeyframeLook();
 };
 
 }  // namespace SchMatrix

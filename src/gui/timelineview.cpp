@@ -83,14 +83,8 @@ void TimelineView::handleMenu(QAction *action) {
       m_animationModel->removeData(m_menuIndex);
       break;
     case SchMatrix::MenuEntry::InsertKeyframe: {
-      auto layer = m_animationModel->layerAt(m_menuIndex.row());
-
       // Set data and check if current Keyframe is empty
-      m_animationModel->setData(m_menuIndex,
-                                (layer->currentKeyframe()->empty())
-                                    ? SchMatrix::FrameTypes::BlankKey
-                                    : SchMatrix::FrameTypes::Key);
-
+      m_animationModel->setData(m_menuIndex, SchMatrix::FrameTypes::Key);
       m_animationModel->setFrame(m_menuIndex.column());
       break;
     }
@@ -117,8 +111,8 @@ void TimelineView::handleMenu(QAction *action) {
   auto layer = m_animationModel->layerAt(m_menuIndex.row());
 
   qDebug() << layer->animations();
-  for (auto l : layer->pauses()) {
-    qDebug() << l << l->duration();
+  for (auto a : layer->animations()) {
+    qDebug() << a << a->duration();
   }
 }
 
