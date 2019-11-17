@@ -130,17 +130,19 @@ void HorizontalHeaderControls::on_ellapsedTime_valueChanged(double seconds) {
 }
 
 void HorizontalHeaderControls::on_frameRate_valueChanged(int fps) {
-  // Udate interval is in milliseconds
-  m_timeLine.setUpdateInterval(1000 / fps);
+  /*
+// Udate interval is in milliseconds
+m_timeLine.setUpdateInterval(1000 / fps);
 
-  auto oldFrameLength = SchMatrix::frameLength;
-  auto currentFrame = m_animationModel->currentFrame();
+auto oldFrameLength = SchMatrix::frameLength;
+auto currentFrame = m_animationModel->currentFrame();
 
-  SchMatrix::fps = fps;
-  SchMatrix::frameLength = 1000 / SchMatrix::fps;
-  SchMatrix::frameLengthDouble = 1000.0 / SchMatrix::fps;
+SchMatrix::fps = fps;
+SchMatrix::frameLength = 1000 / SchMatrix::fps;
+SchMatrix::frameLengthDouble = 1000.0 / SchMatrix::fps;
 
-  emit frameLengthChanged(SchMatrix::frameLength, oldFrameLength, currentFrame);
+emit frameLengthChanged(SchMatrix::frameLength, oldFrameLength, currentFrame);
+*/
 }
 
 void HorizontalHeaderControls::on_prevKeyframe_clicked() {

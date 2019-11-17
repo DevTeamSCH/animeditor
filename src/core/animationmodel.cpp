@@ -467,42 +467,39 @@ int AnimationModel::rowSize(int row) const {
 
 void AnimationModel::updateFrameLength(int newFramelength, int oldFramelength,
                                        int currentFrame) {
-  for (int i = 0; i < m_rootAnimation.animationCount(); ++i) {
-    auto layer = static_cast<QSequentialAnimationGroup *>(
-        m_rootAnimation.animationAt(i));
+  /*
+for (int i = 0; i < m_rootAnimation.animationCount(); ++i) {
+auto layer = qobject_cast<Layer *>(m_rootAnimation.animationAt(i));
 
-    // Update layer contents
-    for (int animIdx = 0; animIdx < layer->animationCount(); ++animIdx) {
-      // Update keyframe
-      auto currentAnim = layer->animationAt(animIdx);
-      auto keyframe = qobject_cast<SchMatrix::Keyframe *>(currentAnim);
 
-      if (keyframe) {
-        // Update frameLength placeholder
-        static_cast<QPauseAnimation *>(keyframe->animationAt(0))
-            ->setDuration(newFramelength);
+// Update layer contents
+for (int animIdx = 0; animIdx < layer->animationCount(); ++animIdx) {
+  // Update keyframe
+  auto currentAnim = layer->animationAt(animIdx);
+  auto keyframe = qobject_cast<SchMatrix::Keyframe *>(currentAnim);
 
-        // Update normal animations
-        for (int i = 1; i < keyframe->animationCount(); ++i) {
-          auto anim =
-              static_cast<QVariantAnimation *>(keyframe->animationAt(i));
+  if (keyframe) {
+    // Update frameLength placeholder
+    static_cast<QPauseAnimation *>(keyframe->animationAt(0))
+        ->setDuration(newFramelength);
 
-          // Recalc new frameLength
-          auto frames = anim->duration() / oldFramelength;
-          anim->setDuration(newFramelength * frames);
-        }
-      } else {  // Update pause
-        auto pause = static_cast<QPauseAnimation *>(currentAnim);
+    // Update normal animations
+    for (int i = 1; i < keyframe->animationCount(); ++i) {
+      auto anim =
+          static_cast<QVariantAnimation *>(keyframe->animationAt(i));
 
-        // Recalc new frameLength
-        auto frames = pause->duration() / oldFramelength;
-        pause->setDuration(newFramelength * frames);
-      }
+      // Recalc new frameLength
+      auto frames = anim->duration() / oldFramelength;
+      anim->setDuration(newFramelength * frames);
     }
   }
+}
 
-  // Prevent FPS change issues
-  setFrame(currentFrame);
+}
+
+// Prevent FPS change issues
+setFrame(currentFrame);
+*/
 }
 
 const QParallelAnimationGroup *AnimationModel::rootAnimation() const {
