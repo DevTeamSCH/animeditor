@@ -45,20 +45,17 @@ class CORESHARED_EXPORT Layer : public QSequentialAnimationGroup {
   void insertKeyframe(int idx, SchMatrix::Keyframe *keyframe, int startFrame);
   void updateFrameToKeyframe(SchMatrix::Keyframe *fromKeyframe = nullptr);
   SchMatrix::Keyframe *keyframeAtFrame(int frame);
-
- private slots:
-  void updateLayer(QAbstractAnimation *current);
-
- private:
-  int m_zValue;
-  QList<QGraphicsWidget *> m_currentItems;
-  QGraphicsScene *m_scene = nullptr;
-  SchMatrix::Keyframe *m_lastKeyframe = nullptr;
-  QMap<int, SchMatrix::Keyframe *> m_frameToKeyframe;
+  SchMatrix::Keyframe *keyframeAtMsec(int msec);
 
   // QAbstractAnimation interface
  protected:
   void updateCurrentTime(int currentTime) override;
+
+ private:
+  int m_zValue;
+  QGraphicsScene *m_scene = nullptr;
+  SchMatrix::Keyframe *m_lastKeyframe = nullptr;
+  QMap<int, SchMatrix::Keyframe *> m_frameToKeyframe;
 };
 
 }  // namespace SchMatrix

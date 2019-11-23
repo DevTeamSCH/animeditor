@@ -1,7 +1,6 @@
 #include "layer.h"
 
 #include <QGraphicsScene>
-#include <QList>
 #include "config.h"
 #include "graphicswidget.h"
 #include "keyframe.h"
@@ -14,9 +13,6 @@ Layer::Layer(QGraphicsScene *scene, QObject *parent, const QString &name,
              int zValue)
     : QSequentialAnimationGroup(parent), m_zValue(zValue), m_scene(scene) {
   setObjectName(name);
-
-  connect(this, &QSequentialAnimationGroup::currentAnimationChanged, this,
-          &Layer::updateLayer);
 }
 
 Layer::Layer(QObject *parent) : QSequentialAnimationGroup(parent) {}
@@ -103,7 +99,7 @@ void Layer::setZValue(const int &zValue) {
   m_zValue = zValue;
 
   // Update current items
-  for (auto item : m_currentItems) {
+  for (auto item : currentKeyframe()->objects()) {
     item->setZValue(zValue);
   }
 }
@@ -124,13 +120,11 @@ QAbstractAnimation *Layer::animationAtMsec(int msec) const {
 }
 
 void Layer::addItem(GraphicsWidget *item) {
-  m_currentItems << item;
   m_scene->addItem(item);
   currentKeyframe()->addObject(item);
 }
 
 void Layer::removeItem(GraphicsWidget *item) {
-  m_currentItems.removeAll(item);
   m_scene->removeItem(item);
   currentKeyframe()->removeObject(item);
 }
@@ -152,18 +146,9 @@ Symbol *Layer::convertToSymbol(const QList<GraphicsWidget *> &items) {
 
 void Layer::deleteItem(GraphicsWidget *item) {
   currentKeyframe()->deleteObject(item);
-
-  m_currentItems.removeAll(item);
 }
 
-void Layer::deleteKeyframe(Keyframe *keyframe) {
-  // Remove item from currentItems if exists
-  for (auto item : keyframe->objects()) {
-    m_currentItems.removeAll(item);
-  }
-
-  delete keyframe;
-}
+void Layer::deleteKeyframe(Keyframe *keyframe) { delete keyframe; }
 
 void Layer::addKeyframe(Keyframe *keyframe, int startFrame) {
   m_frameToKeyframe[startFrame] = keyframe;
@@ -206,52 +191,46 @@ Keyframe *Layer::keyframeAtFrame(int frame) {
   return *it;
 }
 
-// Note: this function will be called for all the animations before/after the
-// current animation
-void Layer::updateLayer(QAbstractAnimation *current) {
-  // Skip unwanted animations
-  if (current != animationAtMsec(currentTime())) return;
-
-  auto keyframe = currentKeyframe();
-
-  // Skip invalid and same keyframe
-  if (keyframe == m_lastKeyframe || !keyframe) return;
-
-  m_lastKeyframe = keyframe;
-
-  // remove previous objects
-  for (auto item : m_currentItems) {
-    m_scene->removeItem(item);
-  }
-  m_currentItems.clear();
-
-  // skip blank keyframe
-  if (keyframe->empty()) return;
-
-  // add current objects
-  for (auto item : keyframe->objects()) {
-    m_currentItems << item;
-
-    // Ensure correct zValue
-    item->setZValue(m_zValue);
-    m_scene->addItem(item);
-  }
+Keyframe *Layer::keyframeAtMsec(int msec) {
+  return keyframeAtFrame(msec / SchMatrix::frameLength);
 }
 
 void Layer::updateCurrentTime(int currentTime) {
   QSequentialAnimationGroup::updateCurrentTime(currentTime);
 
-  auto rootDuration =
-      static_cast<QParallelAnimationGroup *>(parent())->duration();
+  auto keyframe = keyframeAtMsec(currentTime);
+  auto items = keyframe->objects();
 
-  // Hide layerItem only if the layer is finished and it isn't at the end
-  if (currentTime == duration() && currentTime != rootDuration) {
-    for (auto item : m_currentItems) {
-      item->hide();
+  if (m_lastKeyframe != keyframe) {
+    // remove previous objects
+    if (m_lastKeyframe)
+      for (auto item : m_lastKeyframe->objects()) {
+        m_scene->removeItem(item);
+      }
+
+    // add current objects
+    for (auto item : items) {
+      // Ensure correct zValue
+      item->setZValue(m_zValue);
+      m_scene->addItem(item);
     }
-  } else if (currentTime < duration()) {
-    for (auto item : m_currentItems) {
-      item->show();
+
+    m_lastKeyframe = keyframe;
+  }
+
+  if (!keyframe->empty()) {
+    auto rootDuration =
+        static_cast<QParallelAnimationGroup *>(parent())->duration();
+
+    // Hide currentItems only if the layer is finished and it isn't at the end
+    if (currentTime == duration() && currentTime != rootDuration) {
+      for (auto item : items) {
+        item->hide();
+      }
+    } else if (currentTime < duration()) {
+      for (auto item : items) {
+        item->show();
+      }
     }
   }
 }
