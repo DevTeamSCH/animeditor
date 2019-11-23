@@ -51,7 +51,7 @@ class CORESHARED_EXPORT AnimationModel : public QAbstractTableModel {
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-  void setTime(int mscec);
+  void setTime(int msec);
   void setFrame(int frame);
   int currentTime() const;
   double currentTimeDouble() const;

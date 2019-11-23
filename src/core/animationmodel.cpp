@@ -289,25 +289,19 @@ Qt::ItemFlags SchMatrix::AnimationModel::flags(const QModelIndex &) const {
          Qt::ItemIsEnabled;
 }
 
-void AnimationModel::setTime(int mscec) {
-  // Workaround
-  if (m_rootAnimation.state() == m_rootAnimation.Stopped) {
-    m_rootAnimation.start();
-    m_rootAnimation.pause();
-  }
-
-  m_rootAnimation.setCurrentTime(mscec);
+void AnimationModel::setTime(int msec) {
+  setFrame(msec / SchMatrix::frameLength);
 }
 
 void AnimationModel::setFrame(int frame) {
+  if (frame < 0) return;
+
   auto oldFrame = currentFrame();
   auto lastFrame = this->lastFrame();
 
-  // Workaround
-  if (m_rootAnimation.state() == m_rootAnimation.Stopped) {
-    m_rootAnimation.start();
-    m_rootAnimation.pause();
-  }
+  // Animation Framework workaround
+  m_rootAnimation.start();
+  m_rootAnimation.pause();
 
   m_rootAnimation.setCurrentTime(SchMatrix::frameLength * frame);
 
@@ -430,7 +424,7 @@ bool AnimationModel::createClassicTween() {
 
   leftKeyframe->interpolate(rigthKeyframe);
 
-  m_rootAnimation.setCurrentTime(m_rootAnimation.currentTime());
+  setFrame(currentFrame());
   return true;
 }
 
