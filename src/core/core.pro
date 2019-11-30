@@ -55,7 +55,14 @@ HEADERS += \
         rootanimation.h \
         symbol.h
 
-unix {
+win32 {
+    LIBS += -L$$PWD/../../deps/win64/ffmpeg/lib/ -lavcodec -lavformat -lavutil -lswscale
+
+    INCLUDEPATH += $$PWD/../../deps/win64/ffmpeg/include
+    DEPENDPATH += $$PWD/../../deps/win64/ffmpeg/include
+} else:unix {
     target.path = /usr/lib
     INSTALLS += target
+
+    LIBS += -lavcodec -lavformat -lavutil -lswscale
 }

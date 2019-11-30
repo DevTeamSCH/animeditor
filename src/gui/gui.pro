@@ -63,5 +63,8 @@ else:unix: LIBS += -L$$OUT_PWD/../core/ -llibanimeditor
 INCLUDEPATH += $$PWD/../core
 DEPENDPATH += $$PWD/../core
 
+# FFmpeg dlls
+win32:LIBS += -L$$PWD/../../deps/win64/ffmpeg/bin
+
 RESOURCES += \
     resources.qrc

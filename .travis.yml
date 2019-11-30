@@ -6,6 +6,7 @@ addons:
     packages:
       - qt5-default
       - qt5-qmake
+      - ffmpeg
 
 matrix:
   include:
