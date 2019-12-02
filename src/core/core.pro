@@ -37,7 +37,8 @@ SOURCES += \
         keyframe.cpp \
         layer.cpp \
         rootanimation.cpp \
-        symbol.cpp
+        symbol.cpp \
+        videoexport.cpp
 
 HEADERS += \
         animationmodel.h \
@@ -53,7 +54,8 @@ HEADERS += \
         keyframe.h \
         layer.h \
         rootanimation.h \
-        symbol.h
+        symbol.h \
+        videoexport.h
 
 win32 {
     LIBS += -L$$PWD/../../deps/win64/ffmpeg/lib/ -lavcodec -lavformat -lavutil -lswscale
